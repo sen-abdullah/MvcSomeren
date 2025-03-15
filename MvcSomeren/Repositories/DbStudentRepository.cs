@@ -28,7 +28,7 @@ public class DbStudentRepository : IStudentRapository
             while (reader.Read())
             {
                 Student student = ReadUser(reader);
-                students.Add(student);
+                students.Add(student); 
             }
 
             reader.Close();
