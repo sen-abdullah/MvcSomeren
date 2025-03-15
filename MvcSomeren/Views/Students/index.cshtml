@@ -1,8 +1,39 @@
-﻿@{
-    ViewData["Title"] = "Students Page";
+﻿@using MvcSomeren.Models
+@model List<MvcSomeren.Models.Student>
+
+
+@{
+    ViewData["Title"] = "Students";
 }
+
 
 <div class="text-center">
     <h1 class="display-4">Students</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>There are @Model.Count students participating</p>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>StudentNumber</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Phone Number</th>
+            <th>Class</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            foreach(Student student in Model)
+            {
+                <tr>
+                    <td>@student.StudentNumber</td>
+                    <td>@student.StudentFirstName</td>
+                    <td>@student.StudentLastName</td>
+                    <td>@student.StudentPhoneNumber</td>
+                    <td>@student.StudentClass</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
 </div>
