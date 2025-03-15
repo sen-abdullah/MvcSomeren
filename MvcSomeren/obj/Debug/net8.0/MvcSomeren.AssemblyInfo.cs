@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MvcSomeren")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7a692a8dcb823a37d8880da5628d5b9353827eb6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec4a9668354b1ac0ddd72e7b355ec5765a637383")]
 [assembly: System.Reflection.AssemblyProductAttribute("MvcSomeren")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MvcSomeren")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

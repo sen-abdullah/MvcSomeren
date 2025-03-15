@@ -6734,20 +6734,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/nikitabratus/.nuget/packages/": {}
+    "/Users/sena/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/nikitabratus/Desktop/c#/MvcSomeren/MvcSomeren/MvcSomeren.csproj",
+      "projectUniqueName": "/Users/sena/Desktop/InHolland/term3/ProjectDatabase/project/MvcSomeren/MvcSomeren/MvcSomeren.csproj",
       "projectName": "MvcSomeren",
-      "projectPath": "/Users/nikitabratus/Desktop/c#/MvcSomeren/MvcSomeren/MvcSomeren.csproj",
-      "packagesPath": "/Users/nikitabratus/.nuget/packages/",
-      "outputPath": "/Users/nikitabratus/Desktop/c#/MvcSomeren/MvcSomeren/obj/",
+      "projectPath": "/Users/sena/Desktop/InHolland/term3/ProjectDatabase/project/MvcSomeren/MvcSomeren/MvcSomeren.csproj",
+      "packagesPath": "/Users/sena/.nuget/packages/",
+      "outputPath": "/Users/sena/Desktop/InHolland/term3/ProjectDatabase/project/MvcSomeren/MvcSomeren/obj/",
       "projectStyle": "PackageReference",
-      "UsingMicrosoftNETSdk": false,
       "configFilePaths": [
-        "/Users/nikitabratus/.nuget/NuGet/NuGet.Config"
+        "/Users/sena/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -6804,7 +6803,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.402/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
