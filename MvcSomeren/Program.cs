@@ -11,6 +11,8 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
         builder.Services.AddSingleton<IStudentRapository, DbStudentRepository>();
+        builder.Services.AddSingleton<ILecturersRepository, DbLecturersRepository>();
+
 
         var app = builder.Build();
 
