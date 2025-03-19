@@ -20,7 +20,7 @@ public class DbLecturersRepository : ILecturersRepository
 
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
-            string query = "SELECT LecturerID, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge FROM Lecturers";
+            string query = "SELECT LecturerID, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge FROM Lecturer";
             SqlCommand command = new SqlCommand(query, connection);
 
             command.Connection.Open();
