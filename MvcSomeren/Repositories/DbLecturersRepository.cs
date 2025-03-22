@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using MvcSomeren.Models;
 
 namespace MvcSomeren.Repositories;
@@ -9,10 +6,11 @@ namespace MvcSomeren.Repositories;
 public class DbLecturersRepository : ILecturersRepository
 {
     private readonly string? _connectionString;
+    private const string CONNECTION_STRING_KEY = "appsomeren";
 
     public DbLecturersRepository(IConfiguration configuration)
     {
-        _connectionString = configuration.GetConnectionString("appsomeren");
+        _connectionString = configuration.GetConnectionString(CONNECTION_STRING_KEY);
     }
 
     public List<Lecturer> GetAll()
