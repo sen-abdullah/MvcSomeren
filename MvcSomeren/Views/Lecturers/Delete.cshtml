@@ -22,7 +22,11 @@
         </div>
         <div class="form-group py-2">
             <label for="Age">Age:</label>
-            <input type="text" id="Age" name="Age" class="form-control" readonly value="@Model?.Age"/>
+            <input type="number" id="Age" name="Age" class="form-control" readonly value="@Model?.Age"/>
+        </div>
+        <div class="form-group py-2">
+            <label for="Room">Room:</label>
+            <input type="number" id="Room" name="Room" class="form-control" readonly value="@Model?.RoomId"/>
         </div>
 
         <button type="submit" class="btn btn-primary">Delete Lecturer</button>

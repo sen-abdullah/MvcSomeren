@@ -22,7 +22,7 @@ public class DbLecturersRepository : ILecturersRepository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             string query =
-                "SELECT LecturerId, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge FROM Lecturer ORDER BY LecturerLastName ASC";
+                "SELECT LecturerId, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge, RoomId FROM Lecturer ORDER BY LecturerLastName ASC";
             SqlCommand command = new SqlCommand(query, connection);
 
             command.Connection.Open();
@@ -47,7 +47,7 @@ public class DbLecturersRepository : ILecturersRepository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             string query =
-                $"SELECT LecturerId, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge FROM Lecturer WHERE LecturerId = @id";
+                $"SELECT LecturerId, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge, RoomId FROM Lecturer WHERE LecturerId = @id";
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@id", id);
 
@@ -71,8 +71,8 @@ public class DbLecturersRepository : ILecturersRepository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             var query =
-                $"INSERT INTO Lecturer (LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge)" +
-                $"VALUES (@FirstName, @LastName, @PhoneNumber, @Age); " +
+                $"INSERT INTO Lecturer (LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge, RoomId)" +
+                $"VALUES (@FirstName, @LastName, @PhoneNumber, @Age, @RoomId); " +
                 "SELECT CAST(SCOPE_IDENTITY() as int)";
 
             SqlCommand command = new SqlCommand(query, connection);
@@ -80,6 +80,7 @@ public class DbLecturersRepository : ILecturersRepository
             command.Parameters.AddWithValue("@LastName", lecturer.LastName);
             command.Parameters.AddWithValue("@PhoneNumber", lecturer.PhoneNumber);
             command.Parameters.AddWithValue("@Age", lecturer.Age);
+            command.Parameters.AddWithValue("@RoomId", lecturer.RoomId);
 
             command.Connection.Open();
             var numberOfRowsAffected = command.ExecuteNonQuery();
@@ -92,7 +93,7 @@ public class DbLecturersRepository : ILecturersRepository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             var query =
-                $"UPDATE Lecturer SET LecturerFirstName = @FirstName, LecturerLastName = @LastName, LecturerPhoneNumber = @PhoneNumber, LecturerAge = @Age " +
+                $"UPDATE Lecturer SET LecturerFirstName = @FirstName, LecturerLastName = @LastName, LecturerPhoneNumber = @PhoneNumber, LecturerAge = @Age, RoomId = @RoomId " +
                 $"WHERE LecturerId = @Id; ";
 
             SqlCommand command = new SqlCommand(query, connection);
@@ -100,6 +101,7 @@ public class DbLecturersRepository : ILecturersRepository
             command.Parameters.AddWithValue("@LastName", lecturer.LastName);
             command.Parameters.AddWithValue("@PhoneNumber", lecturer.PhoneNumber);
             command.Parameters.AddWithValue("@Age", lecturer.Age);
+            command.Parameters.AddWithValue("@RoomId", lecturer.RoomId);
             command.Parameters.AddWithValue("@Id", lecturer.Id);
 
             command.Connection.Open();
@@ -131,7 +133,8 @@ public class DbLecturersRepository : ILecturersRepository
         string lastName = (string)reader["LecturerLastName"];
         string phoneNumber = (string)reader["LecturerPhoneNumber"];
         int age = (int)reader["LecturerAge"];
+        int roomId = (int)reader["RoomId"];
 
-        return new Lecturer(id, firstName, lastName, phoneNumber, age);
+        return new Lecturer(id, firstName, lastName, phoneNumber, age, roomId);
     }
 }

@@ -7,6 +7,7 @@ public class Lecturer
     public string LastName { get; set; }
     public string PhoneNumber { get; set; }
     public int Age { get; set; }
+    public int RoomId { get; set; }
 
     public Lecturer()
     {
@@ -15,14 +16,16 @@ public class Lecturer
         LastName = "";
         PhoneNumber = "";
         Age = 0;
+        RoomId = 0;
     }
 
-    public Lecturer(int id, string firstName, string lastName, string phoneNumber, int age)
+    public Lecturer(int id, string firstName, string lastName, string phoneNumber, int age, int roomId)
     {
         Id = id;
         FirstName = firstName;
         LastName = lastName;
         PhoneNumber = phoneNumber;
         Age = age;
+        RoomId = roomId;
     }
 }
