@@ -8,13 +8,14 @@
     <h1 class="display-4">Lecturers</h1>
     <a href="/Lecturers/Create">Create New</a>
     <p>Number of lecturers in the list: @Model.Count</p>
-    <table class="table">
+    <table class="table table-striped table-hover">
         <thead>
         <tr>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Phone Number</th>
             <th>Age</th>
+            <th>Room</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -27,6 +28,7 @@
                     <td>@lecturer.LastName</td>
                     <td>@lecturer.PhoneNumber</td>
                     <td>@lecturer.Age</td>
+                    <td>@lecturer.RoomId</td>
                     <td>
                         <a href="/Lecturers/Edit/@lecturer.Id">Edit</a> |
                         <a href="/Lecturers/Delete/@lecturer.Id">Delete</a> 
