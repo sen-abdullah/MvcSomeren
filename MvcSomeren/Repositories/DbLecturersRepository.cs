@@ -123,6 +123,33 @@ public class DbLecturersRepository : ILecturersRepository
         }
     }
 
+    public bool IsLecturerExist(Lecturer lecturer)
+    {
+        List<Lecturer> lecturers = new List<Lecturer>();
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query =
+                "SELECT LecturerId, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge, RoomId FROM Lecturer WHERE LecturerFirstName = @FirstName AND LecturerLastName = @LastName;";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@FirstName", lecturer.FirstName.Trim());
+            command.Parameters.AddWithValue("@LastName", lecturer.LastName.Trim());
+
+            command.Connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Lecturer lecturerItem = ReadLecturer(reader);
+                lecturers.Add(lecturerItem);
+            }
+
+            reader.Close();
+        }
+
+        return lecturers.Count > 0;
+    }
+
 
     private Lecturer ReadLecturer(SqlDataReader reader)
     {

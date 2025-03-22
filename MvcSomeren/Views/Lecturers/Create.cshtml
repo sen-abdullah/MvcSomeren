@@ -7,6 +7,10 @@
 <div>
     <h4>New Lecturer</h4>
     <form action="/Lecturers/Create" method="post">
+        @if (ViewData.ModelState["AlreadyExist"] != null)
+        {
+            <span class="text-danger">@ViewData.ModelState["AlreadyExist"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+        }
         <div class="form-group py-2">
             <label for="FirstName">First Name:</label>
             <input type="text" id="FirstName" name="FirstName" class="form-control" required value="@Model?.FirstName"/>
