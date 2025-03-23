@@ -12,11 +12,293 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
+a.navbar-brand {
+  font-family: "Winky Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: bold;
+  font-size: 50px;
+  font-style: normal;
+}
+
+/* Provide sufficient contrast against white background */
+a, a:hover {
+  color: inherit;
+}
+
+.nav-item{
+  font-family: "Winky Sans", sans-serif;
+  font-weight: bold;
+  font-size: 26px;
+  font-style: normal;
+  text-decoration: none;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/*Good*/
+/*
+My Implementation of the buttons
+ */
+a{
+  text-decoration: none;
+  color: inherit;
+}
 html {
   position: relative;
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+  font-family: 'Nunito', sans-serif;
+}
+.bg-navbar {
+  background: -webkit-linear-gradient(110deg, #e9a8a6 60%, #252152 60%);
+  background: -o-linear-gradient(110deg, #e9a8a6 60%, #252152 60%);
+  background: -moz-linear-gradient(110deg, #e9a8a6 60%, #252152 60%);
+  background: linear-gradient(110deg, #e9a8a6 60%, #252152 60%);
+}
+.bg-footer {
+  background: -webkit-linear-gradient(110deg, #252152 60%, #e9a8a6 60%);
+  background: -o-linear-gradient(110deg, #252152 60%, #e9a8a6 60%);
+  background: -moz-linear-gradient(110deg, #252152 60%, #e9a8a6 60%);
+  background: linear-gradient(110deg, #252152 60%, #e9a8a6 60%);
+}
+
+.button-edit {
+  background-color: #c2fbd7;
+  border-radius: 100px;
+  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
+  color: green;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-edit:hover {
+  box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+}
+
+
+.button-delete {
+  background-color: #ffcbcb;
+  border-radius: 100px;
+  box-shadow: rgba(255, 0, 0, .2) 0 -25px 18px -14px inset,
+  rgba(255, 0, 15, .15) 0 1px 2px,
+  rgba(255, 0, 15, .15) 0 2px 4px,
+  rgba(255, 0, 15, .15) 0 4px 8px,
+  rgba(255, 0, 15, .15) 0 8px 16px,
+  rgba(255, 0, 15, .15) 0 16px 32px;
+  color: #c32020;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-delete:hover {
+  box-shadow: rgba(255, 0, 0, .35) 0 -25px 18px -14px inset,
+  rgba(255, 0, 0, .25) 0 1px 2px,
+  rgba(255, 0, 0, .25) 0 2px 4px,
+  rgba(255, 0, 0, .25) 0 4px 8px,
+  rgba(255, 0, 0, .25) 0 8px 16px,
+  rgba(255, 0, 0, .25) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+}
+
+.button-create {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #18181a;
+  color: #18181a;
+  display: inline-block;
+  font-size: 15px;
+  line-height: 15px;
+  padding: 18px 18px 17px;
+  text-decoration: none;
+  cursor: pointer;
+  background: #fff;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-create span:first-child {
+  position: relative;
+  transition: color 600ms cubic-bezier(0.48, 0, 0.12, 1);
+  z-index: 10;
+}
+
+.button-create span:last-child {
+  color: white;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  transition: all 500ms cubic-bezier(0.48, 0, 0.12, 1);
+  z-index: 100;
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translateY(225%) translateX(-50%);
+  height: 14px;
+  line-height: 13px;
+}
+
+.button-create:after {
+  content: "";
+  position: absolute;
+  bottom: -50%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  transform-origin: bottom center;
+  transition: transform 600ms cubic-bezier(0.48, 0, 0.12, 1);
+  transform: skewY(9.3deg) scaleY(0);
+  z-index: 50;
+}
+
+.button-create:hover:after {
+  transform-origin: bottom center;
+  transform: skewY(9.3deg) scaleY(2);
+}
+
+.button-create:hover span:last-child {
+  transform: translateX(-50%) translateY(-100%);
+  opacity: 1;
+  transition: all 900ms cubic-bezier(0.48, 0, 0.12, 1);
+}
+
+.button-save {
+  background: linear-gradient(to bottom right, 
+  #EF4765, 
+  #FF9A5A);
+  border: 0;
+  border-radius: 12px;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 5rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow .2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.button-save:not([disabled]):focus {
+  box-shadow: 0 0 .25rem 
+  rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem 
+  rgba(239, 71, 101, 0.5), .125rem .125rem 1rem 
+  rgba(255, 154, 90, 0.5);
+}
+
+.button-save:not([disabled]):hover {
+  box-shadow: 0 0 .25rem 
+  rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem 
+  rgba(239, 71, 101, 0.5), .125rem .125rem 1rem 
+  rgba(255, 154, 90, 0.5);
+}
+
+.back-to-list {
+  background: linear-gradient(to bottom right,
+  #d1abff,
+  #5705c3);
+  border: 0;
+  border-radius: 12px;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 5rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow .2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.back-to-list:not([disabled]):focus {
+  box-shadow: 0 0 .25rem 
+  rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem 
+  #9268dc, .125rem .125rem 1rem 
+  #4e00b5;
+}
+
+.back-to-list:not([disabled]):hover {
+  box-shadow: 0 0 .25rem 
+  rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem 
+  rgba(136, 44, 255, 0.5), .125rem .125rem 1rem 
+  rgba(93, 17, 221, 0.5);
+}
+
+html, body {
+  width: 100%;
+  height:100%;
+}
+
+table {
+  font-family: "Sama Devanagari", sans-serif !important;
+  font-size: 16px !important;
 }
