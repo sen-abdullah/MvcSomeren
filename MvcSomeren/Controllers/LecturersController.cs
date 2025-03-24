@@ -103,4 +103,18 @@ public class LecturersController : Controller
             return View(lecturer);
         }
     }
+
+    public IActionResult Filter(String lastName)
+    {
+        try
+        {
+            List<Lecturer> lecturers = _lecturersRepository.Filter(lastName);
+            return View(nameof(Index), lecturers);
+        }
+        catch (Exception e)
+        {
+            List<Lecturer> lecturers = _lecturersRepository.GetAll();
+            return View(nameof(Index), lecturers);
+        }
+    }
 }

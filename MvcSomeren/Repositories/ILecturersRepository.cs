@@ -15,4 +15,6 @@ public interface ILecturersRepository
     void Delete(Lecturer lecturer);
 
     bool IsLecturerExist(Lecturer lecturer);
+    
+    List<Lecturer> Filter(String lastName);
 }
