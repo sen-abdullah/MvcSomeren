@@ -5,4 +5,17 @@ namespace MvcSomeren.Repositories;
 public interface IStudentRapository
 {
     List<Student> GetAll();
+
+    Student? GetById(int id);
+
+    void AddStudent(Student student);
+
+    void UpdateStudent(Student student);
+
+    void DeleteStudent(Student student);
+
+    bool IsStudentExist(Student student);
+    
+    List<Student> Filter(string lastName);
+    
 }
