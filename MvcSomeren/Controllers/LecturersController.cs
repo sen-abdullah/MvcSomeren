@@ -63,12 +63,6 @@ public class LecturersController : Controller
     {
         try
         {
-            if (_lecturersRepository.IsLecturerExist(lecturer))
-            {
-                ModelState.AddModelError("AlreadyExist", "Lecturer Already Exist");
-                return View(lecturer);
-            }
-
             _lecturersRepository.Update(lecturer);
             return RedirectToAction(nameof(Index));
         }
