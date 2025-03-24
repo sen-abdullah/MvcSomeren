@@ -1,8 +1,44 @@
-﻿@{
+﻿@model List<MvcSomeren.Models.Room>
+@{
     ViewData["Title"] = "Rooms Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Rooms</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Number of rooms in the list: @Model.Count</p>
+
+    <a href="/Rooms/Create" class="accordion-button"><i class="bi bi-file-earmark-plus"></i><span class="text">Create new Room</span></a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Room Number</th>
+                <th>RoomSize</th>
+                <th>RoomType</th>
+                <th>Building</th>
+                <th>Floor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var room in Model)
+                {
+                    <tr>
+                        <td>@room.RoomNumber</td>
+                        <td>@room.RoomSize</td>
+                        <td>@room.RoomType</td>
+                        <td>@room.Building</td>
+                        <td>@room.Floor</td>
+
+                        <td>
+                            <a href="/Rooms/Edit/@room.RoomId" class="button-edit"><i class="bi bi-pencil-square"></i>Edit</a>
+                            <a href="/Rooms/Delete/@room.RoomId" class="button-delete"><i class="bi bi-trash3"></i>Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 </div>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">

@@ -12,7 +12,7 @@ public class Program
         builder.Services.AddControllersWithViews();
         builder.Services.AddSingleton<IStudentRapository, DbStudentRepository>();
         builder.Services.AddSingleton<ILecturersRepository, DbLecturersRepository>();
-
+        builder.Services.AddSingleton<IRoomsRepository, DbRoomsRepository>();
 
         var app = builder.Build();
 
