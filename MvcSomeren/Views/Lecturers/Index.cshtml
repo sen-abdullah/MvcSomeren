@@ -6,7 +6,7 @@
 
 <div class="text-center">
     <h1 class="display-4">Lecturers</h1>
-    <a href="/Lecturers/Create">Create New</a>
+    <a href="/Lecturers/Create" class="button-create" role="button"><span class="text">Create New</span><span>Create New</span></a>
     <p>Number of lecturers in the list: @Model.Count</p>
     <form method="get" action="@Url.Action("Filter")">
         <div class="form-group py-2">
@@ -37,8 +37,8 @@
                     <td>@lecturer.Age</td>
                     <td>@lecturer.RoomId</td>
                     <td>
-                        <a href="/Lecturers/Edit/@lecturer.Id">Edit</a> |
-                        <a href="/Lecturers/Delete/@lecturer.Id">Delete</a> 
+                        <a href="/Lecturers/Edit/@lecturer.Id"  class="button-edit">Edit</a>
+                        <a href="/Lecturers/Delete/@lecturer.Id" class="button-delete">Delete</a> 
                     </td>
                 </tr>
             }
