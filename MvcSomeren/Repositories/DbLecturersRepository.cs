@@ -150,6 +150,32 @@ public class DbLecturersRepository : ILecturersRepository
         return lecturers.Count > 0;
     }
 
+    public List<Lecturer> Filter(string lastName)
+    {
+        List<Lecturer> lecturers = new List<Lecturer>();
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query =
+                "SELECT LecturerId, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge, RoomId FROM Lecturer WHERE LecturerLastName = @LastName;";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@LastName", lastName.Trim());
+
+            command.Connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Lecturer lecturerItem = ReadLecturer(reader);
+                lecturers.Add(lecturerItem);
+            }
+
+            reader.Close();
+        }
+
+        return lecturers;
+    }
+
 
     private Lecturer ReadLecturer(SqlDataReader reader)
     {
