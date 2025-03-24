@@ -7,10 +7,6 @@
 <div>
     <h4>Edit Lecturer</h4>
     <form action="/Lecturers/Edit" method="post">
-        @if (ViewData.ModelState["AlreadyExist"] != null)
-        {
-            <span class="text-danger">@ViewData.ModelState["AlreadyExist"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
-        }
         <input hidden type="number" name="id" value="@Model?.Id"/>
         <div class="form-group py-2">
             <label for="FirstName">First Name:</label>
