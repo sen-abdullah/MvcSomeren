@@ -1,0 +1,56 @@
+@model MvcSomeren.Models.Student
+
+@{
+    ViewData["Title"] = "Create Student";
+}
+
+<div>
+    <h4>Create Student</h4>
+    <form action="/Students/Create" method="post">
+        @if (ViewData.ModelState["AlreadyExist"] != null)
+        {
+            <span class="text-danger">@ViewData.ModelState["AlreadyExist"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+        }
+        
+        <div class="form-group py-2">
+            <label for="StudentNumber">Student Number:</label>
+            <input type="number" id="StudentNumber" name="StudentNumber" class="form-control" required value="@Model?.StudentNumber"/>
+        </div>
+        
+        <div class="form-group py-2">
+            <label for="StudentFirstName">First Name:</label>
+            <input type="text" id="StudentFirstName" name="StudentFirstName" class="form-control" required value="@Model?.StudentFirstName"/>
+        </div>
+        <div class="form-group py-2">
+            <label for="StudentLastName">Last Name:</label>
+            <input type="text" id="StudentLastName" name="StudentLastName" class="form-control" required value="@Model?.StudentLastName"/>
+        </div>
+        <div class="form-group py-2">
+            <label for="StudentPhoneNumber">Phone Number:</label>
+            <input type="text" id="StudentPhoneNumber" name="StudentPhoneNumber" class="form-control" required
+                   value="@Model?.StudentPhoneNumber"/>
+        </div>
+        <div class="form-group py-2">
+            <label for="StudentClass">Class:</label>
+            <input type="text" id="StudentClass" name="StudentClass" class="form-control" required value="@Model?.StudentClass"/>
+        </div>
+        <div class="form-group py-2">
+            <label for="RoomId">RoomId:</label>
+            <input type="number" id="RoomId" name="RoomId" class="form-control" required value="@Model?.RoomId"/>
+        </div>
+        
+        <div class="col-4 col-md-2 mb-3">
+            @Html.Label("Voucher")
+            <div class="btn-group d-flex" role="group" aria-label="Basic radio toggle button group">
+                @Html.RadioButtonFor(Model => Model.Voucher, true, new { @class = "btn-check", @id = "VoucherTrue" })
+                @Html.Label("VoucherTrue", "Yes", new { @class = "btn btn-outline-primary" })
+
+                @Html.RadioButtonFor(Model => Model.Voucher, false, new { @class = "btn-check", @id = "VoucherFalse" })
+                @Html.Label("VoucherFalse", "No", new { @class = "btn btn-outline-primary" })
+            </div>
+        </div>
+
+        <button type="submit" class="button-save">Create</button>
+    </form>
+    <a href="/Students/Index" class="back-to-list">Back to List</a>
+</div>
