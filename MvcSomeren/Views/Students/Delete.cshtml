@@ -5,7 +5,13 @@
 }
 
 <div>
-    <h4>Delete Student</h4>
+    <div class="d-flex justify-content-center mr-6 my-lg-5">
+        <h2>Delete Student</h2>
+    </div>
+
+    <div class="d-flex justify-content-center mb-4">
+        <a href="/Students/index" class="back-to-list mx-4">Back to List</a>
+    </div>
     <form action="/Students/Delete" method="post">
         @if (ViewData.ModelState["AlreadyExist"] != null)
         {
@@ -13,36 +19,46 @@
         }
         <input hidden type="number" name="StudentId" value="@Model?.StudentId"/>
         
-        <div class="form-group py-2">
-            <label for="StudentNumber">Student Number:</label>
-            <input type="number" id="StudentNumber" name="StudentNumber" class="form-control" readonly value="@Model?.StudentNumber"/>
-        </div>
-        
-        <div class="form-group py-2">
-            <label for="StudentFirstName">First Name:</label>
-            <input type="text" id="StudentFirstName" name="FirstName" class="form-control" readonly value="@Model?.StudentFirstName"/>
-        </div>
-        <div class="form-group py-2">
-            <label for="StudentLastName">Last Name:</label>
-            <input type="text" id="StudentLastName" name="LastName" class="form-control" readonly value="@Model?.StudentLastName"/>
-        </div>
-        <div class="form-group py-2">
-            <label for="StudentPhoneNumber">Phone Number:</label>
-            <input type="text" id="StudentPhoneNumber" name="PhoneNumber" class="form-control" readonly
-                   value="@Model?.StudentPhoneNumber"/>
-        </div>
-        <div class="form-group py-2">
-            <label for="StudentClass">Class:</label>
-            <input type="text" id="StudentClass" name="Class" class="form-control" readonly value="@Model?.StudentClass"/>
-        </div>
-        <div class="form-group py-2">
-            <label for="StudentRoomId">RoomId:</label>
-            <input type="number" id="StudentRoomId" name="StudentRoomId" class="form-control" readonly value="@Model?.StudentRoomId"/>
+        <div class="form-group row">
+            <div class="form-group form-control-lg">
+                <label for="StudentNumber">Student Number:</label>
+                <input type="number" id="StudentNumber" name="StudentNumber" class="form-control" readonly value="@Model?.StudentNumber"/>
+            </div>
         </div>
 
-        <button type="submit" class="button-save">Delete</button>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="StudentFirstName">First Name:</label>
+                <input type="text" id="StudentFirstName" name="StudentFirstName" class="form-control" readonly value="@Model?.StudentFirstName"/>
+            </div>
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="StudentLastName">Last Name:</label>
+                <input type="text" id="StudentLastName" name="StudentLastName" class="form-control" readonly value="@Model?.StudentLastName"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="StudentPhoneNumber">Phone Number:</label>
+                <input type="text" id="StudentPhoneNumber" name="StudentPhoneNumber" class="form-control" readonly
+                       value="@Model?.StudentPhoneNumber"/>
+            </div>
+
+            <div class="form-group col-md-2 form-control-lg">
+                <label for="StudentClass">StudentClass:</label>
+                <input type="text" id="StudentClass" name="StudentClass" class="form-control" readonly value="@Model?.StudentClass"/>
+            </div>
+            
+            <div class="form-group col-md-2 form-control-lg">
+                <label for="StudentRoomId">RoomId:</label>
+                <input type="number" id="StudentRoomId" name="StudentRoomId" class="form-control" readonly value="@Model?.StudentRoomId"/>
+            </div>
+        </div>
+
+        <div class="mx-1 my-4">
+            <button type="submit" class="button-save">Delete</button>
+        </div>
     </form>
-    <a href="/Students/index" class="back-to-list">Back to List</a>
 </div>
 
 <!-- Add Bootstrap Icons (for Edit and Delete buttons) -->
