@@ -298,7 +298,9 @@ html, body {
   height:100%;
 }
 
-table {
-  font-family: "Sama Devanagari", sans-serif !important;
-  font-size: 16px !important;
-}
+.montserrat {
+               font-family: "Montserrat", sans-serif;
+               font-optical-sizing: auto;
+               font-weight: 500;
+               font-style: normal;
+             }

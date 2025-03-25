@@ -5,41 +5,61 @@
 }
 
 <div>
-    <h4>Edit Student</h4>
+    <div class="d-flex justify-content-center mr-6 my-lg-5">
+        <h2>Edit Student</h2>
+    </div>
+    <div class="d-flex justify-content-center mb-4">
+        <a href="/Students/index" class="back-to-list mx-4">Back to List</a>
+    </div>
     <form action="/Students/Edit" method="post">
         @if (ViewData.ModelState["AlreadyExist"] != null)
         {
             <span class="text-danger">@ViewData.ModelState["AlreadyExist"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
         }
         <input hidden type="number" name="StudentId" value="@Model?.StudentId"/>
-        
-        <div class="form-group py-2">
-            <label for="StudentNumber">Student Number:</label>
-            <input type="text" id="StudentNumber" name="StudentNumber" class="form-control" required value="@Model?.StudentNumber"/>
+
+        <div class="form-group row">
+            <div class="form-group form-control-lg">
+                <label for="StudentNumber">Student Number:</label>
+                <input type="text" id="StudentNumber" name="StudentNumber" class="form-control" required value="@Model?.StudentNumber"/>
+            </div>
         </div>
-        <div class="form-group py-2">
-            <label for="StudentFirstName">First Name:</label>
-            <input type="text" id="StudentFirstName" name="StudentFirstName" class="form-control" required value="@Model?.StudentFirstName"/>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="StudentFirstName">First Name:</label>
+                <input type="text" id="StudentFirstName" name="StudentFirstName" class="form-control" required value="@Model?.StudentFirstName"/>
+            </div>
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="StudentLastName">Last Name:</label>
+                <input type="text" id="StudentLastName" name="StudentLastName" class="form-control" required value="@Model?.StudentLastName"/>
+            </div>
         </div>
-        <div class="form-group py-2">
-            <label for="StudentLastName">Last Name:</label>
-            <input type="text" id="StudentLastName" name="StudentLastName" class="form-control" required value="@Model?.StudentLastName"/>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="StudentPhoneNumber">Phone Number:</label>
+                <input type="text" id="StudentPhoneNumber" name="StudentPhoneNumber" class="form-control" required
+                       value="@Model?.StudentPhoneNumber"/>
+            </div>
+            <div class="form-group form-control-lg col-md-4">
+                @Html.LabelFor(model => model.StudentClass, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.StudentClass, new List<SelectListItem>
+                    {
+                        new SelectListItem {Text = "IT1A", Value = "IT1A", Selected = true },
+                        new SelectListItem {Text = "IT1B", Value = "IT1B" },
+                        new SelectListItem {Text = "IT1C", Value = "IT1C" },
+                        new SelectListItem {Text = "IT1D", Value = "IT1D" },
+                    }, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.StudentClass, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-2 form-control-lg">
+                <label for="StudentRoomId">RoomId:</label>
+                <input type="number" id="StudentRoomId" name="StudentRoomId" class="form-control" required value="@Model?.StudentRoomId"/>
+            </div>
         </div>
-        <div class="form-group py-2">
-            <label for="StudentPhoneNumber">Phone Number:</label>
-            <input type="text" id="StudentPhoneNumber" name="StudentPhoneNumber" class="form-control" required
-                   value="@Model?.StudentPhoneNumber"/>
-        </div>
-        <div class="form-group py-2">
-            <label for="StudentClass">Class:</label>
-            <input type="text" id="StudentClass" name="StudentClass" class="form-control" required value="@Model?.StudentClass"/>
-        </div>
-        <div class="form-group py-2">
-            <label for="StudentRoomId">RoomId:</label>
-            <input type="number" id="StudentRoomId" name="StudentRoomId" class="form-control" required value="@Model?.StudentRoomId"/>
-        </div>
-        
-        <div class="col-4 col-md-2 mb-3">
+
+        <div class="col-4 col-md-2 mb-3 form-control-lg">
             @Html.Label("Voucher")
             <div class="btn-group d-flex" role="group" aria-label="Basic radio toggle button group">
                 @Html.RadioButtonFor(Model => Model.Voucher, true, new { @class = "btn-check", @id = "VoucherTrue" })
@@ -49,10 +69,11 @@
                 @Html.Label("VoucherFalse", "No", new { @class = "btn btn-outline-primary" })
             </div>
         </div>
-
-        <button type="submit" class="button-save">Save</button>
+        
+        <div class="mx-1 my-4">
+            <button type="submit" class="button-save">Save</button>
+        </div>
     </form>
-    <a href="/Students/index" class="back-to-list">Back to List</a>
 </div>
 
 <!-- Add Bootstrap Icons (for Edit and Delete buttons) -->
