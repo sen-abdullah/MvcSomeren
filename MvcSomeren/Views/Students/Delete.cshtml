@@ -11,6 +11,7 @@
         {
             <span class="text-danger">@ViewData.ModelState["AlreadyExist"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
         }
+        <input hidden type="number" name="StudentId" value="@Model?.StudentId"/>
         
         <div class="form-group py-2">
             <label for="StudentNumber">Student Number:</label>
@@ -35,8 +36,8 @@
             <input type="text" id="StudentClass" name="Class" class="form-control" readonly value="@Model?.StudentClass"/>
         </div>
         <div class="form-group py-2">
-            <label for="Room">RoomId:</label>
-            <input type="number" id="Room" name="Room" class="form-control" readonly value="@Model?.RoomId"/>
+            <label for="StudentRoomId">RoomId:</label>
+            <input type="number" id="StudentRoomId" name="StudentRoomId" class="form-control" readonly value="@Model?.StudentRoomId"/>
         </div>
 
         <button type="submit" class="button-save">Delete</button>

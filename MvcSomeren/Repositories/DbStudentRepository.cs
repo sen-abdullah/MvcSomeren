@@ -20,7 +20,7 @@ public class DbStudentRepository : IStudentRapository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             string query =
-              "SELECT StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, Voucher, RoomId FROM Student ORDER BY StudentLastName ASC";
+              "SELECT StudentId, StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, Voucher, StudentRoomId FROM Student ORDER BY StudentLastName ASC";
             SqlCommand command = new SqlCommand(query, connection);
 
             command.Connection.Open();
@@ -46,9 +46,9 @@ public class DbStudentRepository : IStudentRapository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             string query =
-                $"SELECT StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, Voucher, RoomId FROM Student WHERE StudentNumber = @StudentNumber";
+                $"SELECT StudentId, StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, Voucher, StudentRoomId FROM Student WHERE StudentId = @StudentId";
             SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@StudentNumber", id);
+            command.Parameters.AddWithValue("@StudentId", id);
 
             command.Connection.Open();
             SqlDataReader reader = command.ExecuteReader();
@@ -70,19 +70,20 @@ public class DbStudentRepository : IStudentRapository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             var query =
-                $"INSERT INTO Student (StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, Voucher, RoomId )" +
-                $"VALUES (@StudentNumber, @StudentFirstName, @StudentLastName, @StudentPhoneNumber, @StudentClass, @Voucher, @RoomId); ";
-                //"SELECT CAST(SCOPE_IDENTITY() as int)"
+                $"INSERT INTO Student (StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, Voucher, StudentRoomId )" +
+                $"VALUES (@StudentNumber, @StudentFirstName, @StudentLastName, @StudentPhoneNumber, @StudentClass, @Voucher, @StudentRoomId); "+
+                "SELECT CAST(SCOPE_IDENTITY() as int)";
 
             SqlCommand command = new SqlCommand(query, connection);
             
+            command.Parameters.AddWithValue("@StudentId", student.StudentId);
             command.Parameters.AddWithValue("@StudentNumber", student.StudentNumber);
             command.Parameters.AddWithValue("@StudentFirstName", student.StudentFirstName);
             command.Parameters.AddWithValue("@StudentLastName", student.StudentLastName);
             command.Parameters.AddWithValue("@StudentPhoneNumber", student.StudentPhoneNumber);
             command.Parameters.AddWithValue("@StudentClass", student.StudentClass);
             command.Parameters.AddWithValue("@Voucher", student.Voucher);
-            command.Parameters.AddWithValue("@RoomId", student.RoomId);
+            command.Parameters.AddWithValue("@StudentRoomId", student.StudentRoomId);
 
             command.Connection.Open();
             var numberOfRowsAffected = command.ExecuteNonQuery();
@@ -96,16 +97,17 @@ public class DbStudentRepository : IStudentRapository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             var query =
-                $"UPDATE Student SET StudentFirstName = @StudentFirstName, StudentLastName = @StudentLastName, StudentPhoneNumber = @StudentPhoneNumber, StudentClass = @StudentClass, Voucher = @Voucher, RoomId = @RoomId " +
-                $"WHERE StudentNumber = @StudentNumber; ";
+                $"UPDATE Student SET StudentNumber = @StudentNumber, StudentFirstName = @StudentFirstName, StudentLastName = @StudentLastName, StudentPhoneNumber = @StudentPhoneNumber, StudentClass = @StudentClass, Voucher = @Voucher, StudentRoomId = @StudentRoomId " +
+                $"WHERE StudentId = @StudentId; ";
 
             SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@StudentId", student.StudentId);
             command.Parameters.AddWithValue("@StudentFirstName", student.StudentFirstName);
             command.Parameters.AddWithValue("@StudentLastName", student.StudentLastName);
             command.Parameters.AddWithValue("@StudentPhoneNumber", student.StudentPhoneNumber);
             command.Parameters.AddWithValue("@StudentClass", student.StudentClass);
             command.Parameters.AddWithValue("@Voucher", student.Voucher);
-            command.Parameters.AddWithValue("@RoomId", student.RoomId);
+            command.Parameters.AddWithValue("@StudentRoomId", student.StudentRoomId);
             command.Parameters.AddWithValue("@StudentNumber", student.StudentNumber);
 
             command.Connection.Open();
@@ -119,10 +121,10 @@ public class DbStudentRepository : IStudentRapository
     {
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
-            var query = $"DELETE FROM Student WHERE StudentNumber = @StudentNumber;";
+            var query = $"DELETE FROM Student WHERE StudentId = @StudentId;";
 
             SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@StudentNumber", student.StudentNumber);
+            command.Parameters.AddWithValue("@StudentId", student.StudentId);
 
             command.Connection.Open();
             var numberOfRowsAffected = command.ExecuteNonQuery();
@@ -138,9 +140,9 @@ public class DbStudentRepository : IStudentRapository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             string query =
-                "SELECT StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, Voucher, RoomId FROM Student WHERE StudentNumber = @StudentNumber;";
+                "SELECT StudentId, StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, Voucher, StudentRoomId FROM Student WHERE StudentId = @StudentId;";
             SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@StudentNumber", student.StudentNumber);
+            command.Parameters.AddWithValue("@StudentId", student.StudentId);
 
             command.Connection.Open();
             SqlDataReader reader = command.ExecuteReader();
@@ -166,7 +168,7 @@ public class DbStudentRepository : IStudentRapository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             string query =
-                "SELECT StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, Voucher, RoomId FROM Student WHERE StudentLastName = @StudentLastName;";
+                "SELECT StudentId, StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, Voucher, StudentRoomId FROM Student WHERE StudentLastName = @StudentLastName;";
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@StudentLastName", studentLastName.Trim());
 
@@ -188,15 +190,16 @@ public class DbStudentRepository : IStudentRapository
     //Checked!!
     private Student ReadStudent(SqlDataReader reader)
     {
+        int studentId = (int)reader["StudentId"];
         int studentNumber = (int)reader["StudentNumber"];
         string studentFirstName = (string)reader["StudentFirstName"];
         string studentLastName = (string)reader["StudentLastName"];
         int studentPhoneNumber = (int)reader["StudentPhoneNumber"];
         string studentClass = (string)reader["StudentClass"];
         bool voucher = (bool)reader["Voucher"];
-        int roomId = (int)reader["RoomId"];
+        int? roomId = reader["StudentRoomId"] == DBNull.Value ? (int?)null : (int)reader["StudentRoomId"];
         
 
-        return new Student(studentNumber, studentFirstName, studentLastName, studentPhoneNumber, studentClass, voucher, roomId);
+        return new Student(studentId, studentNumber, studentFirstName, studentLastName, studentPhoneNumber, studentClass, voucher, roomId);
     }
 }
