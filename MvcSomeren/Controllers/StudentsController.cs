@@ -46,15 +46,15 @@ public class StudentsController : Controller
         }
     }
 
-    [HttpGet ("Students/Edit/{studentNumber}")]
-    public ActionResult Edit(int? studentNumber)
+    [HttpGet ("Students/Edit/{studentId}")]
+    public ActionResult Edit(int? studentId)
     {
-        if (studentNumber == null)
+        if (studentId == null)
         {
             return NotFound();
         }
 
-        Student? student = _studentRepository.GetById((int)studentNumber);
+        Student? student = _studentRepository.GetById((int)studentId);
         return View(student);
     }
 
@@ -73,15 +73,15 @@ public class StudentsController : Controller
         }
     }
 
-    [HttpGet ("Students/Delete/{studentNumber}")]
-    public ActionResult Delete(int? studentNumber)
+    [HttpGet ("Students/Delete/{studentId}")]
+    public ActionResult Delete(int? studentId)
     {
-        if (studentNumber == null)
+        if (studentId == null)
         {
             return NotFound();
         }
 
-        Student? student = _studentRepository.GetById((int)studentNumber);
+        Student? student = _studentRepository.GetById((int)studentId);
         return View(student);
     }
 
