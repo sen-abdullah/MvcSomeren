@@ -9,8 +9,6 @@ public class Student
     public string StudentLastName { get; set; }
     public int StudentPhoneNumber { get; set; }
     public string StudentClass { get; set; }
-    
-    public bool Voucher { get; set; }
     public int? StudentRoomId { get; set; }
 
 
@@ -23,11 +21,10 @@ public class Student
         this.StudentLastName = "";
         this.StudentPhoneNumber = 0;
         this.StudentClass = "";
-        this.Voucher = false;
         this.StudentRoomId = 0;
     }
 
-    public Student(int studentId, int studentNumber, string studentFirstName, string studentLastName, int studentPhoneNumber, string studentClass, bool voucher, int? roomId)
+    public Student(int studentId, int studentNumber, string studentFirstName, string studentLastName, int studentPhoneNumber, string studentClass, int? roomId)
     {
         this.StudentId = studentId;
         this.StudentNumber = studentNumber;
@@ -35,7 +32,6 @@ public class Student
         this.StudentLastName = studentLastName;
         this.StudentPhoneNumber = studentPhoneNumber;
         this.StudentClass = studentClass;
-        this.Voucher = voucher;
         this.StudentRoomId = roomId;
     }
 }

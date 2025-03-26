@@ -58,17 +58,6 @@
                 <input type="number" id="StudentRoomId" name="StudentRoomId" class="form-control" required value="@Model?.StudentRoomId"/>
             </div>
         </div>
-
-        <div class="col-4 col-md-2 mb-3 form-control-lg">
-            @Html.Label("Voucher")
-            <div class="btn-group d-flex" role="group" aria-label="Basic radio toggle button group">
-                @Html.RadioButtonFor(Model => Model.Voucher, true, new { @class = "btn-check", @id = "VoucherTrue" })
-                @Html.Label("VoucherTrue", "Yes", new { @class = "btn btn-outline-primary" })
-
-                @Html.RadioButtonFor(Model => Model.Voucher, false, new { @class = "btn-check", @id = "VoucherFalse" })
-                @Html.Label("VoucherFalse", "No", new { @class = "btn btn-outline-primary" })
-            </div>
-        </div>
         
         <div class="mx-1 my-4">
             <button type="submit" class="button-save">Save</button>
