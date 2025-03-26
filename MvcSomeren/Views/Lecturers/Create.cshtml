@@ -5,33 +5,46 @@
 }
 
 <div>
-    <h4>New Lecturer</h4>
+    <div class="d-flex justify-content-center mr-6 my-lg-5">
+        <h4>New Lecturer</h4>
+    </div>
+    <div class="d-flex justify-content-center mb-4">
+        <a href="/Lecturers/Index" class="back-to-list mx-4">Back to Lecturer List</a>
+    </div>
     <form action="/Lecturers/Create" method="post">
-        @if (ViewData.ModelState["AlreadyExist"] != null)
+        @if (ViewData.ModelState["ValidationError"] != null)
         {
-            <span class="text-danger">@ViewData.ModelState["AlreadyExist"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+            <span class="text-danger">@ViewData.ModelState["ValidationError"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
         }
-        <div class="form-group py-2">
-            <label for="FirstName">First Name:</label>
-            <input type="text" id="FirstName" name="FirstName" class="form-control" required value="@Model?.FirstName"/>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="FirstName">First Name:</label>
+                <input type="text" id="FirstName" name="FirstName" class="form-control" required
+                       value="@Model?.FirstName"/>
+            </div>
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="LastName">Last Name:</label>
+                <input type="text" id="LastName" name="LastName" class="form-control" required
+                       value="@Model?.LastName"/>
+            </div>
         </div>
-        <div class="form-group py-2">
-            <label for="LastName">Last Name:</label>
-            <input type="text" id="LastName" name="LastName" class="form-control" required value="@Model?.LastName"/>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="PhoneNumber">Phone Number:</label>
+                <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" required
+                       value="@Model?.PhoneNumber"/>
+            </div>
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="Age">Age:</label>
+                <input type="number" id="Age" name="Age" class="form-control" required value="@Model?.Age"/>
+            </div>
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="RoomId">Room Id:</label>
+                <input type="number" id="RoomId" name="RoomId" class="form-control" required value="@Model?.RoomId"/>
+            </div>
         </div>
-        <div class="form-group py-2">
-            <label for="PhoneNumber">Phone Number:</label>
-            <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" required value="@Model?.PhoneNumber"/>
+        <div class="mx-1 my-4">
+            <button type="submit" class="button-save">Add Lecturer</button>
         </div>
-        <div class="form-group py-2">
-            <label for="Age">Age:</label>
-            <input type="number" id="Age" name="Age" class="form-control" required value="@Model?.Age"/>
-        </div>
-        <div class="form-group py-2">
-            <label for="RoomId">Room:</label>
-            <input type="number" id="RoomId" name="RoomId" class="form-control" required value="@Model?.RoomId"/>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Lecturer</button>
     </form>
-    <a href="/Lecturers/Index" class="btn btn-secondary">Back to Lecturer List</a>
 </div>
