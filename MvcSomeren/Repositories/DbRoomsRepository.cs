@@ -27,7 +27,7 @@ namespace MvcSomeren.Repositories
 
                 while (reader.Read())
                 {
-                    Room room = ReadUser(reader);
+                    Room room = ReadRoom(reader);
                     rooms.Add(room);
                 }
 
@@ -37,7 +37,7 @@ namespace MvcSomeren.Repositories
             return rooms;
         }
 
-        private Room ReadUser(SqlDataReader reader)
+        private Room ReadRoom(SqlDataReader reader)
         {
             int roomId = (int)reader["RoomId"];
             int roomNumber = (int)reader["RoomNumber"];
@@ -95,7 +95,6 @@ namespace MvcSomeren.Repositories
                 command.Parameters.AddWithValue("@RoomType", room.RoomType);
                 command.Parameters.AddWithValue("@Building", room.Building);
                 command.Parameters.AddWithValue("@Floor", room.Floor);
-                command.Parameters.AddWithValue("@Floor", room.Floor);
 
                 command.Connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
@@ -125,15 +124,16 @@ namespace MvcSomeren.Repositories
             Room room = new Room();
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                string query = $"SELECT RoomId, RoomNumber, RoomSize, RoomType, Building, Floor FROM Room WHERE RoomId = {roomId}";
+                string query = "SELECT RoomId, RoomNumber, RoomSize, RoomType, Building, Floor FROM Room WHERE RoomId = @RoomId";
                 SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@RoomId", roomId);
 
                 command.Connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    room = ReadUser(reader);
+                    room = ReadRoom(reader);
                 }
 
                 reader.Close();
