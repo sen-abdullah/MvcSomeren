@@ -35,6 +35,13 @@ public class StudentsController : Controller
                 ModelState.AddModelError("AlreadyExist", "Student Already Exist");
                 return View(student);
             }
+            
+            if (!_studentRepository.IsRoomIdExist(student))
+            {
+                ModelState.AddModelError("AlreadyExist", "Room doesn't Already Exist");
+                return View(student);
+            }
+            
             _studentRepository.AddStudent(student);
 
             return RedirectToAction("Index");

@@ -161,12 +161,12 @@ public class DbStudentRepository : IStudentRapository
     
     public bool IsRoomIdExist(Student student)
     {
-        List<Student> students = new List<Student>();
+        List<Room> rooms = new List<Room>();
 
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             string query =
-                "SELECT RoomId FROM Room WHERE RoomId = @RoomId;";
+                "SELECT RoomId, RoomNumber, RoomSize, RoomType, Building, Floor FROM Room WHERE RoomId = @RoomId;";
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@RoomId", student.StudentRoomId);
 
@@ -175,14 +175,14 @@ public class DbStudentRepository : IStudentRapository
 
             while (reader.Read())
             {
-                Student studentItem= ReadStudent(reader);
-                students.Add(studentItem);
+                Room studentItem= ReadRoom(reader);
+                rooms.Add(studentItem);
             }
 
             reader.Close();
         }
 
-        return students.Count > 0;
+        return rooms.Count > 0;
     }
 
 
@@ -228,5 +228,17 @@ public class DbStudentRepository : IStudentRapository
 
         return new Student(studentId, studentNumber, studentFirstName, studentLastName, studentPhoneNumber,
             studentClass, voucher, roomId);
+    }
+    
+    private Room ReadRoom(SqlDataReader reader)
+    {
+        int roomId = (int)reader["RoomId"];
+        int roomNumber = (int)reader["RoomNumber"];
+        int roomSize = (int)reader["RoomSize"];
+        string roomType = (string)reader["RoomType"];
+        string building = (string)reader["Building"];
+        string floor = (string)reader["Floor"];
+
+        return new Room(roomId, roomNumber, roomSize, roomType, building, floor);
     }
 }
