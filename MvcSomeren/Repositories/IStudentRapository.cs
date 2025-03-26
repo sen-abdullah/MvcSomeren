@@ -18,4 +18,5 @@ public interface IStudentRapository
     
     List<Student> Filter(string lastName);
     
+    bool IsRoomIdExist(Student student);
 }

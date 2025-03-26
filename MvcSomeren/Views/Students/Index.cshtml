@@ -15,7 +15,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Filter</button>
     </form>
-    <table class="table table-striped table-hover">
+    <table class="table table-hover">
         <thead>
         <tr>
             <th>Student Number</th>
@@ -38,10 +38,10 @@
                     <td>@student.StudentPhoneNumber</td>
                     <td>@student.StudentClass</td>
                     <td>@student.Voucher</td>
-                    <td>@student.RoomId</td>
+                    <td>@student.StudentRoomId</td>
                     <td>
-                        <a href="/Students/Edit/@student.StudentNumber" class="button-edit">Edit</a>
-                        <a href="/Students/Delete/@student.StudentNumber" class="button-delete">Delete</a> 
+                        <a href="/Students/Edit/@student.StudentId" class="button-edit">Edit</a>
+                        <a href="/Students/Delete/@student.StudentId" class="button-delete">Delete</a> 
                     </td>
                 </tr>
             }

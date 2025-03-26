@@ -35,6 +35,13 @@ public class StudentsController : Controller
                 ModelState.AddModelError("AlreadyExist", "Student Already Exist");
                 return View(student);
             }
+            
+            if (!_studentRepository.IsRoomIdExist(student))
+            {
+                ModelState.AddModelError("AlreadyExist", "Room doesn't Already Exist");
+                return View(student);
+            }
+            
             _studentRepository.AddStudent(student);
 
             return RedirectToAction("Index");
@@ -46,15 +53,15 @@ public class StudentsController : Controller
         }
     }
 
-    [HttpGet ("Students/Edit/{studentNumber}")]
-    public ActionResult Edit(int? studentNumber)
+    [HttpGet ("Students/Edit/{studentId}")]
+    public ActionResult Edit(int? studentId)
     {
-        if (studentNumber == null)
+        if (studentId == null)
         {
             return NotFound();
         }
 
-        Student? student = _studentRepository.GetById((int)studentNumber);
+        Student? student = _studentRepository.GetById((int)studentId);
         return View(student);
     }
 
@@ -63,6 +70,11 @@ public class StudentsController : Controller
     {
         try
         {
+            if (_studentRepository.IsRoomIdExist(student))
+            {
+                ModelState.AddModelError("AlreadyExist", "Student RoomId Already Exist");
+                return View(student);
+            }
             _studentRepository.UpdateStudent(student);
             return RedirectToAction("Index");
         }
@@ -73,15 +85,15 @@ public class StudentsController : Controller
         }
     }
 
-    [HttpGet ("Students/Delete/{studentNumber}")]
-    public ActionResult Delete(int? studentNumber)
+    [HttpGet ("Students/Delete/{studentId}")]
+    public ActionResult Delete(int? studentId)
     {
-        if (studentNumber == null)
+        if (studentId == null)
         {
             return NotFound();
         }
 
-        Student? student = _studentRepository.GetById((int)studentNumber);
+        Student? student = _studentRepository.GetById((int)studentId);
         return View(student);
     }
 
