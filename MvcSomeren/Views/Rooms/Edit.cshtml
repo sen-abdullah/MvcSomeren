@@ -2,67 +2,75 @@
 @{
 	ViewData["Title"] = "Edit Room";
 }
-
-<h4>Edit Room</h4>
+<div class="d-flex justify-content-center mr-6 my-lg-5">
+	<h2>Edit Room</h2>
+</div>
+<div class="d-flex justify-content-center mb-4">
+	<a href="/Rooms/Index" class="back-to-list mx-4">Back to List</a>
+</div>
 <form action="/Rooms/Edit" method="POST">
 	<input hidden type="number" name="RoomId" value="@Model?.RoomId" />
 
-	<div class="form-group py-2">
-		<label for="RoomNumber">Room Number:</label>
-		<input type="number" id="RoomNumber" name="RoomNumber" class="form-control" required value="@Model?.RoomNumber" />
-		@Html.ValidationMessageFor(model => model.RoomNumber, "", new { @class = "text-danger" })
-	</div>
+	<div class="form-group row">
+		<div class="form-group form-control-lg">
+			<label for="RoomNumber">Room Number:</label>
+			<input type="number" id="RoomNumber" name="RoomNumber" class="form-control" required value="@Model?.RoomNumber" />
+			@Html.ValidationMessageFor(model => model.RoomNumber, "", new { @class = "text-danger" })
+		</div>
 
-	<div class="form-group">
-		@Html.LabelFor(model => model.RoomType, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.DropDownListFor(model => model.RoomType, new List<SelectListItem>
-			{
-			new SelectListItem { Text = "Student", Value = "Student" },
-			new SelectListItem { Text = "Lecturer", Value = "Lecturer" }
-			}, new { @class = "form-control", id = "RoomType", onchange = "updateRoomOptions()" })
-			@Html.ValidationMessageFor(model => model.RoomType, "", new { @class = "text-danger" })
+		<div class="form-group form-control-lg col-md-4">
+			@Html.LabelFor(model => model.RoomType, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownListFor(model => model.RoomType, new List<SelectListItem>
+				{
+				new SelectListItem { Text = "Student", Value = "Student" },
+				new SelectListItem { Text = "Lecturer", Value = "Lecturer" }
+				}, new { @class = "form-control", id = "RoomType", onchange = "updateRoomOptions()" })
+				@Html.ValidationMessageFor(model => model.RoomType, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group form-control-lg col-md-4">
+			@Html.LabelFor(model => model.RoomSize, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownListFor(model => model.RoomSize, new List<SelectListItem>
+				{
+				new SelectListItem { Text = "1", Value = "1" },
+				new SelectListItem { Text = "8", Value = "8" }
+				}, new { @class = "form-control", id = "RoomSize", onchange = "updateRoomOptions()" })
+				@Html.ValidationMessageFor(model => model.RoomType, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group form-control-lg col-md-4">
+			@Html.LabelFor(model => model.Building, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownListFor(model => model.Building, new List<SelectListItem>
+				{
+				new SelectListItem { Text = "A1", Value = "A1" },
+				new SelectListItem { Text = "B1", Value = "B1" },
+				new SelectListItem { Text = "B0", Value = "B0" }
+				}, new { @class = "form-control", id = "Building" })
+				@Html.ValidationMessageFor(model => model.Building, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group form-control-lg col-md-4">
+			@Html.LabelFor(model => model.Floor, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownListFor(model => model.Floor, new List<SelectListItem>
+				{
+				new SelectListItem { Text = "01", Value = "01" },
+				new SelectListItem { Text = "02", Value = "02" }
+				}, new { @class = "form-control", id = "Floor" })
+				@Html.ValidationMessageFor(model => model.Floor, "", new { @class = "text-danger" })
+			</div>
 		</div>
 	</div>
 
-	<div class="form-group">
-		@Html.LabelFor(model => model.RoomSize, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.DropDownListFor(model => model.RoomSize, new List<SelectListItem>
-			{
-			new SelectListItem { Text = "1", Value = "1" },
-			new SelectListItem { Text = "8", Value = "8" }
-			}, new { @class = "form-control", id = "RoomSize", onchange = "updateRoomOptions()" })
-			@Html.ValidationMessageFor(model => model.RoomType, "", new { @class = "text-danger" })
-		</div>
+	<div class="mx-1 my-4">
+		<button type="submit" class="button-save">Save</button>
 	</div>
-
-	<div class="form-group">
-		@Html.LabelFor(model => model.Building, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.DropDownListFor(model => model.Building, new List<SelectListItem>
-			{
-			new SelectListItem { Text = "A1", Value = "A1" },
-			new SelectListItem { Text = "B1", Value = "B1" },
-			new SelectListItem { Text = "B0", Value = "B0" }
-			}, new { @class = "form-control", id = "Building" })
-			@Html.ValidationMessageFor(model => model.Building, "", new { @class = "text-danger" })
-		</div>
-	</div>
-
-	<div class="form-group">
-		@Html.LabelFor(model => model.Floor, htmlAttributes: new { @class = "control-label col-md-2" })
-		<div class="col-md-10">
-			@Html.DropDownListFor(model => model.Floor, new List<SelectListItem>
-			{
-			new SelectListItem { Text = "01", Value = "01" },
-			new SelectListItem { Text = "02", Value = "02" }
-			}, new { @class = "form-control", id = "Floor" })
-			@Html.ValidationMessageFor(model => model.Floor, "", new { @class = "text-danger" })
-		</div>
-	</div>
-
-	<button type="submit" class="btn btn-primary">Save</button>
 </form>
 
 <a href="/Rooms/Index">Back to List</a>

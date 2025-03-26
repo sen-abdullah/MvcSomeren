@@ -3,37 +3,47 @@
 	ViewData["Title"] = "Delete Room";
 }
 
-
-<h4>Delete Room</h4>
-<form action="/Rooms/Delete" method="POST">
-	<input hidden type="number" name="RoomId" value="@Model?.RoomId" />
-
-	<div class="form-group py-2">
-		<label for="RoomNumber">Room Number:</label>
-		<input type="number" id="RoomNumber" name="RoomNumber" class="form-control" readonly value="@Model?.RoomNumber" />
+<div>
+	<div class="d-flex justify-content-center mr-6 my-lg-5">
+		<h2>Delete Room</h2>
 	</div>
 
-	<div class="form-group py-2">
-		<label for="RoomSize">Room Size:</label>
-		<input type="number" id="RoomSize" name="RoomSize" class="form-control" readonly value="@Model?.RoomSize" />
+	<div class="d-flex justify-content-center mb-4">
+		<a href="/Rooms/Index" class="back-to-list mx-4">Back to List</a>
 	</div>
+	<form action="/Rooms/Delete" method="POST">
 
-	<div class="form-group py-2">
-		<label for="RoomType">Room Type:</label>
-		<input type="text" id="RoomType" name="RoomType" class="form-control" readonly value="@Model?.RoomType" />
-	</div>
+		<input hidden type="number" name="RoomId" value="@Model?.RoomId" />
 
-	<div class="form-group py-2">
-		<label for="Building">Building:</label>
-		<input type="text" id="Building" name="Building" class="form-control" readonly value="@Model?.Building" />
-	</div>
+		<div class="form-group row">
+			<div class="form-group form-control-lg">
+				<label for="RoomNumber">Room Number:</label>
+				<input type="number" id="RoomNumber" name="RoomNumber" class="form-control" readonly value="@Model?.RoomNumber" />
+			</div>
+		
+			<div class="form-group col-md-6 form-control-lg">
+				<label for="RoomSize">Room Size:</label>
+				<input type="number" id="RoomSize" name="RoomSize" class="form-control" readonly value="@Model?.RoomSize" />
+			</div>
 
-	<div class="form-group py-2">
-		<label for="Floor">Floor:</label>
-		<input type="number" id="Floor" name="Floor" class="form-control" readonly value="@Model?.Floor" />
-	</div>
+			<div class="form-group col-md-6 form-control-lg">
+				<label for="RoomType">Room Type:</label>
+				<input type="text" id="RoomType" name="RoomType" class="form-control" readonly value="@Model?.RoomType" />
+			</div>
 
-	<button type="submit" class="btn btn-primary">Delete</button>
-</form>
+			<div class="form-group col-md-6 form-control-lg">
+				<label for="Building">Building:</label>
+				<input type="text" id="Building" name="Building" class="form-control" readonly value="@Model?.Building" />
+			</div>
 
-<a href="/Rooms/Index">Back to List</a>
+			<div class="form-group col-md-4 form-control-lg">
+				<label for="Floor">Floor:</label>
+				<input type="number" id="Floor" name="Floor" class="form-control" readonly value="@Model?.Floor" />
+			</div>
+		</div>
+
+		<div class="mx-1 my-4">
+			<button type="submit" class="button-save">Delete</button>
+		</div>
+	</form>
+</div>

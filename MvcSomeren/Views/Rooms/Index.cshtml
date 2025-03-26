@@ -5,6 +5,7 @@
 
 <div class="text-center">
     <h1 class="display-4">Rooms</h1>
+    <a href="/Rooms/Create" class="button-create" role="button"><span class="text">Create new</span><span>Create New</span></a>
     <p>Number of rooms in the list: @Model.Count</p>
     <form method="get" action="@Url.Action("Filter")">
         <div class="form-group py-2">
@@ -13,8 +14,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Filter</button>
     </form>
-    <a href="/Rooms/Create" class="accordion-button"><i class="bi bi-file-earmark-plus"></i><span class="text">Create new Room</span></a>
-
+    
     <table class="table">
         <thead>
             <tr>
