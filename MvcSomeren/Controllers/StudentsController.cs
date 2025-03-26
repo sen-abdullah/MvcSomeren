@@ -70,6 +70,12 @@ public class StudentsController : Controller
     {
         try
         {
+            if (!_studentRepository.IsRoomIdExist(student))
+            {
+                ModelState.AddModelError("ValidationError", "Room id does not exist!");
+                return View(student);
+            }
+            
             _studentRepository.UpdateStudent(student);
             return RedirectToAction("Index");
         }

@@ -12,9 +12,9 @@
         <a href="/Students/index" class="back-to-list mx-4">Back to List</a>
     </div>
     <form action="/Students/Edit" method="post">
-        @if (ViewData.ModelState["AlreadyExist"] != null)
+        @if (ViewData.ModelState["ValidationError"] != null)
         {
-            <span class="text-danger">@ViewData.ModelState["AlreadyExist"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+            <span class="text-danger">@ViewData.ModelState["ValidationError"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
         }
         <input hidden type="number" name="StudentId" value="@Model?.StudentId"/>
 
