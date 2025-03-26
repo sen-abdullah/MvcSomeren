@@ -69,6 +69,12 @@ public class LecturersController : Controller
     {
         try
         {
+            if (!_lecturersRepository.IsRoomExist(lecturer))
+            {
+                ModelState.AddModelError("ValidationError", "Room id does not exist!");
+                return View(lecturer);
+            }
+            
             _lecturersRepository.Update(lecturer);
             return RedirectToAction(nameof(Index));
         }
