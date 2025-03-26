@@ -33,7 +33,13 @@ public class LecturersController : Controller
         {
             if (_lecturersRepository.IsLecturerExist(lecturer))
             {
-                ModelState.AddModelError("AlreadyExist", "Lecturer Already Exist");
+                ModelState.AddModelError("ValidationError", "Lecturer already exist!");
+                return View(lecturer);
+            }
+
+            if (!_lecturersRepository.IsRoomExist(lecturer))
+            {
+                ModelState.AddModelError("ValidationError", "Room id does not exist!");
                 return View(lecturer);
             }
 

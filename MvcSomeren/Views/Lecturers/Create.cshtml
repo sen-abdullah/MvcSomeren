@@ -12,9 +12,9 @@
         <a href="/Lecturers/Index" class="back-to-list mx-4">Back to Lecturer List</a>
     </div>
     <form action="/Lecturers/Create" method="post">
-        @if (ViewData.ModelState["AlreadyExist"] != null)
+        @if (ViewData.ModelState["ValidationError"] != null)
         {
-            <span class="text-danger">@ViewData.ModelState["AlreadyExist"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+            <span class="text-danger">@ViewData.ModelState["ValidationError"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
         }
         <div class="form-group row">
             <div class="form-group col-md-6 form-control-lg">
