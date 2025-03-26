@@ -158,6 +158,32 @@ public class DbStudentRepository : IStudentRapository
 
         return students.Count > 0;
     }
+    
+    public bool IsRoomIdExist(Student student)
+    {
+        List<Student> students = new List<Student>();
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query =
+                "SELECT RoomId FROM Room WHERE RoomId = @RoomId;";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@RoomId", student.StudentRoomId);
+
+            command.Connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Student studentItem= ReadStudent(reader);
+                students.Add(studentItem);
+            }
+
+            reader.Close();
+        }
+
+        return students.Count > 0;
+    }
 
 
     //Checked!!
@@ -198,8 +224,9 @@ public class DbStudentRepository : IStudentRapository
         string studentClass = (string)reader["StudentClass"];
         bool voucher = (bool)reader["Voucher"];
         int? roomId = reader["StudentRoomId"] == DBNull.Value ? (int?)null : (int)reader["StudentRoomId"];
-        
 
-        return new Student(studentId, studentNumber, studentFirstName, studentLastName, studentPhoneNumber, studentClass, voucher, roomId);
+
+        return new Student(studentId, studentNumber, studentFirstName, studentLastName, studentPhoneNumber,
+            studentClass, voucher, roomId);
     }
 }
