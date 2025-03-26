@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using MvcSomeren.Models;
 
 namespace MvcSomeren.Repositories;
@@ -150,6 +153,32 @@ public class DbLecturersRepository : ILecturersRepository
         return lecturers.Count > 0;
     }
 
+    public bool IsRoomExist(Lecturer lecturer)
+    {
+        List<Room> rooms = new List<Room>();
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query =
+                "SELECT RoomId, RoomNumber, RoomSize, RoomType, Building, Floor FROM Room WHERE RoomId = @RoomId;";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@RoomId", lecturer.RoomId);
+
+            command.Connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Room roomItem= ReadRoom(reader);
+                rooms.Add(roomItem);
+            }
+
+            reader.Close();
+        }
+
+        return rooms.Count > 0;
+    }
+
     public List<Lecturer> Filter(string lastName)
     {
         List<Lecturer> lecturers = new List<Lecturer>();
@@ -187,5 +216,17 @@ public class DbLecturersRepository : ILecturersRepository
         int roomId = (int)reader["RoomId"];
 
         return new Lecturer(id, firstName, lastName, phoneNumber, age, roomId);
+    }
+    
+    private Room ReadRoom(SqlDataReader reader)
+    {
+        int roomId = (int)reader["RoomId"];
+        int roomNumber = (int)reader["RoomNumber"];
+        int roomSize = (int)reader["RoomSize"];
+        string roomType = (string)reader["RoomType"];
+        string building = (string)reader["Building"];
+        string floor = (string)reader["Floor"];
+
+        return new Room(roomId, roomNumber, roomSize, roomType, building, floor);
     }
 }

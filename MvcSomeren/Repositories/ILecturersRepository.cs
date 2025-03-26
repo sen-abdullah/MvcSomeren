@@ -17,4 +17,6 @@ public interface ILecturersRepository
     bool IsLecturerExist(Lecturer lecturer);
     
     List<Lecturer> Filter(String lastName);
+    
+    bool IsRoomExist(Lecturer lecturer);
 }
