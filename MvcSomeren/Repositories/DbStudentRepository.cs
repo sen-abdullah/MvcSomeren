@@ -138,9 +138,9 @@ public class DbStudentRepository : IStudentRapository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             string query =
-                "SELECT StudentId, StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, StudentRoomId FROM Student WHERE StudentId = @StudentId;";
+                "SELECT StudentId, StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, StudentRoomId FROM Student WHERE StudentNumber = @StudentNumber;";
             SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@StudentId", student.StudentId);
+            command.Parameters.AddWithValue("@StudentNumber", student.StudentNumber);
 
             command.Connection.Open();
             SqlDataReader reader = command.ExecuteReader();
