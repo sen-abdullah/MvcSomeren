@@ -186,9 +186,9 @@ public class DbLecturersRepository : ILecturersRepository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             string query =
-                "SELECT LecturerId, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge, RoomId FROM Lecturer WHERE LecturerLastName = @LastName;";
+                "SELECT LecturerId, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge, RoomId FROM Lecturer WHERE LecturerLastName LIKE @LastName";
             SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@LastName", lastName.Trim());
+            command.Parameters.AddWithValue("@LastName", lastName.Trim() + "%");
 
             command.Connection.Open();
             SqlDataReader reader = command.ExecuteReader();
