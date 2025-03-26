@@ -95,6 +95,7 @@ namespace MvcSomeren.Repositories
                 command.Parameters.AddWithValue("@RoomType", room.RoomType);
                 command.Parameters.AddWithValue("@Building", room.Building);
                 command.Parameters.AddWithValue("@Floor", room.Floor);
+                command.Parameters.AddWithValue("@RoomId", room.RoomId);
 
                 command.Connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
@@ -119,6 +120,30 @@ namespace MvcSomeren.Repositories
             }
         }
 
+        public List<Room> Filter(int roomSize)
+        {
+            List<Room> rooms = new List<Room>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                string query = "SELECT RoomId, RoomNumber, RoomSize, RoomType, Building, Floor FROM Room WHERE RoomSize = @RoomSize";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@RoomSize", roomSize);
+
+                command.Connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Room roomItem = ReadRoom(reader);
+                    rooms.Add(roomItem);
+                }
+
+                reader.Close();
+            }
+
+            return rooms;
+        }
         public Room? GetById(int roomId)
         {
             Room room = new Room();

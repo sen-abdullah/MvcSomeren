@@ -9,5 +9,6 @@ public interface IRoomsRepository
     void Update(Room room);
     void Delete(Room room);
 
+    List<Room> Filter(int roomSize);
     Room? GetById(int roomId);
 }

@@ -99,4 +99,18 @@ public class RoomsController : Controller
             return View(room);
         }
     }
+
+    public IActionResult Filter(int roomSize)
+    {
+        try
+        {
+            List<Room> rooms = _roomRepository.Filter(roomSize);
+            return View(nameof(Index), rooms);
+        }
+        catch (Exception e)
+        {
+            List<Room> rooms = _roomRepository.GetAll();
+            return View(nameof(Index), rooms);
+        }
+    }
 }

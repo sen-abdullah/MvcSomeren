@@ -1,152 +1,96 @@
 ﻿@model MvcSomeren.Models.Room
 @{
-    ViewData["Title"] = "Edit Room";
+	ViewData["Title"] = "Edit Room";
 }
 
 <h4>Edit Room</h4>
 <form action="/Rooms/Edit" method="POST">
-    <input hidden type="number" name="RoomId" value="@Model?.RoomId" />
+	<input hidden type="number" name="RoomId" value="@Model?.RoomId" />
 
-    @*     <div class="form-group py-2">
-        <label for="RoomNumber">Room Number:</label>
-        <input type="number" id="RoomNumber" name="RoomNumber" class="form-control" required value="@Model?.RoomNumber" />
-        @Html.ValidationMessageFor(model => model.RoomNumber, "", new { @class = "text-danger" })
-    </div> *@
+	<div class="form-group py-2">
+		<label for="RoomNumber">Room Number:</label>
+		<input type="number" id="RoomNumber" name="RoomNumber" class="form-control" required value="@Model?.RoomNumber" />
+		@Html.ValidationMessageFor(model => model.RoomNumber, "", new { @class = "text-danger" })
+	</div>
 
-    <div class="form-group py-2">
-        <label for="RoomNumber">Room Number:</label>
-        <input type="number" id="RoomNumber" name="RoomNumber" class="form-control" required value="@Model?.RoomNumber" />
-    </div>
+	<div class="form-group">
+		@Html.LabelFor(model => model.RoomType, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.DropDownListFor(model => model.RoomType, new List<SelectListItem>
+			{
+			new SelectListItem { Text = "Student", Value = "Student" },
+			new SelectListItem { Text = "Lecturer", Value = "Lecturer" }
+			}, new { @class = "form-control", id = "RoomType", onchange = "updateRoomOptions()" })
+			@Html.ValidationMessageFor(model => model.RoomType, "", new { @class = "text-danger" })
+		</div>
+	</div>
 
-    <div class="form-group py-2">
-        <label for="RoomType">Room Type:</label>
-        <input type="text" id="RoomType" name="RoomType" class="form-control" required value="@Model?.RoomType" />
-    </div>
+	<div class="form-group">
+		@Html.LabelFor(model => model.RoomSize, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.DropDownListFor(model => model.RoomSize, new List<SelectListItem>
+			{
+			new SelectListItem { Text = "1", Value = "1" },
+			new SelectListItem { Text = "8", Value = "8" }
+			}, new { @class = "form-control", id = "RoomSize", onchange = "updateRoomOptions()" })
+			@Html.ValidationMessageFor(model => model.RoomType, "", new { @class = "text-danger" })
+		</div>
+	</div>
 
-    @*     <div class="form-group">
-        @Html.LabelFor(model => model.RoomType, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.RoomType, new List<SelectListItem>
-            {
-            new SelectListItem { Text = "Student", Value = "Student" },
-            new SelectListItem { Text = "Lecturer", Value = "Lecturer" }
-            }, new { @class = "form-control", id = "RoomType", onchange = "updateRoomOptions()" })
-            @Html.ValidationMessageFor(model => model.RoomType, "", new { @class = "text-danger" })
-        </div>
-    </div> *@
+	<div class="form-group">
+		@Html.LabelFor(model => model.Building, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.DropDownListFor(model => model.Building, new List<SelectListItem>
+			{
+			new SelectListItem { Text = "A1", Value = "A1" },
+			new SelectListItem { Text = "B1", Value = "B1" },
+			new SelectListItem { Text = "B0", Value = "B0" }
+			}, new { @class = "form-control", id = "Building" })
+			@Html.ValidationMessageFor(model => model.Building, "", new { @class = "text-danger" })
+		</div>
+	</div>
 
-    <div class="form-group py-2">
-        <label for="RoomSize">Room Size:</label>
-        <input type="number" id="RoomSize" name="RoomSize" class="form-control" required value="@Model?.RoomSize" />
-    </div>
+	<div class="form-group">
+		@Html.LabelFor(model => model.Floor, htmlAttributes: new { @class = "control-label col-md-2" })
+		<div class="col-md-10">
+			@Html.DropDownListFor(model => model.Floor, new List<SelectListItem>
+			{
+			new SelectListItem { Text = "01", Value = "01" },
+			new SelectListItem { Text = "02", Value = "02" }
+			}, new { @class = "form-control", id = "Floor" })
+			@Html.ValidationMessageFor(model => model.Floor, "", new { @class = "text-danger" })
+		</div>
+	</div>
 
-    @*     <div class="form-group">
-        @Html.LabelFor(model => model.RoomSize, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.RoomSize, new List<SelectListItem>
-            {
-            new SelectListItem { Text = "1", Value = "1" },
-            new SelectListItem { Text = "8", Value = "8" }
-            }, new { @class = "form-control", id = "RoomSize", onchange = "updateRoomOptions()" })
-            @Html.ValidationMessageFor(model => model.RoomType, "", new { @class = "text-danger" })
-        </div>
-    </div> *@
-
-    <div class="form-group py-2">
-        <label for="Building">Building:</label>
-        <input type="text" id="Building" name="Building" class="form-control" required value="@Model?.Building" />
-    </div>
-
-    @*     <div class="form-group">
-        @Html.LabelFor(model => model.Building, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.Building, new List<SelectListItem>
-            {
-            new SelectListItem { Text = "A1", Value = "A1" },
-            new SelectListItem { Text = "B1", Value = "B1" },
-            new SelectListItem { Text = "B0", Value = "B0" }
-            }, new { @class = "form-control", id = "Building" })
-            @Html.ValidationMessageFor(model => model.Building, "", new { @class = "text-danger" })
-        </div>
-    </div> *@
-
-    <div class="form-group py-2">
-        <label for="Floor">Floor:</label>
-        <input type="text" id="Floor" name="Floor" class="form-control" required value="@Model?.Floor" />
-    </div>
-
-    @*     <div class="form-group">
-        @Html.LabelFor(model => model.Floor, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.Floor, new List<SelectListItem>
-            {
-            new SelectListItem { Text = "01", Value = "01" },
-            new SelectListItem { Text = "02", Value = "02" }
-            }, new { @class = "form-control", id = "Floor" })
-            @Html.ValidationMessageFor(model => model.Floor, "", new { @class = "text-danger" })
-        </div>
-    </div> *@
-
-    <button type="submit" class="btn btn-primary">Save</button>
+	<button type="submit" class="btn btn-primary">Save</button>
 </form>
 
 <a href="/Rooms/Index">Back to List</a>
 
-@* <script>
-    function updateRoomOptions() {
-        var roomType = document.getElementById("RoomType").value;
-        var roomSizeSelect = document.getElementById("RoomSize");
-        var buildingSelect = document.getElementById("Building");
-        var floorSelect = document.getElementById("Floor");
+<script>
+	function updateRoomOptions() {
+		var roomType = document.getElementById("RoomType").value;
+		var roomSizeSelect = document.getElementById("RoomSize");
+		var buildingSelect = document.getElementById("Building");
+		var floorSelect = document.getElementById("Floor");
 
-        // Clear existing options
-        roomSizeSelect.innerHTML = "";
+		roomSizeSelect.innerHTML = "";
 
-        if (roomType === "Lecturer") {
-            var option1 = document.createElement("option");
-            option1.value = "1";
-            option1.text = "1 Bed";
-            roomSizeSelect.appendChild(option1);
+		if (roomType === "Lecturer") {
+			var option1 = new Option("1 Bed", "1");
+			roomSizeSelect.appendChild(option1);
 
-            buildingSelect.value = "A1";
-            floorSelect.value = "01";
-            buildingSelect.disabled = true;
-            floorSelect.disabled = true;
-        } else if (roomType === "Student") {
-            var option1 = document.createElement("option");
-            option1.value = "8";
-            option1.text = "8 Beds";
-            roomSizeSelect.appendChild(option1);
+			buildingSelect.value = "A1";
+			floorSelect.value = "01";
+			buildingSelect.disabled = true;
+			floorSelect.disabled = true;
+		} else if (roomType === "Student") {
+			var option1 = new Option("8 Beds", "8");
+			roomSizeSelect.appendChild(option1);
 
-            buildingSelect.disabled = false;
-            floorSelect.disabled = false;
-        }
-    }
+			document.getElementById("Building").disabled = false;
+			document.getElementById("Floor").disabled = false;
+		}
+	}
 
-    document.addEventListener("DOMContentLoaded", function () {
-        updateRoomOptions();
-
-        var roomSizeSelect = document.getElementById("RoomSize");
-        var buildingSelect = document.getElementById("Building");
-        var floorSelect = document.getElementById("Floor");
-
-        var savedRoomSize = "@Model?.RoomSize";
-        var savedBuilding = "@Model?.Building";
-        var savedFloor = "@Model?.Floor";
-
-        if (savedRoomSize) {
-            roomSizeSelect.value = savedRoomSize;
-        }
-        if (savedBuilding) {
-            buildingSelect.value = savedBuilding;
-        }
-        if (savedFloor) {
-            floorSelect.value = savedFloor;
-        }
-
-        document.querySelector("form").addEventListener("submit", function () {
-            document.getElementById("Building").disabled = false;
-            document.getElementById("Floor").disabled = false;
-        });
-    });
-</script> *@
+</script> 

@@ -64,55 +64,63 @@
 <a href="/Rooms/Index">Back to List</a>
 
 <script>
-    function updateRoomOptions() {
-        var roomType = document.getElementById("RoomType").value;
-        var roomSizeSelect = document.getElementById("RoomSize");
-        var buildingSelect = document.getElementById("Building");
-        var floorSelect = document.getElementById("Floor");
+    <script>
+        function updateRoomOptions() {
+            var roomType = document.getElementById("RoomType").value;
+            var roomSizeSelect = document.getElementById("RoomSize");
+            var buildingSelect = document.getElementById("Building");
+            var floorSelect = document.getElementById("Floor");
 
-        roomSizeSelect.innerHTML = "";
+            // Clear existing options
+            roomSizeSelect.innerHTML = "";
 
-        if (roomType === "Lecturer") {
-            roomSizeSelect.innerHTML += '<option value="1">1 Bed</option>';
+            if (roomType === "Lecturer") {
+                var option1 = document.createElement("option");
+                option1.value = "1";
+                option1.text = "1 Bed";
+                roomSizeSelect.appendChild(option1);
 
-            buildingSelect.value = "A1";
-            floorSelect.value = "01";
+                buildingSelect.value = "A1";
+                floorSelect.value = "01";
+                buildingSelect.disabled = true;
+                floorSelect.disabled = true;
+            } else if (roomType === "Student") {
+                var option1 = document.createElement("option");
+                option1.value = "8";
+                option1.text = "8 Beds";
+                roomSizeSelect.appendChild(option1);
 
-            buildingSelect.setAttribute("readonly", true);
-            floorSelect.setAttribute("readonly", true);
-        } else if (roomType === "Student") {
-            roomSizeSelect.innerHTML += '<option value="8">8 Beds</option>';
-
-            buildingSelect.removeAttribute("readonly");
-            floorSelect.removeAttribute("readonly");
+                buildingSelect.disabled = false;
+                floorSelect.disabled = false;
+            }
         }
 
-        var selectedRoomSize = "@Model?.RoomSize";
-        if (selectedRoomSize) {
-            roomSizeSelect.value = selectedRoomSize;
-        }
-    }
+        document.addEventListener("DOMContentLoaded", function () {
+            updateRoomOptions();
 
-    document.addEventListener("DOMContentLoaded", function () {
-        updateRoomOptions();
+            var roomSizeSelect = document.getElementById("RoomSize");
+            var buildingSelect = document.getElementById("Building");
+            var floorSelect = document.getElementById("Floor");
 
-        var roomSizeSelect = document.getElementById("RoomSize");
-        var buildingSelect = document.getElementById("Building");
-        var floorSelect = document.getElementById("Floor");
+            var savedRoomSize = "@Model?.RoomSize";
+            var savedBuilding = "@Model?.Building";
+            var savedFloor = "@Model?.Floor";
 
-        var savedRoomSize = "@Model?.RoomSize";
-        var savedBuilding = "@Model?.Building";
-        var savedFloor = "@Model?.Floor";
+            if (savedRoomSize) {
+                roomSizeSelect.value = savedRoomSize;
+            }
+            if (savedBuilding) {
+                buildingSelect.value = savedBuilding;
+            }
+            if (savedFloor) {
+                floorSelect.value = savedFloor;
+            }
 
-        if (savedRoomSize) {
-            roomSizeSelect.value = savedRoomSize;
-        }
-        if (savedBuilding) {
-            buildingSelect.value = savedBuilding;
-        }
-        if (savedFloor) {
-            floorSelect.value = savedFloor;
-        }
-    });
+            document.querySelector("form").addEventListener("submit", function () {
+                document.getElementById("Building").disabled = false;
+                document.getElementById("Floor").disabled = false;
+            });
+        });
+</script>
 </script>
 
