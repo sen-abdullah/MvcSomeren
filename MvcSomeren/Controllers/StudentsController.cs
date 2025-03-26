@@ -70,11 +70,6 @@ public class StudentsController : Controller
     {
         try
         {
-            if (_studentRepository.IsRoomIdExist(student))
-            {
-                ModelState.AddModelError("AlreadyExist", "Student RoomId Already Exist");
-                return View(student);
-            }
             _studentRepository.UpdateStudent(student);
             return RedirectToAction("Index");
         }

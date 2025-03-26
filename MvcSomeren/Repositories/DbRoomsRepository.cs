@@ -90,6 +90,7 @@ namespace MvcSomeren.Repositories
                     + $"WHERE RoomId = @RoomId; ";
                 SqlCommand command = new SqlCommand(query, connection);
 
+                command.Parameters.AddWithValue("@RoomId", room.RoomId);
                 command.Parameters.AddWithValue("@RoomNumber", room.RoomNumber);
                 command.Parameters.AddWithValue("@RoomSize", room.RoomSize);
                 command.Parameters.AddWithValue("@RoomType", room.RoomType);
