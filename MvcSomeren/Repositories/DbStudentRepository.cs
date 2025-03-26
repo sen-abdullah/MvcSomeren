@@ -192,9 +192,9 @@ public class DbStudentRepository : IStudentRapository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             string query =
-                "SELECT StudentId, StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, StudentRoomId FROM Student WHERE StudentLastName = @StudentLastName;";
+                "SELECT StudentId, StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, StudentRoomId FROM Student WHERE StudentLastName LIKE @StudentLastName;";
             SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@StudentLastName", studentLastName.Trim());
+            command.Parameters.AddWithValue("@StudentLastName", studentLastName.Trim() + "%");
 
             command.Connection.Open();
             SqlDataReader reader = command.ExecuteReader();
