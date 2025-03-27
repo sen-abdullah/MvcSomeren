@@ -96,7 +96,6 @@ namespace MvcSomeren.Repositories
                 command.Parameters.AddWithValue("@RoomType", room.RoomType);
                 command.Parameters.AddWithValue("@Building", room.Building);
                 command.Parameters.AddWithValue("@Floor", room.Floor);
-                command.Parameters.AddWithValue("@RoomId", room.RoomId);
 
                 command.Connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
