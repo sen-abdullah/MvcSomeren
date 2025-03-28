@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MvcSomeren.Models;
+using Activity = System.Diagnostics.Activity;
 
 namespace MvcSomeren.Controllers;
 

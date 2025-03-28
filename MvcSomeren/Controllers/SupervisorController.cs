@@ -17,8 +17,8 @@ public class SupervisorController : Controller
     public IActionResult Index()
     {
         //lecturer
-        List<Lecturer> lecturers = _supervisorRepository.GetAll();
-        return View(lecturers);
+        List<Supervisor> supervisors = _supervisorRepository.GetAll();
+        return View(supervisors);
     }
 
     [HttpGet]
