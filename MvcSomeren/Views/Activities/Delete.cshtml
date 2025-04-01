@@ -1,0 +1,43 @@
+﻿@model MvcSomeren.Models.Activity
+
+@{
+	ViewData["Title"] = "Delete Activity";
+}
+
+<div>
+	<div class="d-flex justify-content-center mr-6 my-lg-5">
+		<h2>Delete Activity</h2>
+	</div>
+
+	<div class="d-flex justify-content-center mb-4">
+		<a href="/Activities/Index" class="back-to-list mx-4">Back to List</a>
+	</div>
+	<form action="/Activities/Delete" method="post">
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		<input hidden type="number" name="ActivityId" value="@Model?.ActivityId" />
+
+		<div class="form-group row">
+			<div class="form-group col-md-6 form-control-lg">
+				<label for="ActivityName">Activity Name:</label>
+				<input type="text" id="ActivityName" name="ActivityName" class="form-control" readonly
+					   value="@Model?.ActivityName"/>
+			</div>
+
+			<div class="form-group col-md-4 form-control-lg">
+				<label for="Date">Date:</label>
+				<input type="text" id="Date" name="Date" class="form-control" readonly value="@Model?.Date"/>
+			</div>
+
+			<div class="form-group col-md-2 form-control-lg">
+				<label for="Time">Time:</label>
+				<input type="text" id="Time" name="Time" class="form-control" readonly value="@Model?.Time"/>
+			</div>
+		</div>
+		<div class="mx-1 my-4">
+			<button type="submit" class="button-save">Delete</button>
+		</div>
+	</form>
+</div>
+
+<!-- Add Bootstrap Icons (for Edit and Delete buttons) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">

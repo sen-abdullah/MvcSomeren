@@ -8,7 +8,7 @@ public interface ISupervisorRepository
 
     Supervisor? GetById(int id);
 
-    void Add(Supervior supervisor);
+    void Add(Supervisor supervisor);
 
     void Update(Supervisor supervisor);
 
