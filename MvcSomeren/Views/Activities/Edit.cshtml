@@ -1,0 +1,56 @@
+﻿@model MvcSomeren.Models.Activity
+
+@{
+	ViewData["Title"] = "Edit Activity";
+}
+
+<div>
+	<div class="d-flex justify-content-center mr-6 my-lg-5">
+		<h2>Edit Activity</h2>
+	</div>
+	<div class="d-flex justify-content-center mb-4">
+		<a href="/Activities/Index" class="back-to-list mx-4">Back to List</a>
+	</div>
+	<form action="/Activities/Edit" method="post">
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		<input hidden type="number" name="ActivityId" value="@Model?.ActivityId" />
+
+        <div class="form-group form-control-lg col-md-4">
+            @Html.LabelFor(model => model.ActivityName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ActivityName, new List<SelectListItem>
+                {
+                new SelectListItem {Text = "Soccer Tournament", Value = "Soccer Tournament", Selected = true },
+                new SelectListItem {Text = "Puzzle Quest", Value = "Puzzle Quest" },
+                new SelectListItem {Text = "Obstacle Course", Value = "Obstacle Course" },
+                }, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ActivityName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group form-control-lg col-md-4">
+            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Date, new List<SelectListItem>
+                {
+                new SelectListItem {Text = "Monday", Value = "Monday", Selected = true },
+                new SelectListItem {Text = "Tuesday", Value = "Tuesday" },
+                }, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-2 form-control-lg">
+            <label for="Time">Time:</label>
+            <input type="text" id="Time" name="Time" class="form-control" placeholder="321" required value="@Model?.Time" />
+        </div>
+
+
+		<div class="mx-1 my-4">
+			<button type="submit" class="button-save">Save</button>
+		</div>
+	</form>
+</div>
+
+<!-- Add Bootstrap Icons (for Edit and Delete buttons) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
