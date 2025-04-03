@@ -15,6 +15,7 @@ public class Program
         builder.Services.AddSingleton<IRoomsRepository, DbRoomsRepository>();
         builder.Services.AddSingleton<ISupervisorRepository, DbSupervisorRepository>();
         builder.Services.AddSingleton<IActivitiesRepository, DbActivitiesRepository>();
+        builder.Services.AddSingleton<IDrinkOrderRepository, DbDrinkOrderRepository>();
 
         var app = builder.Build();
 
