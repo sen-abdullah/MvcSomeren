@@ -13,6 +13,7 @@ public class Program
         builder.Services.AddSingleton<IStudentRapository, DbStudentRepository>();
         builder.Services.AddSingleton<ILecturersRepository, DbLecturersRepository>();
         builder.Services.AddSingleton<IRoomsRepository, DbRoomsRepository>();
+        builder.Services.AddSingleton<ISupervisorRepository, DbSupervisorRepository>();
 
         var app = builder.Build();
 
