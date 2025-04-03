@@ -4,11 +4,11 @@ using MvcSomeren.Repositories;
 
 namespace MvcSomeren.Controllers;
 
-public class SupervisorController : Controller
+public class SupervisorsController : Controller
 {
     private readonly ISupervisorRepository _supervisorRepository;
 
-    public SupervisorController(ISupervisorRepository supervisorRepository)
+    public SupervisorsController(ISupervisorRepository supervisorRepository)
     {
         _supervisorRepository = supervisorRepository;
     }
@@ -16,7 +16,6 @@ public class SupervisorController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        //lecturer
         List<Supervisor> supervisors = _supervisorRepository.GetAll();
         return View(supervisors);
     }
