@@ -32,15 +32,9 @@ public class SupervisorController : Controller
     {
         try
         {
-            if (_supervisorRepository.IsLecturerExist(supervisor))
+            if (_supervisorRepository.IsSupervisorExist(supervisor))
             {
                 ModelState.AddModelError("ValidationError", "Lecturer already exist!");
-                return View(supervisor);
-            }
-
-            if (!_supervisorRepository.IsRoomExist(supervisor))
-            {
-                ModelState.AddModelError("ValidationError", "Room id does not exist!");
                 return View(supervisor);
             }
 
@@ -70,12 +64,6 @@ public class SupervisorController : Controller
     {
         try
         {
-            if (!_supervisorRepository.IsRoomExist(supervisor))
-            {
-                ModelState.AddModelError("ValidationError", "Room id does not exist!");
-                return View(supervisor);
-            }
-            
             _supervisorRepository.Update(supervisor);
             return RedirectToAction(nameof(Index));
         }
