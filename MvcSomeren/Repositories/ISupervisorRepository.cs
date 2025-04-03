@@ -14,9 +14,7 @@ public interface ISupervisorRepository
 
     void Delete(Supervisor supervisor);
 
-    bool IsLecturerExist(Supervisor supervisor);
+    bool IsSupervisorExist(Supervisor supervisor);
     
     List<Supervisor> Filter(String lastName);
-    
-    bool IsRoomExist(Supervisor supervisor);
 }
