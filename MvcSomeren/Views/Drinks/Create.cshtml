@@ -1,0 +1,44 @@
+﻿@model MvcSomeren.Models.Drink
+
+@{
+    ViewData["Title"] = "Add new Drink";
+}
+
+<div>
+    <div class="d-flex justify-content-center mr-6 my-lg-5">
+        <h4>New Drink</h4>
+    </div>
+    <div class="d-flex justify-content-center mb-4">
+        <a href="/Drinks/Index" class="back-to-list mx-4">Back to Drink List</a>
+    </div>
+    <form action="/Drinks/Create" method="post">
+        @if (ViewData.ModelState["ValidationError"] != null)
+        {
+            <span
+                class="text-danger">@ViewData.ModelState["ValidationError"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+        }
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="Name">Drink Name:</label>
+                <input type="text" id="Name" name="Name" class="form-control" required value="@Model?.Name"/>
+            </div>
+        </div>
+        <div class="form-group row">
+
+            <div class="form-group col-md-4 form-control-lg">
+                @Html.Label("Is Alcoholic? ")
+                @Html.EditorFor(x => x.IsAlcoholic)
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="AmountOfStock">Amount Of Stock:</label>
+                <input type="number" id="AmountOfStock" name="AmountOfStock" class="form-control" required
+                       value="@Model?.AmountOfStock"/>
+            </div>
+        </div>
+        <div class="mx-1 my-4">
+            <button type="submit" class="button-save">Add Drink</button>
+        </div>
+    </form>
+</div>
