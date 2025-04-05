@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using MvcSomeren.Models;
 
 namespace MvcSomeren.Repositories;
@@ -13,9 +12,13 @@ public interface IDrinkOrderRepository
     
     void Delete(int orderId);
     
+    void UpdateOrder(DrinkOrderViewModel drinkOrderViewModel);
+    
     DrinkOrderViewModel GetOrderByID(int orderId);
     
     Student? GetStudentById(int id);
     
     Drink? GetDrinkById(int id);
+    
+    Order? GetOrderById(int id);
 }

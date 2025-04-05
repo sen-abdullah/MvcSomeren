@@ -84,4 +84,55 @@ public class DrinkOrderController : Controller
             return View(_drinkOrderRepository.GetOrderByID(id));
         }
     }
+    
+    [HttpGet]
+    public IActionResult Edit(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+        
+        DrinkOrderViewModel drinkOrderViewModel = _drinkOrderRepository.GetOrderByID((int)id);
+        return View(drinkOrderViewModel);
+    }
+    
+    [HttpPost]
+    public IActionResult Edit(DrinkOrderViewModel drinkOrderViewModel)
+    {
+        try
+        {
+            int stockAmountOfDrink = _drinkOrderRepository.GetDrinkStockAmount(drinkOrderViewModel.Order.DrinkId);
+            Order order = _drinkOrderRepository.GetOrderById(drinkOrderViewModel.Order.Id);
+            int amountChange = drinkOrderViewModel.Order.Quantity - order.Quantity;
+            
+            if (amountChange > stockAmountOfDrink)
+            {
+                ModelState.AddModelError("ValidationError", "There is not enough drinks!");
+                DrinkOrderViewModel model = _drinkOrderRepository.GetAll();
+                model.Order = drinkOrderViewModel.Order;
+                return View(model);
+            }
+
+            _drinkOrderRepository.UpdateOrder(drinkOrderViewModel);
+            _drinkOrderRepository.UpdateDrinkStockAmount(drinkOrderViewModel.Order.DrinkId,
+                stockAmountOfDrink - amountChange);
+            
+            /*
+            Student student = _drinkOrderRepository.GetStudentById(drinkOrderViewModel.Order.StudentId);
+            Drink drink = _drinkOrderRepository.GetDrinkById(drinkOrderViewModel.Order.DrinkId);
+            
+            ModelState.AddModelError("OrderAdded", $"{drinkOrderViewModel.Order.Quantity} {drink.Name} has been ordered for {student.StudentNumber} - {student.StudentFirstName} {student.StudentLastName}! You can order new drinks");
+            */
+            
+            
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception e)
+        {
+            DrinkOrderViewModel model = _drinkOrderRepository.GetAll();
+            model.Order = drinkOrderViewModel.Order;
+            return View(model);
+        }
+    }
 }
