@@ -1,0 +1,110 @@
+@model MvcSomeren.Models.LecturerSupervisorViewModel
+
+@{
+    ViewData["Title"] = "Supervisor Management";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Supervisor Management</h1>
+   
+    @*<a href="/Lecturers/Create" class="button-create" role="button"><span class="text">Create New</span><span>Create New</span></a>
+    <p>Number of lecturers in the list: @Model.Count</p>
+    <form method="get" action="@Url.Action("Filter")">
+        <div class="form-group py-2">
+            <label for="lastName">Last Name:</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" />
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>*@
+    <hr>
+    <h1 class="display-4">Supervisors</h1>
+    <a href="/LecturerSupervisor/Create" class="button-create" role="button">
+        <span class="text">Create Supervisor</span>
+        <span>Create Supervisor</span>
+    </a>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Age</th>
+            <th>Room Id</th>
+            <th>Activity Name</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            for (var i = 0; i < Model.Activities.Count; i++)
+            {
+                <tr>
+                    <td>@Model.Lecturers[i].FirstName</td>
+                    <td>@Model.Lecturers[i].LastName</td>
+                    <td>@Model.Lecturers[i].PhoneNumber</td>
+                    <td>@Model.Lecturers[i].Age</td>
+                    <td>@Model.Lecturers[i].RoomId</td>
+                    <td>@Model.Activities[i].ActivityName</td>
+                    <td>@Model.Activities[i].Date</td>
+                    <td>@Model.Activities[i].Time</td>
+                    <td>
+                        <a href="/LecturerSupervisor/Edit/@Model.AllSupervisors[i].SupervisorId" class="button-edit">Edit</a>
+                        <a href="/LecturerSupervisor/Delete/@Model.AllSupervisors[i].SupervisorId" class="button-delete">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+    <hr>
+    <h1 class="display-4">All Lecturers Available</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Age</th>
+            <th>Room Id</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            foreach (var lecturer in Model.AllLecturers)
+            {
+                <tr>
+                    <td>@lecturer.FirstName</td>
+                    <td>@lecturer.LastName</td>
+                    <td>@lecturer.PhoneNumber</td>
+                    <td>@lecturer.Age</td>
+                    <td>@lecturer.RoomId</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+    <hr>
+    <h1 class="display-4">All Activities</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Activity Name</th>
+            <th>Date</th>
+            <th>Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            foreach (var activity in Model.AllActivities)
+            {
+                <tr><td>@activity.ActivityName</td>
+                    <td>@activity.Date</td>
+                    <td>@activity.Time</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>
