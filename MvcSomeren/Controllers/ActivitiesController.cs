@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MvcSomeren.Models;
 using MvcSomeren.Repositories;
-
 namespace MvcSomeren.Controllers;
 
 public class ActivitiesController : Controller

@@ -1,5 +1,6 @@
 @model List<MvcSomeren.Models.Supervisor>
 
+
 @{
     ViewData["Title"] = "Supervisors Page";
 }
@@ -18,11 +19,13 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Supervisor Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Age</th>
+            <th>Room</th>
             <th>Supervising Date</th>
-            <th>LecturerId</th>
-            <th>ActivityId</th>
-            <th></th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -30,13 +33,18 @@
             foreach (var supervisor in Model)
             {
                 <tr>
-                    <td>@supervisor.SupervisorId</td>
+                    <td>@supervisor.FirstName</td>
+                    <td>@supervisor.LastName</td>
+                    <td>@supervisor.PhoneNumber</td>
+                    <td>@supervisor.Age</td>
+                    <td>@supervisor.RoomId</td>
                     <td>@supervisor.SupervisingDate</td>
-                    <td>@supervisor.LecturerId</td>
+                    <td>@supervisor.SupervisorId</td>
                     <td>@supervisor.ActivityId</td>
+                    <td>@supervisor.LecturerId</td>
                     <td>
-                        <a href="/Supervisor/Edit/@supervisor.SupervisorId" class="button-edit">Edit</a>
-                        <a href="/Supervisor/Delete/@supervisor.SupervisorId" class="button-delete">Delete</a>
+                        <a href="/Supervisor/Edit/@supervisor.Id" class="button-edit">Edit</a>
+                        <a href="/Supervisor/Delete/@supervisor.Id" class="button-delete">Delete</a>
                     </td>
                 </tr>
             }

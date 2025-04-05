@@ -22,10 +22,9 @@ public class DbSupervisorRepository : ISupervisorRepository
 
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
-            string query = @"SELECT * FROM Supervisor JOIN Lecturer ON Supervisor.LecturerId = Lecturer.LecturerId ";
+            string query = @"SELECT L.LecturerId, L.LecturerFirstName, L.LecturerLastName, L.LecturerPhoneNumber, L.LecturerAge, L.RoomId, S.SupervisorId, S.SupervisingDate, S.ActivityId FROM Supervisor AS S JOIN Lecturer AS L ON S.LecturerId = L.LecturerId ";
             
             SqlCommand command = new SqlCommand(query, connection);
-
             command.Connection.Open();
             SqlDataReader reader = command.ExecuteReader();
 
@@ -72,9 +71,7 @@ public class DbSupervisorRepository : ISupervisorRepository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             var query =
-                $"INSERT INTO Supervisor (SupervisingDate, LecturerId, ActivityId)" +
-                $"VALUES (@SupervisingDate, @LecturerId, @ActivityId); " +
-                "SELECT CAST(SCOPE_IDENTITY() as int)";
+                $"INSERT INTO Supervisor (SupervisingDate, LecturerId, ActivityId) VALUES (@SupervisingDate, @LecturerId, @ActivityId); SELECT SCOPE_IDENTITY();";
 
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@SupervisingDate", supervisor.SupervisingDate);
@@ -167,7 +164,7 @@ public class DbSupervisorRepository : ISupervisorRepository
 
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
-            string query = @"SELECT Supervisor.SupervisorId, Supervisor.SupervisingDate, Supervisor.LecturerId, Supervisor.ActivityId, Lecturer.LecturerFirstName, Lecturer.LecturerLastName, Lecturer.LecturerPhoneNumber, Lecturer.LecturerAge, Lecturer.RoomId FROM Supervisor JOIN Lecturer ON Supervisor.LecturerId = Lecturer.LecturerId WHERE Lecturer.LecturerLastName LIKE @LastName;";
+            string query = @"SELECT L.LecturerId, L.LecturerFirstName, L.LecturerLastName, L.LecturerPhoneNumber, L.LecturerAge, L.RoomId, S.SupervisorId, S.SupervisingDate, S.ActivityId FROM Supervisor AS S JOIN Lecturer AS L ON S.LecturerId = L.LecturerId WHERE L.LecturerLastName = @LastName;";
             
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@LastName", lastName.Trim() + "%");
@@ -187,14 +184,19 @@ public class DbSupervisorRepository : ISupervisorRepository
         return supervisors;
     }
     
-    
     private Supervisor ReadSupervisor(SqlDataReader reader)
     {
-        int id = (int)reader["SupervisorId"];
+        int supervisorId = (int)reader["SupervisorId"];
         int supervisingDate = (int)reader["SupervisingDate"];
         int lecturerId = (int)reader["LecturerId"];
         int activityId = (int)reader["ActivityId"];
+        string firstName = (string)reader["LecturerFirstName"];
+        string lastName = (string)reader["LecturerLastName"];
+        string phoneNumber = (string)reader["LecturerPhoneNumber"];
+        int age = (int)reader["LecturerAge"];
+        int roomId = (int)reader["RoomId"];
+        
 
-        return new Supervisor(id, supervisingDate, lecturerId, activityId);
+        return new Supervisor(supervisorId, supervisingDate, lecturerId, activityId, firstName, lastName, phoneNumber, age, roomId);
     }
 }

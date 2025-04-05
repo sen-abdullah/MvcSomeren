@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcSomeren.Models;
 using MvcSomeren.Repositories;
 
@@ -23,27 +24,28 @@ public class SupervisorsController : Controller
     [HttpGet]
     public IActionResult Create()
     {
+        // Assuming you have a Supervisor model and database context
+        var supervisors = _supervisorRepository.GetAll();
+
+        // Prepare the SelectList for LecturerId dropdown
+        ViewData["Supervisors"] = new SelectList(supervisors, "LecturerId", "LastName");
+
+        // Prepare the SelectList for SupervisingDate dropdown
+        ViewData["Activities"] = new SelectList(supervisors, "ActivityId", "ActivityId");
+
         return View();
     }
 
     [HttpPost]
     public IActionResult Create(Supervisor supervisor)
     {
-        try
+        if (ModelState.IsValid)
         {
-            if (_supervisorRepository.IsSupervisorExist(supervisor))
-            {
-                ModelState.AddModelError("ValidationError", "Lecturer already exist!");
-                return View(supervisor);
-            }
-
             _supervisorRepository.Add(supervisor);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index)); // Or any other action you want after submission
         }
-        catch (Exception e)
-        {
-            return View(supervisor);
-        }
+
+        return View(supervisor);
     }
 
     [HttpGet]

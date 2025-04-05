@@ -1,0 +1,42 @@
+@model MvcSomeren.Models.Supervisor
+
+@{
+    ViewData["Title"] = "Delete Supervisor";
+}
+
+<div>
+    <div class="d-flex justify-content-center mr-6 my-lg-5">
+        <h4>Delete Supervisor</h4>
+    </div>
+    <div class="d-flex justify-content-center mb-4">
+        <a href="/Supervisors/Index" class="back-to-list mx-4">Back to Lecturer List</a>
+    </div>
+    <form action="/Supervisors/Delete" method="post">
+        <input hidden type="number" name="id" value="@Model?.SupervisorId"/>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="LastName">Last Name:</label>
+                <input type="text" id="LastName" name="LastName" class="form-control" readonly
+                       value="@Model?.LastName"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="PhoneNumber">Phone Number:</label>
+                <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" readonly
+                       value="@Model?.PhoneNumber"/>
+            </div>
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="Age">Age:</label>
+                <input type="number" id="Age" name="Age" class="form-control" readonly value="@Model?.Age"/>
+            </div>
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="ActivityId">Activity ID:</label>
+                <input type="number" id="ActivityId" name="ActivityId" class="form-control" readonly value="@Model?.ActivityId"/>
+            </div>
+        </div>
+        <div class="mx-1 my-4">
+            <button type="submit" class="button-save">Delete Lecturer</button>
+        </div>
+    </form>
+</div>
