@@ -1,14 +1,12 @@
-using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using MvcSomeren.Models;
 
 namespace MvcSomeren.Repositories;
 
 public class DbDrinkOrderRepository : IDrinkOrderRepository
 {
-    private readonly string? _connectionString;
     private const string ConnectionStringKey = "appsomeren";
+    private readonly string? _connectionString;
 
     public DbDrinkOrderRepository(IConfiguration configuration)
     {
@@ -16,10 +14,226 @@ public class DbDrinkOrderRepository : IDrinkOrderRepository
     }
 
 
-    public DrinkOrderViewModel Get()
+    //It fetches all the orders
+    public DrinkOrderViewModel GetAll()
     {
-        return new DrinkOrderViewModel(getDrinks(), GetStudents());
+        List<Drink> drinks = new List<Drink>();
+        List<Student> students = new List<Student>();
+        List<int> quantities = new List<int>();
+        List<Order> orders = new List<Order>();
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query =
+                "SELECT [Order].OrderId, [Order].Quantity, Student.StudentId, Student.StudentNumber, Student.StudentFirstName, Student.StudentLastName, Student.StudentClass, Student.StudentPhonenumber, Student.StudentRoomId, Drink.DrinkId, Drink.DrinkName, Drink.IsAlcoholicDrink, Drink.StockAmountOfDrinks FROM [Order] JOIN Student ON [Order].StudentId = Student.StudentId JOIN Drink ON [Order].DrinkId = Drink.DrinkId";
+
+            SqlCommand command = new SqlCommand(query, connection);
+
+            command.Connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Student student = ReadStudent(reader);
+                students.Add(student);
+                
+                Drink drink = ReadDrink(reader);
+                drinks.Add(drink);
+                
+                int quantity = (int)reader["Quantity"];
+                quantities.Add(quantity);
+                
+                int orderId = (int)reader["OrderId"];
+                int studentId = (int)reader["StudentId"];
+                int drinkId = (int)reader["DrinkId"];
+                
+                Order order = new Order(orderId, studentId, drinkId, quantity);
+                orders.Add(order);
+                
+            }
+
+            reader.Close();
+        }
+
+        return new DrinkOrderViewModel(drinks, students, quantities, null, GetStudents(), GetDrinks(), orders);
     }
+
+    public DrinkOrderViewModel GetDrinksAndStudents()
+    {
+        return new DrinkOrderViewModel(new List<Drink>(), new List<Student>(), new List<int>(), null, GetStudents(), GetDrinks(), new List<Order>());
+    }
+
+    public void AddOrder(DrinkOrderViewModel drinkOrderViewModel)
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            var query =
+                $"INSERT INTO [Order] (DrinkId, StudentId, Quantity)" +
+                $"VALUES (@DrinkId, @StudentId, @Quantity); " +
+                "SELECT CAST(SCOPE_IDENTITY() as int)";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@DrinkId", drinkOrderViewModel.Order.DrinkId);
+            command.Parameters.AddWithValue("@StudentId", drinkOrderViewModel.Order.StudentId);
+            command.Parameters.AddWithValue("@Quantity", drinkOrderViewModel.Order.Quantity);
+
+            command.Connection.Open();
+            var numberOfRowsAffected = command.ExecuteNonQuery();
+            if (numberOfRowsAffected != 1) throw new Exception("Adding a new order failed.");
+        }
+    }
+
+    public int GetDrinkStockAmount(int drinkId)
+    {
+        int drinkStockAmount = 0;
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query = "SELECT StockAmountOfDrinks FROM Drink WHERE DrinkId = @DrinkId";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@DrinkId", drinkId);
+
+            command.Connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                drinkStockAmount = (int)reader["StockAmountOfDrinks"];
+            }
+
+            reader.Close();
+        }
+
+        return drinkStockAmount;
+    }
+
+    public void UpdateDrinkStockAmount(int drinkId, int stockAmount)
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            var query =
+                $"UPDATE Drink SET StockAmountOfDrinks = @StockAmountOfDrinks " +
+                $"WHERE DrinkId = @DrinkId; ";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@StockAmountOfDrinks", stockAmount);
+            command.Parameters.AddWithValue("@DrinkId", drinkId);
+            
+            command.Connection.Open();
+            var numberOfRowsAffected = command.ExecuteNonQuery();
+            if (numberOfRowsAffected != 1) throw new Exception("Something went wrong! Lecturer was not updated.");
+        }
+    }
+
+    public void Delete(int orderId)
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            var query = $"DELETE FROM [Order] WHERE OrderId = @Id;";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@Id", orderId);
+
+            command.Connection.Open();
+            var numberOfRowsAffected = command.ExecuteNonQuery();
+            if (numberOfRowsAffected != 1) throw new Exception("Something went wrong! Order was not deleted.");
+        }
+    }
+
+    public DrinkOrderViewModel GetOrderByID(int orderId)
+    {
+        List<Drink> drinks = new List<Drink>();
+        List<Student> students = new List<Student>();
+        List<int> quantities = new List<int>();
+        Order? order = null;
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query =
+                "SELECT [Order].OrderId, [Order].Quantity, Student.StudentId, Student.StudentNumber, Student.StudentFirstName, Student.StudentLastName, Student.StudentClass, Student.StudentPhonenumber, Student.StudentRoomId, Drink.DrinkId, Drink.DrinkName, Drink.IsAlcoholicDrink, Drink.StockAmountOfDrinks FROM [Order] JOIN Student ON [Order].StudentId = Student.StudentId JOIN Drink ON [Order].DrinkId = Drink.DrinkId WHERE [Order].OrderId = @OrderId";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@OrderId", orderId);
+
+            command.Connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Student student = ReadStudent(reader);
+                students.Add(student);
+                
+                Drink drink = ReadDrink(reader);
+                drinks.Add(drink);
+                
+                int quantity = (int)reader["Quantity"];
+                quantities.Add(quantity);
+                
+                int id = (int)reader["OrderId"];
+                int studentId = (int)reader["StudentId"];
+                int drinkId = (int)reader["DrinkId"];
+                
+                order = new Order(id, studentId, drinkId, quantity);
+            }
+
+            reader.Close();
+        }
+
+        return new DrinkOrderViewModel(drinks, students, quantities, order, GetStudents(), GetDrinks(), new List<Order>());
+    }
+
+    public Student? GetStudentById(int id)
+    {
+        Student? student = null;
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query =
+                "SELECT StudentId, StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, StudentRoomId FROM Student WHERE StudentId = @StudentId;";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@StudentId", id);
+            
+            command.Connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            { student = ReadStudent(reader);
+                
+            }
+
+            reader.Close();
+        }
+        return student;
+
+    }
+
+    public Drink? GetDrinkById(int id)
+    {
+        Drink? drink = null;
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query =
+                "SELECT DrinkId, DrinkName, IsAlcoholicDrink, StockAmountOfDrinks FROM Drink WHERE DrinkId = @DrinkId;";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@DrinkId", id);
+
+            command.Connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            { 
+                drink = ReadDrink(reader);
+            }
+
+            reader.Close();
+        }
+
+        return drink;
+    }
+
 
     private List<Student> GetStudents()
     {
@@ -29,7 +243,7 @@ public class DbDrinkOrderRepository : IDrinkOrderRepository
         {
             string query =
                 "SELECT StudentId, StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, StudentRoomId FROM Student";
-            
+
             SqlCommand command = new SqlCommand(query, connection);
 
             command.Connection.Open();
@@ -46,8 +260,8 @@ public class DbDrinkOrderRepository : IDrinkOrderRepository
 
         return students;
     }
-    
-    private List<Drink> getDrinks()
+
+    private List<Drink> GetDrinks()
     {
         List<Drink> drinks = new List<Drink>();
 
@@ -55,7 +269,7 @@ public class DbDrinkOrderRepository : IDrinkOrderRepository
         {
             string query =
                 "SELECT DrinkId, DrinkName, IsAlcoholicDrink, StockAmountOfDrinks FROM Drink";
-            
+
             SqlCommand command = new SqlCommand(query, connection);
 
             command.Connection.Open();
@@ -72,6 +286,7 @@ public class DbDrinkOrderRepository : IDrinkOrderRepository
 
         return drinks;
     }
+    
 
 
     private Student ReadStudent(SqlDataReader reader)
@@ -82,19 +297,27 @@ public class DbDrinkOrderRepository : IDrinkOrderRepository
         string studentLastName = (string)reader["StudentLastName"];
         int studentPhoneNumber = (int)reader["StudentPhoneNumber"];
         string studentClass = (string)reader["StudentClass"];
+        int studentRoomId = (int)reader["StudentRoomId"];
 
 
-        return new Student(studentId, studentNumber, studentFirstName, studentLastName, studentPhoneNumber,
-            studentClass, 1);
+        return new Student(
+            studentId,
+            studentNumber,
+            studentFirstName,
+            studentLastName,
+            studentPhoneNumber,
+            studentClass,
+            studentRoomId
+        );
     }
-    
+
     private Drink ReadDrink(SqlDataReader reader)
-    {// DrinkName, IsAlcoholicDrink, StockAmountOfDrinks
+    {
         int id = (int)reader["DrinkId"];
         string name = (string)reader["DrinkName"];
         bool isAlcoholic = (bool)reader["IsAlcoholicDrink"];
         int amountOfStock = (int)reader["StockAmountOfDrinks"];
-        
+
         return new Drink(id, name, isAlcoholic, amountOfStock);
     }
 }

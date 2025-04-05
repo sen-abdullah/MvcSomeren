@@ -15,4 +15,7 @@ public interface IDrinksRepository
     void Delete(Drink drink);
     
     bool IsDrinkExist(Drink drink);
+    
+    List<Drink> Filter(string drinkName);
+    
 }

@@ -1,0 +1,39 @@
+﻿@model MvcSomeren.Models.DrinkOrderViewModel
+
+@{
+    ViewData["Title"] = "Delete Order";
+}
+
+<div>
+    <div class="d-flex justify-content-center mr-6 my-lg-5">
+        <h4>Delete Order</h4>
+    </div>
+    <div class="d-flex justify-content-center mb-4">
+        <a href="/DrinkOrder/Index" class="back-to-list mx-4">Back to Order List</a>
+    </div>
+    <form asp-action="DeleteOrder" asp-controller="DrinkOrder" method="post">
+        <input hidden type="number" name="id" value="@Model?.Order.Id" />
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="Name">Student:</label>
+                <input type="text" id="Name" name="Name" class="form-control" required readonly value="@Model?.Students[0].StudentNumber - @Model?.Students[0].StudentClass - @Model?.Students[0].StudentFirstName - @Model?.Students[0].StudentLastName - @Model?.Students[0].StudentClass - Room(@Model?.Students[0].StudentRoomId)"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="Drink">Drink:</label>
+                <input type="text" id="Drink" name="Drink" class="form-control" required readonly value="@Model?.Drinks[0].Name - Is Alcholic: @Model?.Drinks[0].IsAlcoholic - Amount:(@Model?.Drinks[0].AmountOfStock) - Vat Rate(%@Model?.Drinks[0].VatRate)"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label for="Quantity">Quantity:</label>
+                <input type="number" id="Quantity" name="Quantity" class="form-control" required
+                     readonly  value="@Model?.Order.Quantity"/>
+            </div>
+        </div>
+        <div class="mx-1 my-4">
+            <button type="submit" class="button-save">Delete Order</button>
+        </div>
+    </form>
+</div>

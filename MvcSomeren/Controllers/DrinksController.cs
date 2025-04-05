@@ -98,4 +98,18 @@ public class DrinksController : Controller
             return View(drink);
         }
     }
+    
+    public IActionResult Filter(String drinkName)
+    {
+        try
+        {
+            List<Drink> drinks = _drinksRepository.Filter(drinkName);
+            return View(nameof(Index), drinks);
+        }
+        catch (Exception e)
+        {
+            List<Drink> drinks = _drinksRepository.GetAll();
+            return View(nameof(Index), drinks);
+        }
+    }
 }
