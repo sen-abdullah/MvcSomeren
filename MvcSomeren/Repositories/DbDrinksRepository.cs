@@ -144,6 +144,32 @@ public class DbDrinksRepository : IDrinksRepository
         return drinks.Count > 0;
     }
 
+    public List<Drink> Filter(string drinkName)
+    {
+        List<Drink> drinks = new List<Drink>();
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query =
+                "SELECT DrinkId, DrinkName, IsAlcoholicDrink, StockAmountOfDrinks FROM Drink WHERE DrinkName LIKE @DrinkName;";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@DrinkName", "%"+ drinkName.Trim() + "%");
+
+            command.Connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Drink drink = ReadDrink(reader);
+                drinks.Add(drink);
+            }
+
+            reader.Close();
+        }
+
+        return drinks;
+    }
+
 
     private Drink ReadDrink(SqlDataReader reader)
     {
