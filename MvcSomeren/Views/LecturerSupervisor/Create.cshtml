@@ -1,0 +1,66 @@
+@model MvcSomeren.Models.LecturerSupervisorViewModel
+
+@{
+    ViewData["Title"] = "Add new Supervisor";
+}
+
+<div>
+    <div class="d-flex justify-content-center mr-6 my-lg-5">
+        <h4>New Supervisor</h4>
+    </div>
+    <div class="d-flex justify-content-center mb-4">
+        <a href="/LecturerSupervisor/Index" class="back-to-list mx-4">Back to List</a>
+    </div>
+    <form method="post" action="/LecturerSupervisor/Create">
+        @if (ViewData.ModelState["ValidationError"] != null)
+        {
+            <span
+                class="text-danger">@ViewData.ModelState["ValidationError"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+        }
+        @if (ViewData.ModelState["OrderAdded"] != null)
+        {
+            <span
+                class="text-info">@ViewData.ModelState["OrderAdded"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+        }
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label asp-for="Supervisor.ActivityId" class="form-label">Student Details</label>
+                <select asp-for="Supervisor.ActivityId" class="form-select hover-animate">
+                    <option value="">Select a Student</option>
+                    @foreach (var activity in Model.AllActivities)
+                    {
+                        <option
+                            value="@activity.ActivityId">@activity.ActivityName - @activity.Date - @activity.Time</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label asp-for="Supervisor.LecturerId" class="form-label">Lecturer Details</label>
+                <select asp-for="Supervisor.LecturerId" class="form-select hover-animate">
+                    <option value="">Select a Drink</option>
+                    @foreach (var lecturer in Model.AllLecturers)
+                    {
+                        <option
+                            value="@lecturer.Id">@lecturer.FirstName - @lecturer.LastName - (@lecturer.Age) - @lecturer.PhoneNumber - @lecturer.RoomId</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label asp-for="Supervisor.SupervisingDate" class="form-label">Supervising Date</label>
+                <input asp-for="Supervisor.SupervisingDate" class="form-control hover-animate"/>
+                <span asp-validation-for="Supervisor.SupervisingDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-4 row justify-content-center">
+            <div class="mx-1 my-4">
+                <button type="submit" class="button-save" onclick="return confirm('Are you sure to add a Supervisor? @Model.');">Add
+                    Supervisor
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

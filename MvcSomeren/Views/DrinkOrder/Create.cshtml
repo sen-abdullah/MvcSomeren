@@ -11,8 +11,7 @@
     <div class="d-flex justify-content-center mb-4">
         <a href="/DrinkOrder/Index" class="back-to-list mx-4">Back to Order List</a>
     </div>
-    <form method="post" action="/DrinkOrder/Create"
-          @*onsubmit="return confirm('Ok?');"*@>
+    <form method="post" action="/DrinkOrder/Create">
         @if (ViewData.ModelState["ValidationError"] != null)
         {
             <span
