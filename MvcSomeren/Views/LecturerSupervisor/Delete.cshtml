@@ -1,15 +1,15 @@
 @model MvcSomeren.Models.LecturerSupervisorViewModel
 
 @{
-    ViewData["Title"] = "Delete Order";
+    ViewData["Title"] = "Delete Supervisor";
 }
 
 <div>
     <div class="d-flex justify-content-center mr-6 my-lg-5">
-        <h4>Delete Order</h4>
+        <h4>Delete Supervisor</h4>
     </div>
     <div class="d-flex justify-content-center mb-4">
-        <a href="/DrinkOrder/Index" class="back-to-list mx-4">Back to Order List</a>
+        <a href="/LecturerSupervisor/Index" class="back-to-list mx-4">Back to List</a>
     </div>
     <form asp-action="DeleteSupervisor" asp-controller="LecturerSupervisor" method="post">
         <input hidden type="number" name="id" value="@Model?.Supervisor.SupervisorId" />

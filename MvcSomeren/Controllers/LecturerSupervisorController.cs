@@ -59,7 +59,7 @@ public class LecturerSupervisorController : Controller
         LecturerSupervisorViewModel? lecturerSupervisorViewModel = _lecturerSupervisorRepository.GetSupervisorById((int)id);
         return View(lecturerSupervisorViewModel);
     }
-    
+
     [HttpPost]
     public IActionResult DeleteSupervisor(int id)
     {
@@ -71,6 +71,33 @@ public class LecturerSupervisorController : Controller
         catch (Exception e)
         {
             return View(_lecturerSupervisorRepository.GetSupervisorById(id));
+        }
+    }
+    [HttpGet]
+    public IActionResult Edit(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+        
+        LecturerSupervisorViewModel lecturerSupervisorViewModel = _lecturerSupervisorRepository.GetSupervisorById((int)id);
+        return View(lecturerSupervisorViewModel);
+    }
+
+    [HttpPost]
+    public IActionResult Edit(LecturerSupervisorViewModel lecturerSupervisorViewModel)
+    {
+        try
+        {
+            _lecturerSupervisorRepository.UpdateSupervisor(lecturerSupervisorViewModel);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception e)
+        {
+            LecturerSupervisorViewModel model = _lecturerSupervisorRepository.GetAll();
+            model.Supervisor = lecturerSupervisorViewModel.Supervisor;
+            return View(model);
         }
     }
 }

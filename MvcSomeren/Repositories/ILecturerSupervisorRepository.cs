@@ -10,10 +10,12 @@ public interface ILecturerSupervisorRepository
     void AddSupervisor(LecturerSupervisorViewModel lecturerSupervisorViewModel);
     
     void Delete(int supervisorId);
+    void UpdateSupervisor(LecturerSupervisorViewModel lecturerSupervisorViewModel);
 
     LecturerSupervisorViewModel GetSupervisorById(int supervisorId);
 
     Models.Activity GetActivityById(int id);
 
     Lecturer? GetLecturerById(int id);
+    Supervisor? GetSupervisorByID(int id);
 }
