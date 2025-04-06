@@ -141,6 +141,25 @@ public class DbDrinkOrderRepository : IDrinkOrderRepository
         }
     }
 
+    public void UpdateOrder(DrinkOrderViewModel drinkOrderViewModel)
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            var query =
+                $"UPDATE [Order] SET DrinkId = @DrinkId, StudentId = @StudentId, Quantity = @Quantity " +
+                $"WHERE OrderId = @OrderId; ";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@DrinkId", drinkOrderViewModel.Order.DrinkId);
+            command.Parameters.AddWithValue("@StudentId", drinkOrderViewModel.Order.StudentId);
+            command.Parameters.AddWithValue("@Quantity", drinkOrderViewModel.Order.Quantity);
+            command.Parameters.AddWithValue("@OrderId", drinkOrderViewModel.Order.Id);
+            command.Connection.Open();
+            var numberOfRowsAffected = command.ExecuteNonQuery();
+            if (numberOfRowsAffected != 1) throw new Exception("Something went wrong! Order was not updated.");
+        }
+    }
+
     public DrinkOrderViewModel GetOrderByID(int orderId)
     {
         List<Drink> drinks = new List<Drink>();
@@ -170,11 +189,8 @@ public class DbDrinkOrderRepository : IDrinkOrderRepository
                 int quantity = (int)reader["Quantity"];
                 quantities.Add(quantity);
                 
-                int id = (int)reader["OrderId"];
-                int studentId = (int)reader["StudentId"];
-                int drinkId = (int)reader["DrinkId"];
                 
-                order = new Order(id, studentId, drinkId, quantity);
+                order = ReadOrder(reader);
             }
 
             reader.Close();
@@ -232,6 +248,32 @@ public class DbDrinkOrderRepository : IDrinkOrderRepository
         }
 
         return drink;
+    }
+
+    public Order? GetOrderById(int id)
+    {
+        Order? order = null;
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query =
+                "SELECT OrderId, DrinkId, StudentId, Quantity FROM [Order] WHERE OrderId = @OrderId;";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@OrderId", id);
+
+            command.Connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            { 
+                order = ReadOrder(reader);
+            }
+
+            reader.Close();
+        }
+
+        return order;
     }
 
 
@@ -319,5 +361,15 @@ public class DbDrinkOrderRepository : IDrinkOrderRepository
         int amountOfStock = (int)reader["StockAmountOfDrinks"];
 
         return new Drink(id, name, isAlcoholic, amountOfStock);
+    }
+
+    private Order ReadOrder(SqlDataReader reader)
+    {
+        int id = (int)reader["OrderId"];
+        int studentId = (int)reader["StudentId"];
+        int drinkId = (int)reader["DrinkId"];
+        int quantity = (int)reader["Quantity"];
+        return new Order(id, drinkId, studentId, quantity);
+        
     }
 }
