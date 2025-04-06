@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using MvcSomeren.Models;
+using System.Diagnostics;
 
 namespace MvcSomeren.Repositories
 {
@@ -18,22 +19,27 @@ namespace MvcSomeren.Repositories
         public ManageParticipantViewModel GetAll()
         {
             List<Student> students = new List<Student>();
-            List<Activity> activities = new List<Activity>();
+            List<Models.Activity> activities = new List<Models.Activity>();
             List<int> participateDates = new List<int>();
             List<Participator> participators = new List<Participator>();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                //string query = "SELECT P.PartcipatorId, P.ParticipateDate, P.ActivityId, S.StudentFirstName, S.StudentLastName, S.StudentPhoneNumber, S.StudentClass, S.StudentRoomId, A.ActivityId, A.ActivityName, A.Date, A.Time FROM Participator AS P JOIN Student ON Participator.StudentId = Student.StudentId JOIN Activity ON Participator.ActivityId = A.ActivityId WHERE Participator.ParticipatorId = @ParticipatorId";
+                //string query = "SELECT P.ParticipatorId, P.ParticipateDate, P.ActivityId, " +
+                //"S.StudentId, S.StudentPhoneNumber, S.StudentFirstName, S.StudentLastName, S.StudentClass, S.StudentRoomId, " +
+                //"A.ActivityId, A.ActivityName, A.Date, A.Time FROM Participator AS P " +
+                //"JOIN Student ON P.StudentId = S.StudentId " +
+                //"JOIN Activity ON P.ActivityId = A.ActivityId ";
                 string query = @"
             SELECT 
-                P.PartcipatorId, P.ParticipateDate, P.ActivityId, P.StudentId,
+                P.ParticipatorId, P.ParticipateDate, P.ActivityId, P.StudentId,
                 S.StudentFirstName, S.StudentLastName, S.StudentPhoneNumber, S.StudentClass, S.StudentRoomId,
                 A.ActivityId, A.ActivityName, A.Date, A.Time
             FROM Participator AS P
             JOIN Student AS S ON P.StudentId = S.StudentId
             JOIN Activity AS A ON P.ActivityId = A.ActivityId";
                 SqlCommand command = new SqlCommand(query, connection);
+                //checkCommand.Parameters.AddWithValue("@Date", participator.Parti);
 
                 command.Connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
@@ -43,7 +49,7 @@ namespace MvcSomeren.Repositories
                     Student student = ReadStudent(reader);
                     students.Add(student);
 
-                    Activity activity = ReadActivity(reader);
+                    Models.Activity activity = ReadActivity(reader);
                     activities.Add(activity);
 
                     int participateDate = (int)reader["ParticipateDate"];
@@ -67,7 +73,7 @@ namespace MvcSomeren.Repositories
 
         public ManageParticipantViewModel GetStudentsAndActivities()
         {
-            return new ManageParticipantViewModel(new List<Student>(), new List<Activity>(), new List<int>(), null, GetStudents(), GetActivities(), new List<Participator>());
+            return new ManageParticipantViewModel(new List<Student>(), new List<Models.Activity>(), new List<int>(), null, GetStudents(), GetActivities(), new List<Participator>());
         }
 
         public void AddParticipator(ManageParticipantViewModel manageParticipantViewModel)
@@ -108,7 +114,7 @@ namespace MvcSomeren.Repositories
         public ManageParticipantViewModel GetParticipatorByID(int participatorId)
         {
             List<Student> students = new List<Student>();
-            List<Activity> activities = new List<Activity>();
+            List<Models.Activity> activities = new List<Models.Activity>();
             List<int> participateDates = new List<int>();
             List<Participator> participators = new List<Participator>();
 
@@ -129,7 +135,7 @@ namespace MvcSomeren.Repositories
                     Student student = ReadStudent(reader);
                     students.Add(student);
 
-                    Activity activity = ReadActivity(reader);
+                    Models.Activity activity = ReadActivity(reader);
                     activities.Add(activity);
 
                     int participateDate = (int)reader["ParticipateDate"];
@@ -174,9 +180,9 @@ namespace MvcSomeren.Repositories
 
         }
 
-        public Activity? GetActivityById(int id)
+        public Models.Activity? GetActivityById(int id)
         {
-            Activity? activity = null;
+            Models.Activity? activity = null;
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -225,9 +231,9 @@ namespace MvcSomeren.Repositories
             return students;
         }
 
-        private List<Activity> GetActivities()
+        private List<Models.Activity> GetActivities()
         {
-            List<Activity> activities = new List<Activity>();
+            List<Models.Activity> activities = new List<Models.Activity>();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {        
@@ -240,7 +246,7 @@ namespace MvcSomeren.Repositories
 
                 while (reader.Read())
                 {
-                    Activity activity = ReadActivity(reader);
+                    Models.Activity activity = ReadActivity(reader);
                     activities.Add(activity);
                 }
 
@@ -274,14 +280,14 @@ namespace MvcSomeren.Repositories
             );
         }
 
-        private Activity ReadActivity(SqlDataReader reader)
+        private Models.Activity ReadActivity(SqlDataReader reader)
         {
             int activityId = (int)reader["ActivityId"];
             string activityName = (string)reader["ActivityName"];
             string date = (string)reader["Date"];
             string time = (string)reader["Time"];
 
-            return new Activity(activityId, activityName, date, time);
+            return new Models.Activity(activityId, activityName, date, time);
         }
     }
 }

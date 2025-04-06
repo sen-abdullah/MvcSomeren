@@ -9,9 +9,9 @@
         <h4>New Participant</h4>
     </div>
     <div class="d-flex justify-content-center mb-4">
-        <a href="/ManageParticipators/Index" class="back-to-list mx-4">Back to Participant List</a>
+        <a href="/ManageParticipants/Index" class="back-to-list mx-4">Back to Participant List</a>
     </div>
-    <form method="post" action="/ManageParticipators/Create"
+    <form method="post" action="/ManageParticipants/Create"
           @*onsubmit="return confirm('Ok?');"*@>
         @if (ViewData.ModelState["ValidationError"] != null)
         {

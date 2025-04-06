@@ -18,7 +18,7 @@
     </form>*@
     <hr>
     <h1 class="display-4">Participators</h1>
-    <a href="/ManageParticipators/Create" class="button-create" role="button">
+    <a href="/ManageParticipants/Create" class="button-create" role="button">
         <span class="text">Assign Participant</span>
         <span>Assign Participant</span>
     </a>
@@ -54,8 +54,8 @@
                     <td>@Model.Activities[i].Time</td>
                     <td>@Model.ParticipateDate[i]</td>
                     <td>
-                            <a href="/ManageParticipators/Edit/@Model.AllParticipators[i].ParticipatorId" class="button-edit">Edit</a>
-                            <a href="/ManageParticipators/Delete/@Model.AllParticipators[i].ParticipatorId" class="button-delete">Delete</a>
+                            <a href="/ManageParticipants/Edit/@Model.AllParticipators[i].ParticipatorId" class="button-edit">Edit</a>
+                            <a href="/ManageParticipants/Delete/@Model.AllParticipators[i].ParticipatorId" class="button-delete">Delete</a>
                     </td>
                 </tr>
             }

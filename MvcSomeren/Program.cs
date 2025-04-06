@@ -16,11 +16,11 @@ public class Program
         builder.Services.AddSingleton<ILecturerSupervisorRepository, DbLecturerSupervisorRepository>();
         builder.Services.AddSingleton<ISupervisorRepository, DbSupervisorRepository>();
         builder.Services.AddSingleton<IActivitiesRepository, DbActivitiesRepository>();
+        builder.Services.AddSingleton<IManageParticipantsRepository, DbManageParticipantsRepository>();
+        builder.Services.AddSingleton<IParticipatorsRepository, DbParticipatorsRepository>();
         builder.Services.AddSingleton<IDrinkOrderRepository, DbDrinkOrderRepository>();
         builder.Services.AddSingleton<IDrinksRepository, DbDrinksRepository>();
 
-        builder.Services.AddSingleton<IManageParticipantsRepository, DbManageParticipantsRepository>();
-        builder.Services.AddSingleton<IParticipatorsRepository, DbParticipatorsRepository>();
 
         var app = builder.Build();
 
