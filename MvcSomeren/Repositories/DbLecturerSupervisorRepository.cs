@@ -108,6 +108,25 @@ public class DbLecturerSupervisorRepository : ILecturerSupervisorRepository
             }
         }
     }
+    
+    public void UpdateSupervisor(LecturerSupervisorViewModel lecturerSupervisorViewModel)
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            var query = @"UPDATE Supervisor SET SupervisingDate = @SupervisingDate, LecturerId = @LecturerId, ActivityId = @ActivityId WHERE SupervisorId = @Id; ";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@SupervisingDate", lecturerSupervisorViewModel.Supervisor.SupervisingDate);
+            command.Parameters.AddWithValue("@LecturerId", lecturerSupervisorViewModel.Supervisor.LecturerId);
+            command.Parameters.AddWithValue("@ActivityId", lecturerSupervisorViewModel.Supervisor.ActivityId);
+            command.Parameters.AddWithValue("@Id", lecturerSupervisorViewModel.Supervisor.SupervisorId);
+
+            command.Connection.Open();
+            var numberOfRowsAffected = command.ExecuteNonQuery();
+            if (numberOfRowsAffected != 1) throw new Exception("Something went wrong! Supervisor was not updated.");
+        }
+
+    }
 
     public LecturerSupervisorViewModel GetSupervisorById(int supervisorId)
     {
@@ -147,6 +166,32 @@ public class DbLecturerSupervisorRepository : ILecturerSupervisorRepository
         }
 
         return new LecturerSupervisorViewModel(lecturers, activities, supervisor, GetLecturers(), GetActivities(), new List<Supervisor>());
+    }
+    
+    public Supervisor? GetSupervisorByID(int id)
+    {
+        Supervisor? supervisor = null;
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query =
+                $"SELECT * FROM Supervisor WHERE SupervisorId = @id";
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@id", id);
+
+            command.Connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                supervisor = ReadSupervisor(reader);
+            }
+
+            reader.Close();
+        }
+
+        return supervisor;
+
     }
 
     public Activity GetActivityById(int id)
@@ -277,4 +322,16 @@ public class DbLecturerSupervisorRepository : ILecturerSupervisorRepository
 
         return new Lecturer(id, firstName, lastName, phoneNumber, age, roomId);
     }
+    
+    private Supervisor ReadSupervisor(SqlDataReader reader)
+    {
+        int supervisorId = (int)reader["SupervisorId"];
+        int supervisingDate = (int)reader["SupervisingDate"];
+        int lecturerId = (int)reader["LecturerId"];
+        int activityId = (int)reader["ActivityId"];
+        
+
+        return new Supervisor(supervisorId, supervisingDate, lecturerId, activityId);
+    }
+
 }
