@@ -33,7 +33,7 @@ namespace MvcSomeren.Repositories
                 string query = @"
             SELECT 
                 P.ParticipatorId, P.ParticipateDate, P.ActivityId, P.StudentId,
-                S.StudentFirstName, S.StudentLastName, S.StudentPhoneNumber, S.StudentClass, S.StudentRoomId,
+                S.StudentNumber, S.StudentFirstName, S.StudentLastName, S.StudentPhoneNumber, S.StudentClass, S.StudentRoomId,
                 A.ActivityId, A.ActivityName, A.Date, A.Time
             FROM Participator AS P
             JOIN Student AS S ON P.StudentId = S.StudentId
@@ -56,7 +56,7 @@ namespace MvcSomeren.Repositories
                     //int participateDateInt = Convert.ToInt32((string)reader["ParticipateDate"]);
                     participateDates.Add(participateDate);
 
-                    int participatorId = (int)reader["OrderId"];
+                    int participatorId = (int)reader["ParticipatorId"];
                     int studentId = (int)reader["StudentId"];
                     int activityId = (int)reader["ActivityId"];
 
@@ -122,8 +122,14 @@ namespace MvcSomeren.Repositories
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                string query = "SELECT P.PartcipatorId, P.ParticipateDate, P.ActivityId, S.StudentFirstName, S.StudentLastName, S.StudentPhoneNumber, S.StudentClass, S.StudentRoomId, A.ActivityId, A.ActivityName, A.Date, A.Time FROM Participator AS P JOIN Student ON Participator.StudentId = Student.StudentId JOIN Activity ON Participator.ActivityId = A.ActivityId WHERE Participator.ParticipatorId = @ParticipatorId";
-
+                string query = @"
+            SELECT 
+                P.ParticipatorId, P.ParticipateDate, P.ActivityId, P.StudentId,
+                S.StudentNumber, S.StudentFirstName, S.StudentLastName, S.StudentPhoneNumber, S.StudentClass, S.StudentRoomId,
+                A.ActivityId, A.ActivityName, A.Date, A.Time
+            FROM Participator AS P
+            JOIN Student AS S ON P.StudentId = S.StudentId
+            JOIN Activity AS A ON P.ActivityId = A.ActivityId";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@ParticipatorId", participatorId);
 
