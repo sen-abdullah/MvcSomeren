@@ -37,7 +37,7 @@ public class LecturerSupervisorController : Controller
 
             Lecturer lecturer = _lecturerSupervisorRepository.GetLecturerById(lecturerSupervisorViewModel.Supervisor.LecturerId);
             
-            ModelState.AddModelError("OrderAdded", $"{lecturerSupervisorViewModel.Supervisor.SupervisingDate} {activity.ActivityName} has been reserved for {lecturer.LastName} - {lecturer.FirstName}! You are now a supervisor!");
+            ModelState.AddModelError("SupervisorAdded", $"{lecturerSupervisorViewModel.Supervisor.SupervisingDate} {activity.ActivityName} has been reserved for {lecturer.LastName} - {lecturer.FirstName}! You are now a supervisor!");
             return View(_lecturerSupervisorRepository.GetLecturersAndActivities());
         }
         catch (Exception e)
