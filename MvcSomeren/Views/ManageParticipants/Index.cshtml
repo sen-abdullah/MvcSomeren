@@ -6,111 +6,97 @@
 
 <div class="text-center">
     <h1 class="display-4">Participant's Management</h1>
-   
-    @*<a href="/Lecturers/Create" class="button-create" role="button"><span class="text">Create New</span><span>Create New</span></a>
-    <p>Number of lecturers in the list: @Model.Count</p>
-    <form method="get" action="@Url.Action("Filter")">
-        <div class="form-group py-2">
-            <label for="lastName">Last Name:</label>
-            <input type="text" class="form-control" id="lastName" name="lastName" />
-        </div>
-        <button type="submit" class="btn btn-primary">Filter</button>
-    </form>*@
+
     <hr>
     <h1 class="display-4">Participators</h1>
     <a href="/ManageParticipants/Create" class="button-create" role="button">
         <span class="text">Assign Participant</span>
         <span>Assign Participant</span>
     </a>
-    <table class="table table-hover">
+    <table class="table table-hover my-4">
         <thead>
-        <tr>
-            <th>Student Number</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone Number</th>
-            <th>Class</th>
-            <th>Room Id</th>
-            <th>Activity Name</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>ParticipateDate</th>
-            <th>Actions</th>
-        </tr>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Class</th>
+                <th>Room Id</th>
+                <th>Activity Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody>
-        @{
-                for (var i = 0; i < Model.ParticipateDate.Count; i++)
-            {
-                <tr>
-                    <td>@Model.Students[i].StudentNumber</td>
-                    <td>@Model.Students[i].StudentFirstName</td>
-                    <td>@Model.Students[i].StudentLastName</td>
-                    <td>@Model.Students[i].StudentPhoneNumber</td>
-                    <td>@Model.Students[i].StudentClass</td>
-                    <td>@Model.Students[i].StudentRoomId</td>
-                    <td>@Model.Activities[i].ActivityName</td>
-                    <td>@Model.Activities[i].Date</td>
-                    <td>@Model.Activities[i].Time</td>
-                    <td>@Model.ParticipateDate[i]</td>
-                    <td>
+            @{
+                for (var i = 0; i < Model.Activities.Count; i++)
+                {
+                    <tr>
+                        <td>@Model.Students[i].StudentFirstName</td>
+                        <td>@Model.Students[i].StudentLastName</td>
+                        <td>@Model.Students[i].StudentPhoneNumber</td>
+                        <td>@Model.Students[i].StudentClass</td>
+                        <td>@Model.Students[i].StudentRoomId</td>
+                        <td>@Model.Activities[i].ActivityName</td>
+                        <td>@Model.Activities[i].Date</td>
+                        <td>@Model.Activities[i].Time</td>
+                        <td>
                             <a href="/ManageParticipants/Edit/@Model.AllParticipators[i].ParticipatorId" class="button-edit">Edit</a>
                             <a href="/ManageParticipants/Delete/@Model.AllParticipators[i].ParticipatorId" class="button-delete">Delete</a>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                }
             }
-        }
         </tbody>
     </table>
-    <hr>
-    <h1 class="display-4">All Activities</h1>
+    <hr class="m-xxl-5">
+    <h1 class="my-4 p-2 fs-1">All Students Available</h1>
     <table class="table table-hover">
         <thead>
-        <tr>
-            <th>Activity Name</th>
-            <th>Date</th>
-            <th>Time</th>
-        </tr>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Age</th>
+                <th>Room Id</th>
+            </tr>
         </thead>
         <tbody>
-        @{
-            foreach (var activity in Model.AllActivities)
-            {
-                <tr>
+            @{
+                foreach (var student in Model.AllStudents)
+                {
+                    <tr>
+                        <td>@student.StudentFirstName</td>
+                        <td>@student.StudentLastName</td>
+                        <td>@student.StudentPhoneNumber</td>
+                        <td>@student.StudentClass</td>
+                        <td>@student.StudentRoomId</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <hr class="m-xxl-5">
+    <h1 class="my-4 p-2 fs-1">All Activities</h1>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Activity Name</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var activity in Model.AllActivities)
+                {
+                    <tr>
                         <td>@activity.ActivityName</td>
                         <td>@activity.Date</td>
                         <td>@activity.Time</td>
-                </tr>
+                    </tr>
+                }
             }
-        }
-        </tbody>
-    </table>
-    <hr>
-    <h1 class="display-4">All Students</h1>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Student Number</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone Number</th>
-            <th>Class</th>
-            <th>RoomId</th>
-        </tr>
-        </thead>
-        <tbody>
-        @{
-            foreach (var student in Model.AllStudents)
-            {
-                <tr><td>@student.StudentNumber</td>
-                    <td>@student.StudentFirstName</td>
-                    <td>@student.StudentLastName</td>
-                    <td>@student.StudentPhoneNumber</td>
-                    <td>@student.StudentClass</td>
-                    <td>@student.StudentRoomId</td>
-                </tr>
-            }
-        }
         </tbody>
     </table>
 </div>

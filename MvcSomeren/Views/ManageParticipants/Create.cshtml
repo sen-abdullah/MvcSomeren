@@ -11,8 +11,7 @@
     <div class="d-flex justify-content-center mb-4">
         <a href="/ManageParticipants/Index" class="back-to-list mx-4">Back to Participant List</a>
     </div>
-    <form method="post" action="/ManageParticipants/Create"
-          @*onsubmit="return confirm('Ok?');"*@>
+    <form method="post" action="/ManageParticipants/Create">
         @if (ViewData.ModelState["ValidationError"] != null)
         {
             <span
@@ -29,8 +28,7 @@
                     <option value="">Select a Student</option>
                     @foreach (var student in Model.AllStudents)
                     {
-                        <option
-                            value="@student.StudentId">@student.StudentNumber - @student.StudentClass - @student.StudentFirstName - @student.StudentLastName - @student.StudentClass - Room(@student.StudentRoomId)</option>
+                        <option value="@student.StudentId">@student.StudentNumber - @student.StudentClass - @student.StudentFirstName - @student.StudentLastName - @student.StudentClass - Room(@student.StudentRoomId)</option>
                     }
                 </select>
             </div>
@@ -39,7 +37,7 @@
             <div class="form-group col-md-6 form-control-lg">
                 <label asp-for="Participator.ActivityId" class="form-label">Drink Details</label>
                 <select asp-for="Participator.ActivityId" class="form-select hover-animate">
-                    <option value="">Select a Drink</option>
+                    <option value="">Select an Activity</option>
                     @foreach (var activity in Model.AllActivities)
                     {
                         <option value="@activity.ActivityId">@activity.ActivityName - Date: @activity.Date - Time:(@activity.Time)</option>

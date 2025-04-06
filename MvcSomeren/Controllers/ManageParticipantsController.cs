@@ -61,7 +61,7 @@ namespace MvcSomeren.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteOrder(int id)
+        public IActionResult DeleteParticipant(int id)
         {
             try
             {
@@ -71,6 +71,36 @@ namespace MvcSomeren.Controllers
             catch (Exception e)
             {
                 return View(_manageParticipantsRepository.GetParticipatorByID(id));
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+
+            ManageParticipantViewModel manageParticipantViewModel = _manageParticipantsRepository.GetParticipatorByID((int)id);
+            return View(manageParticipantViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(ManageParticipantViewModel manageParticipantViewModel)
+        {
+            try
+            {
+                _manageParticipantsRepository.UpdateParticipator(manageParticipantViewModel);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                ManageParticipantViewModel model = _manageParticipantsRepository.GetAll();
+                model.Participator = manageParticipantViewModel.Participator;
+                return View(model);
             }
         }
     }

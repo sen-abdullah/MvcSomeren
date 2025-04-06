@@ -20,16 +20,10 @@ namespace MvcSomeren.Repositories
         {
             List<Student> students = new List<Student>();
             List<Models.Activity> activities = new List<Models.Activity>();
-            List<int> participateDates = new List<int>();
             List<Participator> participators = new List<Participator>();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                //string query = "SELECT P.ParticipatorId, P.ParticipateDate, P.ActivityId, " +
-                //"S.StudentId, S.StudentPhoneNumber, S.StudentFirstName, S.StudentLastName, S.StudentClass, S.StudentRoomId, " +
-                //"A.ActivityId, A.ActivityName, A.Date, A.Time FROM Participator AS P " +
-                //"JOIN Student ON P.StudentId = S.StudentId " +
-                //"JOIN Activity ON P.ActivityId = A.ActivityId ";
                 string query = @"
             SELECT 
                 P.ParticipatorId, P.ParticipateDate, P.ActivityId, P.StudentId,
@@ -39,7 +33,6 @@ namespace MvcSomeren.Repositories
             JOIN Student AS S ON P.StudentId = S.StudentId
             JOIN Activity AS A ON P.ActivityId = A.ActivityId";
                 SqlCommand command = new SqlCommand(query, connection);
-                //checkCommand.Parameters.AddWithValue("@Date", participator.Parti);
 
                 command.Connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
@@ -53,8 +46,6 @@ namespace MvcSomeren.Repositories
                     activities.Add(activity);
 
                     int participateDate = (int)reader["ParticipateDate"];
-                    //int participateDateInt = Convert.ToInt32((string)reader["ParticipateDate"]);
-                    participateDates.Add(participateDate);
 
                     int participatorId = (int)reader["ParticipatorId"];
                     int studentId = (int)reader["StudentId"];
@@ -68,12 +59,12 @@ namespace MvcSomeren.Repositories
                 reader.Close();
             }
 
-            return new ManageParticipantViewModel(students, activities, participateDates, null, GetStudents(), GetActivities(), participators);
+            return new ManageParticipantViewModel(students, activities, null, GetStudents(), GetActivities(), participators);
         }
 
         public ManageParticipantViewModel GetStudentsAndActivities()
         {
-            return new ManageParticipantViewModel(new List<Student>(), new List<Models.Activity>(), new List<int>(), null, GetStudents(), GetActivities(), new List<Participator>());
+            return new ManageParticipantViewModel(new List<Student>(), new List<Models.Activity>(), null, GetStudents(), GetActivities(), new List<Participator>());
         }
 
         public void AddParticipator(ManageParticipantViewModel manageParticipantViewModel)
@@ -83,19 +74,39 @@ namespace MvcSomeren.Repositories
                 var query =
                     $"INSERT INTO Participator (ActivityId, StudentId, ParticipateDate)" +
                     $"VALUES (@ActivityId, @StudentId, @ParticipateDate); " +
-                    "SELECT CAST(SCOPE_IDENTITY() as int)";
+                    "SELECT SCOPE_IDENTITY();";
 
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@ActivityId", manageParticipantViewModel.Participator.ActivityId);
-                command.Parameters.AddWithValue("@StudentId", manageParticipantViewModel.Participator.StudentId);
-                command.Parameters.AddWithValue("@ParticipateDate", manageParticipantViewModel.Participator.ParticipateDate);
+
+                if (manageParticipantViewModel.Participator != null)
+                {
+                    command.Parameters.AddWithValue("@ActivityId", manageParticipantViewModel.Participator.ActivityId);
+                    command.Parameters.AddWithValue("@StudentId", manageParticipantViewModel.Participator.StudentId);
+                    command.Parameters.AddWithValue("@ParticipateDate", manageParticipantViewModel.Participator.ParticipateDate);
+                }
 
                 command.Connection.Open();
                 var numberOfRowsAffected = command.ExecuteNonQuery();
                 if (numberOfRowsAffected != 1) throw new Exception("Adding a new participator failed.");
             }
         }
+        public void UpdateParticipator(ManageParticipantViewModel manageParticipantViewModel)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var query =
+                    $"UPDATE Participator SET ActivityId = @ActivityId, StudentId = @StudentId, ParticipateDate = @ParticipateDate WHERE ParticipatorId = @ParticipatorId; ";
 
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@ActivityId", manageParticipantViewModel.Participator.ActivityId);
+                command.Parameters.AddWithValue("@StudentId", manageParticipantViewModel.Participator.StudentId);
+                command.Parameters.AddWithValue("@ParticipateDate", manageParticipantViewModel.Participator.ParticipateDate);
+                command.Parameters.AddWithValue("@ParticipatorId", manageParticipantViewModel.Participator.ParticipatorId);
+                command.Connection.Open();
+                var numberOfRowsAffected = command.ExecuteNonQuery();
+                if (numberOfRowsAffected != 1) throw new Exception("Something went wrong! Participant was not updated.");
+            }
+        }
         public void Delete(int participatorId)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -105,18 +116,26 @@ namespace MvcSomeren.Repositories
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@ParticipatorId", participatorId);
 
-                command.Connection.Open();
-                var numberOfRowsAffected = command.ExecuteNonQuery();
-                if (numberOfRowsAffected != 1) throw new Exception("Something went wrong! Participator was not deleted.");
+                try
+                {
+                    connection.Open();
+                    var numberOfRowsAffected = command.ExecuteNonQuery();
+
+                    if (numberOfRowsAffected != 1)
+                    {
+                        throw new Exception($"Delete failed. Rows affected: {numberOfRowsAffected}. ParticipatorId: {participatorId}.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error deleting Participator: " + ex.Message, ex);
+                }
             }
         }
-
         public ManageParticipantViewModel GetParticipatorByID(int participatorId)
         {
             List<Student> students = new List<Student>();
             List<Models.Activity> activities = new List<Models.Activity>();
-            List<int> participateDates = new List<int>();
-            List<Participator> participators = new List<Participator>();
 
             Participator? participator = null;
 
@@ -145,7 +164,6 @@ namespace MvcSomeren.Repositories
                     activities.Add(activity);
 
                     int participateDate = (int)reader["ParticipateDate"];
-                    participateDates.Add(participateDate);
 
                     int id = (int)reader["ParticipatorId"];
                     int studentId = (int)reader["StudentId"];
@@ -157,7 +175,32 @@ namespace MvcSomeren.Repositories
                 reader.Close();
             }
 
-            return new ManageParticipantViewModel(students, activities, participateDates, participator, GetStudents(), GetActivities(), new List<Participator>());
+            return new ManageParticipantViewModel(students, activities, participator, GetStudents(), GetActivities(), new List<Participator>());
+        }
+        public Participator? GetParticipatorById(int id)
+        {
+            Participator? participator = null;
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                string query =
+                    $"SELECT * FROM Participator WHERE Participator = @ParticipatorId";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@ParticipatorId", id);
+
+                command.Connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    participator = ReadParticipator(reader);
+                }
+
+                reader.Close();
+            }
+
+            return participator;
+
         }
 
         public Student? GetStudentById(int id)
@@ -209,16 +252,13 @@ namespace MvcSomeren.Repositories
 
             return activity;
         }
-
-
-
         private List<Student> GetStudents()
         {
             List<Student> students = new List<Student>();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                string query = "SELECT StudentId, StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, StudentRoomId FROM Student";
+                string query = "SELECT StudentId, StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, StudentRoomId FROM Student ORDER BY StudentLastName ASC";
 
                 SqlCommand command = new SqlCommand(query, connection);
 
@@ -236,14 +276,13 @@ namespace MvcSomeren.Repositories
 
             return students;
         }
-
         private List<Models.Activity> GetActivities()
         {
             List<Models.Activity> activities = new List<Models.Activity>();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {        
-                string query = "SELECT ActivityId, ActivityName, Date, Time FROM Activity";
+                string query = "SELECT ActivityId, ActivityName, Date, Time FROM Activity ORDER BY ActivityId";
 
                 SqlCommand command = new SqlCommand(query, connection);
 
@@ -261,9 +300,6 @@ namespace MvcSomeren.Repositories
 
             return activities;
         }
-
-
-
         private Student ReadStudent(SqlDataReader reader)
         {
             int studentId = (int)reader["StudentId"];
@@ -294,6 +330,17 @@ namespace MvcSomeren.Repositories
             string time = (string)reader["Time"];
 
             return new Models.Activity(activityId, activityName, date, time);
+        }
+
+        private Participator ReadParticipator(SqlDataReader reader)
+        {
+            int participatorId = (int)reader["ParticipatorId"];
+            int participateDate = (int)reader["ParticipateDate"];
+            int studentId = (int)reader["StudentId"];
+            int activityId = (int)reader["ActivityId"];
+
+
+            return new Participator(participatorId, participateDate, studentId, activityId);
         }
     }
 }
