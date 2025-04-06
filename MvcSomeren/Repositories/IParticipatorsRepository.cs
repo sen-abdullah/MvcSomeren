@@ -8,7 +8,6 @@ public interface IParticipatorsRepository
     void Add(Participator participator);
     void Update(Participator participator);
     void Delete(Participator participator);
-    List<Participator> Filter(int participatorId);
     Participator? GetById(int participatorId);
 }
 

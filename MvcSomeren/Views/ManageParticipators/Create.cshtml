@@ -1,0 +1,63 @@
+﻿@model MvcSomeren.Models.ManageParticipantViewModel
+
+@{
+    ViewData["Title"] = "Add new Participant";
+}
+
+<div>
+    <div class="d-flex justify-content-center mr-6 my-lg-5">
+        <h4>New Participant</h4>
+    </div>
+    <div class="d-flex justify-content-center mb-4">
+        <a href="/ManageParticipators/Index" class="back-to-list mx-4">Back to Participant List</a>
+    </div>
+    <form method="post" action="/ManageParticipators/Create"
+          @*onsubmit="return confirm('Ok?');"*@>
+        @if (ViewData.ModelState["ValidationError"] != null)
+        {
+            <span
+                class="text-danger">@ViewData.ModelState["ValidationError"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+        }
+        @if (ViewData.ModelState["ParticipantAdded"] != null)
+        {
+            <span class="text-info">@ViewData.ModelState["ParticipantAdded"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+        }
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label asp-for="Participator.StudentId" class="form-label">Student Details</label>
+                <select asp-for="Participator.StudentId" class="form-select hover-animate">
+                    <option value="">Select a Student</option>
+                    @foreach (var student in Model.AllStudents)
+                    {
+                        <option
+                            value="@student.StudentId">@student.StudentNumber - @student.StudentClass - @student.StudentFirstName - @student.StudentLastName - @student.StudentClass - Room(@student.StudentRoomId)</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label asp-for="Participator.ActivityId" class="form-label">Drink Details</label>
+                <select asp-for="Participator.ActivityId" class="form-select hover-animate">
+                    <option value="">Select a Drink</option>
+                    @foreach (var activity in Model.AllActivities)
+                    {
+                        <option value="@activity.ActivityId">@activity.ActivityName - Date: @activity.Date - Time:(@activity.Time)</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="form-group col-md-6 form-control-lg">
+                <label asp-for="Participator.ParticipateDate" class="form-label">Participate Date</label>
+                <input asp-for="Participator.ParticipateDate" class="form-control hover-animate" />
+                <span asp-validation-for="Participator.ParticipateDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-4 row justify-content-center">
+            <div class="mx-1 my-4">
+                <button type="submit" class="button-save" onclick="return confirm('Are you sure to assign participant? @Model.');">Add Participant</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,34 @@
+﻿@model MvcSomeren.Models.Participator
+@{
+	ViewData["Title"] = "Delete Participator";
+}
+
+<div>
+	<div class="d-flex justify-content-center mr-6 my-lg-5">
+		<h2>Delete Participator</h2>
+	</div>
+
+	<div class="d-flex justify-content-center mb-4">
+		<a href="/Participators/Index" class="back-to-list mx-4">Back to List</a>
+	</div>
+	<form action="/Participators/Delete" method="POST">
+
+		<input hidden type="number" name="ParticipatorId" value="@Model?.ParticipatorId" />
+
+		<div class="form-group row">
+			<div class="form-group form-control-lg">
+				<label for="StudentId">Student Id:</label>
+				<input type="number" id="StudentId" name="StudentId" class="form-control" readonly value="@Model?.StudentId" />
+			</div>
+
+			<div class="form-group col-md-6 form-control-lg">
+				<label for="ActivityId">Activity Id:</label>
+				<input type="number" id="ActivityId" name="ActivityId" class="form-control" readonly value="@Model?.ActivityId" />
+			</div>
+		</div>
+
+		<div class="mx-1 my-4">
+			<button type="submit" class="button-save">Delete</button>
+		</div>
+	</form>
+</div>

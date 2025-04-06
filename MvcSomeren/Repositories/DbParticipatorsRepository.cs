@@ -7,10 +7,11 @@ namespace MvcSomeren.Repositories
     public class DbParticipatorsRepository : IParticipatorsRepository
     {
         private readonly string? _connectionString;
+        private const string CONNECTION_STRING_KEY = "appsomeren";
 
         public DbParticipatorsRepository(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("appsomeren");
+            _connectionString = configuration.GetConnectionString(CONNECTION_STRING_KEY);
         }
 
         public List<Participator> GetAll()
@@ -19,7 +20,8 @@ namespace MvcSomeren.Repositories
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                string query = "SELECT PartcipatorId, ParticipateDate, StudentId, ActivityId FROM Participator ORDER BY PartcipatorId";
+                //string query = "SELECT P.PartcipatorId, P.ParticipateDate, S.StudentId, P.ActivityId, S.StudentNumber, S.StudentFirstName, S.StudentLastName, S.StudentPhoneNumber, S.StudentClass, S.StudentRoomId FROM Participator AS P JOIN Student AS S ON P.StudentId = S.StudentId ORDER BY PartcipatorId";
+                string query = "SELECT ParticipatorId, ParticipateDate, StudentId, ActivityId FROM Participator";
                 SqlCommand command = new SqlCommand(query, connection);
 
                 command.Connection.Open();
@@ -44,27 +46,22 @@ namespace MvcSomeren.Repositories
             int studentId = (int)reader["StudentId"];
             int activityId = (int)reader["ActivityId"];
 
+            //int studentNumber = (int)reader["StudentNumber"];
+            //string studentFirstName = (string)reader["StudentFirstName"];
+            //string studentLastName = (string)reader["StudentLastName"];
+            //int studentPhoneNumber = (int)reader["StudentPhoneNumber"];
+            //string studentClass = (string)reader["StudentClass"];
+            //int roomId = (int)reader["RoomId"];
+
             return new Participator(participatorId, participateDate, studentId, activityId);
+            //, studentNumber, studentFirstName, studentLastName, studentPhoneNumber, studentClass, roomId
         }
 
         public void Add(Participator participator)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
-            { /*Correct if wrong*/
-                string checkQuery = "SELECT COUNT(*) FROM Participator WHERE ParticipateDate = @ParticipateDate";
-                SqlCommand checkCommand = new SqlCommand(checkQuery, connection);
-                checkCommand.Parameters.AddWithValue("@ParticipateDate", participator.ParticipateDate);
-
-                connection.Open();
-                int count = (int)checkCommand.ExecuteScalar();
-                connection.Close();
-
-                if (count > 0)
-                {
-                    throw new InvalidOperationException("A participator with this number already exists!");
-                }
-                //This one is good
-                string query = "INSERT INTO Participator (ParticipateDate, StudentId, ActivityId) VALUES (@ParticipateDate, @StudentId, @ActivityId);";
+            { 
+                string query = "INSERT INTO Participator (ParticipateDate, StudentId, ActivityId) VALUES (@ParticipateDate, @StudentId, @ActivityId); SELECT CAST(SCOPE_IDENTITY() as int)";
                 SqlCommand command = new SqlCommand(query, connection);
 
                 command.Parameters.AddWithValue("@ParticipateDate", participator.ParticipateDate);
@@ -113,36 +110,13 @@ namespace MvcSomeren.Repositories
                 reader.Close();
             }
         }
-        public List<Participator> Filter(int participatorId)
-        {
-            List<Participator> participators = new List<Participator>();
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                string query = "SELECT ParticipatorId, ParticipateDate, StudentId, ParticipatorId FROM Participator WHERE ParticipatorId = @ParticipatorId";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@ParticipatorId", participatorId);
-
-                command.Connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    Participator participatorItem = ReadParticipator(reader);
-                    participators.Add(participatorItem);
-                }
-
-                reader.Close();
-            }
-
-            return participators;
-        }
         public Participator? GetById(int participatorId)
         {
-            Participator participator = new Participator();
+            Participator? participator = null;
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                string query = "SELECT ParticipatorId, ParticipateDate, StudentId, ParticipatorId FROM Participator WHERE ParticipatorId = @ParticipatorId";
+                string query = "SELECT ParticipatorId, ParticipateDate, StudentId, ActivityId FROM Participator WHERE ParticipatorId = @ParticipatorId";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@ParticipatorId", participatorId);
 

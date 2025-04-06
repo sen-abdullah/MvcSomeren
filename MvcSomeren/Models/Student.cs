@@ -11,27 +11,26 @@ public class Student
     public string StudentClass { get; set; }
     public int? StudentRoomId { get; set; }
 
-
     //constructors
     public Student()
     {
-        this.StudentId = 0;
-        this.StudentNumber = 0;
-        this.StudentFirstName = "";
-        this.StudentLastName = "";
-        this.StudentPhoneNumber = 0;
-        this.StudentClass = "";
-        this.StudentRoomId = 0;
+        StudentId = 0;
+        StudentNumber = 0;
+        StudentFirstName = "";
+        StudentLastName = "";
+        StudentPhoneNumber = 0;
+        StudentClass = "";
+        StudentRoomId = 0;
     }
 
     public Student(int studentId, int studentNumber, string studentFirstName, string studentLastName, int studentPhoneNumber, string studentClass, int? roomId)
     {
-        this.StudentId = studentId;
-        this.StudentNumber = studentNumber;
-        this.StudentFirstName = studentFirstName;
-        this.StudentLastName = studentLastName;
-        this.StudentPhoneNumber = studentPhoneNumber;
-        this.StudentClass = studentClass;
-        this.StudentRoomId = roomId;
+        StudentId = studentId;
+        StudentNumber = studentNumber;
+        StudentFirstName = studentFirstName;
+        StudentLastName = studentLastName;
+        StudentPhoneNumber = studentPhoneNumber;
+        StudentClass = studentClass;
+        StudentRoomId = roomId;
     }
 }

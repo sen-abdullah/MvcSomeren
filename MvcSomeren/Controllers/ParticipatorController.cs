@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcSomeren.Models;
 using MvcSomeren.Repositories;
 
@@ -16,7 +17,6 @@ public class ParticipatorController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        //lecturer
         List<Participator> participators = _participatorRepository.GetAll();
         return View(participators);
     }
@@ -24,6 +24,11 @@ public class ParticipatorController : Controller
     [HttpGet]
     public IActionResult Create()
     {
+        /*var participators = _participatorRepository.GetAll();
+
+        ViewData["Particapors"] = new SelectList(participators, "StudentId", "StudentId");
+        ViewData["Activities"] = new SelectList(participators, "ActivityId", "ActivityId");*/
+
         return View();
     }
 
@@ -90,20 +95,6 @@ public class ParticipatorController : Controller
         catch (Exception e)
         {
             return View(participator);
-        }
-    }
-
-    public IActionResult Filter(int participatorId)
-    {
-        try
-        {
-            List<Participator> participators = _participatorRepository.Filter(participatorId);
-            return View(nameof(Index), participators);
-        }
-        catch (Exception e)
-        {
-            List<Participator> participators = _participatorRepository.GetAll();
-            return View(nameof(Index), participators);
         }
     }
 }
