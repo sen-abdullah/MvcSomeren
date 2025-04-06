@@ -18,7 +18,6 @@ namespace MvcSomeren.Repositories
         Activity? GetActivityById(int id);
 
         void UpdateParticipator(ManageParticipantViewModel manageParticipantViewModel);
-        Participator? GetParticipatorById(int id);
     }
 }
 

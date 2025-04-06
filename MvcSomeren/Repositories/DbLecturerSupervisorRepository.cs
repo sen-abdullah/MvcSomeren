@@ -167,32 +167,6 @@ public class DbLecturerSupervisorRepository : ILecturerSupervisorRepository
 
         return new LecturerSupervisorViewModel(lecturers, activities, supervisor, GetLecturers(), GetActivities(), new List<Supervisor>());
     }
-    
-    public Supervisor? GetSupervisorByID(int id)
-    {
-        Supervisor? supervisor = null;
-
-        using (SqlConnection connection = new SqlConnection(_connectionString))
-        {
-            string query =
-                $"SELECT * FROM Supervisor WHERE SupervisorId = @id";
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@id", id);
-
-            command.Connection.Open();
-            SqlDataReader reader = command.ExecuteReader();
-
-            if (reader.Read())
-            {
-                supervisor = ReadSupervisor(reader);
-            }
-
-            reader.Close();
-        }
-
-        return supervisor;
-
-    }
 
     public Activity GetActivityById(int id)
     {
@@ -224,7 +198,7 @@ public class DbLecturerSupervisorRepository : ILecturerSupervisorRepository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             string query =
-                $"SELECT LecturerId, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge, RoomId FROM Lecturer WHERE LecturerId = @id";
+                $"SELECT LecturerId, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge, RoomId FROM Lecturer WHERE LecturerId = @LecturerId";
 
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@LecturerId", id);
