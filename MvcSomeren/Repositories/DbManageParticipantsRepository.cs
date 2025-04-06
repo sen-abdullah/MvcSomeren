@@ -177,31 +177,6 @@ namespace MvcSomeren.Repositories
 
             return new ManageParticipantViewModel(students, activities, participator, GetStudents(), GetActivities(), new List<Participator>());
         }
-        public Participator? GetParticipatorById(int id)
-        {
-            Participator? participator = null;
-
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                string query =
-                    $"SELECT * FROM Participator WHERE Participator = @ParticipatorId";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@ParticipatorId", id);
-
-                command.Connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    participator = ReadParticipator(reader);
-                }
-
-                reader.Close();
-            }
-
-            return participator;
-
-        }
 
         public Student? GetStudentById(int id)
         {

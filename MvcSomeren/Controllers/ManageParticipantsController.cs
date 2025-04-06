@@ -35,7 +35,8 @@ namespace MvcSomeren.Controllers
                 Student student = _manageParticipantsRepository.GetStudentById(manageParticipantViewModel.Participator.StudentId);
                 Activity activity = _manageParticipantsRepository.GetActivityById(manageParticipantViewModel.Participator.ActivityId);
 
-                ModelState.AddModelError("ParticipatorAdded", $"{manageParticipantViewModel.Participator.ParticipateDate} {activity.ActivityName} has been assigned for {student.StudentNumber} - {student.StudentFirstName} {student.StudentLastName}! You can choose new Participators");
+                ModelState.AddModelError("ParticipantAdded", $"{manageParticipantViewModel.Participator.ParticipateDate} {activity.ActivityName} has been assigned for {student.StudentNumber} - {student.StudentFirstName} {student.StudentLastName}! You can assign new Participants");
+
 
 
                 return View(_manageParticipantsRepository.GetStudentsAndActivities());
