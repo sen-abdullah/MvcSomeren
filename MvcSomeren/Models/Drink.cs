@@ -2,24 +2,35 @@
 {
     public class Drink
     {
-        public int DrinkId { get; set; }
-        public string DrinkName { get; set; }
-        public bool IsAlcoholicDrink { get; set; }
-        public int StockAmountOfDrinks { get; set; }
         public Drink()
         {
-            DrinkId = 0;
-            DrinkName = "";
-            IsAlcoholicDrink = false;
-            StockAmountOfDrinks = 0;
+            Id = 0;
+            Name = "";
+            IsAlcoholic = false;
+            AmountOfStock = 0;
+            VatRate = 0;
         }
 
-        public Drink(int drinkId, string drinkName, bool isAlcoholicDrink, int stockAmountOfDrinks)
+        public Drink(int id, string name, bool isAlcoholic, int amountOfStock)
         {
-            DrinkId = drinkId;
-            DrinkName = drinkName;
-            IsAlcoholicDrink = isAlcoholicDrink;
-            StockAmountOfDrinks = stockAmountOfDrinks;
+            Id = id;
+            Name = name;
+            IsAlcoholic = isAlcoholic;
+            AmountOfStock = amountOfStock;
+            if (isAlcoholic)
+            {
+                VatRate = 21;
+            }
+            else
+            {
+                VatRate = 9;
+            }
         }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool IsAlcoholic { get; set; }
+        public int AmountOfStock { get; set; }
+        public int VatRate { get; set; }
     }
 }

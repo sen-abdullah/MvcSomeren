@@ -2,24 +2,25 @@
 {
     public class Order
     {
-        public int OrderId { get; set; }
-        public int DrinkId { get; set; }
-        public int StudentId { get; set; }
-        public int LecturerId { get; set; }
         public Order()
         {
-            OrderId = 0;
+            Id = 0;
             DrinkId = 0;
             StudentId = 0;
-            LecturerId = 0;
+            Quantity = 0;
         }
 
-        public Order(int orderId, int drinkId, int studentId, int lecturerId)
+        public Order(int id, int drinkId, int studentId, int quantity)
         {
-            OrderId = orderId;
+            Id = id;
             DrinkId = drinkId;
             StudentId = studentId;
-            LecturerId = lecturerId;
+            Quantity = quantity;
         }
+
+        public int Id { get; set; }
+        public int DrinkId { get; set; }
+        public int StudentId { get; set; }
+        public int Quantity { get; set; }
     }
 }

@@ -1,0 +1,120 @@
+﻿@model MvcSomeren.Models.DrinkOrderViewModel
+
+@{
+    ViewData["Title"] = "Drink Order Management";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Drink Order Management</h1>
+   
+    @*<a href="/Lecturers/Create" class="button-create" role="button"><span class="text">Create New</span><span>Create New</span></a>
+    <p>Number of lecturers in the list: @Model.Count</p>
+    <form method="get" action="@Url.Action("Filter")">
+        <div class="form-group py-2">
+            <label for="lastName">Last Name:</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" />
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>*@
+    <hr>
+    <h1 class="display-4">Orders</h1>
+    <a href="/DrinkOrder/Create" class="button-create" role="button">
+        <span class="text">Create Order</span>
+        <span>Create Order</span>
+    </a>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Student Number</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Class</th>
+            <th>Room Id</th>
+            <th>Drink Name</th>
+            <th>Is Alcoholic</th>
+            <th>Amount of Stock</th>
+            <th>Vat Rate</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            for (var i = 0; i < Model.Quantities.Count; i++)
+            {
+                <tr>
+                    <td>@Model.Students[i].StudentNumber</td>
+                    <td>@Model.Students[i].StudentFirstName</td>
+                    <td>@Model.Students[i].StudentLastName</td>
+                    <td>@Model.Students[i].StudentPhoneNumber</td>
+                    <td>@Model.Students[i].StudentClass</td>
+                    <td>@Model.Students[i].StudentRoomId</td>
+                    <td>@Model.Drinks[i].Name</td>
+                    <td>@Model.Drinks[i].IsAlcoholic</td>
+                    <td>@Model.Drinks[i].AmountOfStock</td>
+                    <td>@Model.Drinks[i].VatRate</td>
+                    <td>@Model.Quantities[i]</td>
+                    <td>
+                        <a href="/DrinkOrder/Edit/@Model.AllOrders[i].Id"  class="button-edit">Edit</a>
+                        <a href="/DrinkOrder/Delete/@Model.AllOrders[i].Id" class="button-delete">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+    <hr>
+    <h1 class="display-4">All Drinks in Bar</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Drink Name</th>
+            <th>Is Alcoholic</th>
+            <th>Stock Amount of Drink</th>
+            <th>Vat Rate</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            foreach (var drink in Model.AllDrinks)
+            {
+                <tr>
+                    <td>@drink.Name</td>
+                    <td>@drink.IsAlcoholic</td>
+                    <td>@drink.AmountOfStock</td>
+                    <td>@drink.VatRate</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+    <hr>
+    <h1 class="display-4">All Students</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Student Number</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Class</th>
+            <th>RoomId</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            foreach (var student in Model.AllStudents)
+            {
+                <tr><td>@student.StudentNumber</td>
+                    <td>@student.StudentFirstName</td>
+                    <td>@student.StudentLastName</td>
+                    <td>@student.StudentPhoneNumber</td>
+                    <td>@student.StudentClass</td>
+                    <td>@student.StudentRoomId</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>

@@ -1,14 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MvcSomeren.Models;
 using MvcSomeren.Repositories;
 
 namespace MvcSomeren.Controllers;
 
-public class SupervisorController : Controller
+public class SupervisorsController : Controller
 {
     private readonly ISupervisorRepository _supervisorRepository;
 
-    public SupervisorController(ISupervisorRepository supervisorRepository)
+    public SupervisorsController(ISupervisorRepository supervisorRepository)
     {
         _supervisorRepository = supervisorRepository;
     }
@@ -16,7 +17,6 @@ public class SupervisorController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        //lecturer
         List<Supervisor> supervisors = _supervisorRepository.GetAll();
         return View(supervisors);
     }
@@ -24,27 +24,28 @@ public class SupervisorController : Controller
     [HttpGet]
     public IActionResult Create()
     {
+        // Assuming you have a Supervisor model and database context
+        var supervisors = _supervisorRepository.GetAll();
+
+        // Prepare the SelectList for LecturerId dropdown
+        ViewData["Supervisors"] = new SelectList(supervisors, "LecturerId", "LastName");
+
+        // Prepare the SelectList for SupervisingDate dropdown
+        ViewData["Activities"] = new SelectList(supervisors, "ActivityId", "ActivityId");
+
         return View();
     }
 
     [HttpPost]
     public IActionResult Create(Supervisor supervisor)
     {
-        try
+        if (ModelState.IsValid)
         {
-            if (_supervisorRepository.IsSupervisorExist(supervisor))
-            {
-                ModelState.AddModelError("ValidationError", "Lecturer already exist!");
-                return View(supervisor);
-            }
-
             _supervisorRepository.Add(supervisor);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index)); // Or any other action you want after submission
         }
-        catch (Exception e)
-        {
-            return View(supervisor);
-        }
+
+        return View(supervisor);
     }
 
     [HttpGet]
@@ -112,4 +113,4 @@ public class SupervisorController : Controller
             return View(nameof(Index), supervisors);
         }
     }
-} 
+}

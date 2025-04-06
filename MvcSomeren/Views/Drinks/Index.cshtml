@@ -1,0 +1,46 @@
+﻿@model List<MvcSomeren.Models.Drink>
+
+@{
+    ViewData["Title"] = "Drinks Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Drinks</h1>
+    <a href="/Drinks/Create" class="button-create" role="button"><span class="text">Create New</span><span>Create New</span></a>
+    <p>Number of drinks in the list: @Model.Count</p>
+    <form method="get" action="@Url.Action("Filter")">
+        <div class="form-group py-2">
+            <label for="drinkName">Drink Name:</label>
+            <input type="text" class="form-control" id="drinkName" name="drinkName" />
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Drink Name</th>
+            <th>Is Alcoholic</th>
+            <th>Stock Amount of Drink</th>
+            <th>Vat Rate</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            foreach (var drink in Model)
+            {
+                <tr>
+                    <td>@drink.Name</td>
+                    <td>@drink.IsAlcoholic</td>
+                    <td>@drink.AmountOfStock</td>
+                    <td>%@drink.VatRate</td>
+                    <td>
+                        <a href="/Drinks/Edit/@drink.Id"  class="button-edit">Edit</a>
+                        <a href="/Drinks/Delete/@drink.Id" class="button-delete">Delete</a> 
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>
