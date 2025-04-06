@@ -2,9 +2,9 @@ html {
   font-size: 14px;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 1400px) {
   html {
-    font-size: 16px;
+    font-size: 12px;
   }
 }
 
@@ -16,7 +16,7 @@ a.navbar-brand {
   font-family: "Winky Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: bold;
-  font-size: 50px;
+  font-size: 32px;
   font-style: normal;
 }
 
@@ -32,7 +32,7 @@ a, a:hover {
   font-family: "Winky Sans", sans-serif;
   color: white;
   font-weight: bold;
-  font-size: 26px;
+  font-size: 20px;
   font-style: normal;
   text-decoration: none;
 }
