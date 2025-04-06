@@ -17,16 +17,16 @@
             <span
                 class="text-danger">@ViewData.ModelState["ValidationError"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
         }
-        @if (ViewData.ModelState["OrderAdded"] != null)
+        @if (ViewData.ModelState["SupervisorAdded"] != null)
         {
             <span
-                class="text-info">@ViewData.ModelState["OrderAdded"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
+                class="text-info">@ViewData.ModelState["SupervisorAdded"]?.Errors.FirstOrDefault()?.ErrorMessage</span>
         }
         <div class="form-group row">
             <div class="form-group col-md-6 form-control-lg">
-                <label asp-for="Supervisor.ActivityId" class="form-label">Student Details</label>
+                <label asp-for="Supervisor.ActivityId" class="form-label">Activity Details</label>
                 <select asp-for="Supervisor.ActivityId" class="form-select hover-animate">
-                    <option value="">Select a Student</option>
+                    <option value="">Select an Activity</option>
                     @foreach (var activity in Model.AllActivities)
                     {
                         <option
@@ -39,7 +39,7 @@
             <div class="form-group col-md-6 form-control-lg">
                 <label asp-for="Supervisor.LecturerId" class="form-label">Lecturer Details</label>
                 <select asp-for="Supervisor.LecturerId" class="form-select hover-animate">
-                    <option value="">Select a Drink</option>
+                    <option value="">Select a Lecturer</option>
                     @foreach (var lecturer in Model.AllLecturers)
                     {
                         <option

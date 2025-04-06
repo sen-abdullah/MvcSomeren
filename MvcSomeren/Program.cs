@@ -14,7 +14,6 @@ public class Program
         builder.Services.AddSingleton<ILecturersRepository, DbLecturersRepository>();
         builder.Services.AddSingleton<IRoomsRepository, DbRoomsRepository>();
         builder.Services.AddSingleton<ILecturerSupervisorRepository, DbLecturerSupervisorRepository>();
-        builder.Services.AddSingleton<ISupervisorRepository, DbSupervisorRepository>();
         builder.Services.AddSingleton<IActivitiesRepository, DbActivitiesRepository>();
         builder.Services.AddSingleton<IManageParticipantsRepository, DbManageParticipantsRepository>();
         builder.Services.AddSingleton<IParticipatorsRepository, DbParticipatorsRepository>();
