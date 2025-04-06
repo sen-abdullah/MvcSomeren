@@ -9,6 +9,8 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Students\index.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Home\Students\index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Supervisors\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Supervisors\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
