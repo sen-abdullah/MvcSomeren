@@ -18,6 +18,11 @@ public class ActivitiesController : Controller
         List<Activity> activities = _activityRepository.GetAll();
         return View(activities);
     }
+    public IActionResult Manage()
+    {
+        List<Activity> activities = _activityRepository.GetAll();
+        return View(activities);
+    }
 
     [HttpGet]
     public ActionResult Create()
