@@ -6,6 +6,7 @@ public class Supervisor
     public int SupervisingDate { get; set; }
     public int LecturerId { get; set; }
     public int ActivityId { get; set; }
+    public Lecturer Lecturer { get; set; }
 
     public Supervisor()
     {
