@@ -18,10 +18,20 @@ public class ActivitiesController : Controller
         List<Activity> activities = _activityRepository.GetAll();
         return View(activities);
     }
-    public IActionResult Manage()
+    public IActionResult Manage(int id)
     {
-        List<Activity> activities = _activityRepository.GetAll();
-        return View(activities);
+        try
+        {
+            ManageActivityViewModel model = new ManageActivityViewModel();
+            model.ActivityID = id;
+            model.Supervisors = CommonRepository._supervisorRepository.GetAllSupervisorsForActivities(id);
+            return View(model);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw;
+        }
     }
 
     [HttpGet]

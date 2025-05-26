@@ -1,4 +1,4 @@
-@model List<MvcSomeren.Models.Activity>
+@model MvcSomeren.Models.ManageActivityViewModel
 
 @{
     ViewData["Title"] = "Activities Page";
@@ -7,7 +7,6 @@
 <div class="text-center">
     <h1 class="display-4">Activities</h1>
     <a href="/Activities/Create" class="button-create" role="button"><span class="text">Create new Activity</span><span>Have Activity bro, bruh</span></a>
-    <p>Number of activities in the list: @Model.Count</p>
     <form method="get" action="@Url.Action("Filter")">
         <div class="form-group py-2">
             <label for="ActivityName">Activity Name:</label>
@@ -15,9 +14,22 @@
         </div>
         <button type="submit" class="btn btn-primary">Filter</button>
     </form>
-    <table class="table table-hover">
+</div>
+
+<div class="text-center pb-5">
+    <h1 class="display-4 py-lg-5 m-2">Supervisors Management</h1>
+    <hr class="m-xxl-5">
+    <h1 class="display-5 my-4 p-2">Supervisors</h1>
+    <a href="/LecturerSupervisor/Create" class="button-create m-2" role="button">
+        <span class="text">Create Supervisor</span>
+    </a>
+    <table class="table table-hover my-4">
         <thead>
         <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Age</th>
             <th>Activity Name</th>
             <th>Date</th>
             <th>Time</th>
@@ -25,20 +37,17 @@
         </tr>
         </thead>
         <tbody>
-        @{
-            foreach (var activity in Model)
-            {
-                <tr>
-                    <td>@activity.ActivityName</td>
-                    <td>@activity.Date</td>
-                    <td>@activity.Time</td>
-                    <td>
-                        <a href="/Activities/Edit/@activity.ActivityId" class="button-edit">Edit</a>
-                        <a href="/Activities/Delete/@activity.ActivityId" class="button-delete">Delete</a>
-                        <a href="/Activities/Manage/@activity.ActivityId" class="button-delete">Delete</a>
-                    </td>
-                </tr>
-            }
+        @foreach (var item in Model.Supervisors)
+        {
+            <tr>
+                <td>@item.Lecturer.FirstName</td>
+                <td>@item.Lecturer.LastName</td>
+                <td>@item.Lecturer.PhoneNumber</td>
+                <td>@item.Lecturer.Age</td>
+                <td>@item.ActivityId</td>
+                <td>@item.SupervisingDate</td>
+                <td></td>
+            </tr>
         }
         </tbody>
     </table>
