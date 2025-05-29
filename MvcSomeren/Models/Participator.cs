@@ -6,8 +6,6 @@
         public int ParticipateDate { get; set; }
         public int StudentId { get; set; }
         public int ActivityId { get; set; }
-
-        public Student student { get; set; }
         public Participator()
         {
             ParticipatorId = 0;

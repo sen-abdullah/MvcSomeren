@@ -132,30 +132,6 @@ namespace MvcSomeren.Repositories
                 }
             }
         }
-
-        public void Add(Participator participator)
-        {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                string query = "INSERT INTO Participator (ParticipateDate, StudentId, ActivityId) VALUES (@ParticipateDate, @StudentId, @ActivityId)";
-                SqlCommand command = new SqlCommand(query, connection);
-
-                command.Parameters.AddWithValue("@ParticipateDate", participator.ParticipateDate);
-                command.Parameters.AddWithValue("@StudentId", participator.StudentId);
-                command.Parameters.AddWithValue("@ActivityId", participator.ActivityId);
-
-                connection.Open();
-                command.ExecuteNonQuery();
-            }
-        }
-
-
-
-
-
-
-
-
         public ManageParticipantViewModel GetParticipatorByID(int participatorId)
         {
             List<Student> students = new List<Student>();

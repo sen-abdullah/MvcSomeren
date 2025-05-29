@@ -17,6 +17,4 @@ public interface ILecturerSupervisorRepository
     Models.Activity GetActivityById(int id);
 
     Lecturer? GetLecturerById(int id);
-
-
 }

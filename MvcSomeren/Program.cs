@@ -41,9 +41,6 @@ public class Program
         builder.Services.AddSingleton<IManageParticipantsRepository>(_manage_participants_rep);
         CommonRepository._manageParticipantsRepository = _manage_participants_rep;
 
-        var _participant_rep = new DbParticipantRepository(builder.Configuration);
-        builder.Services.AddSingleton<IParticipantRepository>(_participant_rep);
-        CommonRepository._participantRepository = _participant_rep;
 
         var app = builder.Build();
 
