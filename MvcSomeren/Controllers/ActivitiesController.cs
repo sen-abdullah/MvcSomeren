@@ -34,6 +34,63 @@ public class ActivitiesController : Controller
         }
     }
 
+    public IActionResult AssignParticipant(int id)
+    {
+        try
+        {
+            ManageActivityViewModel model = new ManageActivityViewModel();
+            model.ActivityID = id;
+            model.Participators = CommonRepository._participantRepository.GetAllParticipantsForActivities(id);
+            return View(model);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw;
+        }
+    }
+
+    [HttpGet]
+    public IActionResult AssignStudents(int id)
+    {
+        try
+        {
+            ViewBag.Activity = _activityRepository.GetById(id);
+            ViewBag.Students = CommonRepository._studentRapository.GetAll();
+            ViewBag.ActivityId = id;
+            return View();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw;
+        }
+    }
+
+    [HttpPost]
+    public IActionResult AssignStudents(int activityId, int studentId)
+    {
+        try
+        {
+            var participator = new Participator
+            {
+                ActivityId = activityId,
+                StudentId = studentId,
+                ParticipateDate = DateTime.Now.Year * 10000 + DateTime.Now.Month * 100 + DateTime.Now.Day
+            };
+
+            CommonRepository._manageParticipantsRepository.Add(participator);
+            
+            return RedirectToAction("Index", "ManageParticipants");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return RedirectToAction("AssignStudents", new { id = activityId });
+        }
+    }
+
+
     [HttpGet]
     public ActionResult Create()
     {

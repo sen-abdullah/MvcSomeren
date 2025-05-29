@@ -14,7 +14,6 @@
             Date = "";
             Time = "";
         }
-
         public Activity(int activityId, string activityName, string date, string time)
         {
             ActivityId = activityId;
