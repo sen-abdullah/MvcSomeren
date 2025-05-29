@@ -51,7 +51,7 @@ namespace MvcSomeren.Repositories
                     int studentId = (int)reader["StudentId"];
                     int activityId = (int)reader["ActivityId"];
 
-                    Participator participator = new Participator(participatorId,  studentId, activityId, participateDate);
+                    Participator participator = new Participator(participatorId, studentId, activityId, participateDate);
                     participators.Add(participator);
 
                 }
@@ -132,6 +132,30 @@ namespace MvcSomeren.Repositories
                 }
             }
         }
+
+        public void Add(Participator participator)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                string query = "INSERT INTO Participator (ParticipateDate, StudentId, ActivityId) VALUES (@ParticipateDate, @StudentId, @ActivityId)";
+                SqlCommand command = new SqlCommand(query, connection);
+
+                command.Parameters.AddWithValue("@ParticipateDate", participator.ParticipateDate);
+                command.Parameters.AddWithValue("@StudentId", participator.StudentId);
+                command.Parameters.AddWithValue("@ActivityId", participator.ActivityId);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+
+
+
+
+
+
+
         public ManageParticipantViewModel GetParticipatorByID(int participatorId)
         {
             List<Student> students = new List<Student>();
@@ -212,7 +236,7 @@ namespace MvcSomeren.Repositories
             {
                 string query = "SELECT ActivityId, ActivityName, Date, Time FROM Activity WHERE ActivityId = @ActivityId;";
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@ActivityId", id); 
+                command.Parameters.AddWithValue("@ActivityId", id);
 
                 command.Connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
@@ -256,7 +280,7 @@ namespace MvcSomeren.Repositories
             List<Models.Activity> activities = new List<Models.Activity>();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
-            {        
+            {
                 string query = "SELECT ActivityId, ActivityName, Date, Time FROM Activity ORDER BY ActivityId";
 
                 SqlCommand command = new SqlCommand(query, connection);
