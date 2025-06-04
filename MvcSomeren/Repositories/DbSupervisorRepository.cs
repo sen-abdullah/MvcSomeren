@@ -37,7 +37,6 @@ public class DbSupervisorRepository : ISupervisorRepository
         return supervisors;
     }
     
-    
     public List<Supervisor> GetAllSupervisorsForActivities(int activityId)
     {
         List<Supervisor> supervisors = new List<Supervisor>();
@@ -64,6 +63,7 @@ public class DbSupervisorRepository : ISupervisorRepository
         return supervisors;
     }
     
+    /*
     public List<Supervisor> GetAllSupervisorsWithoutActivities(int activityId)
     {
         List<Supervisor> supervisors = new List<Supervisor>();
@@ -71,6 +71,11 @@ public class DbSupervisorRepository : ISupervisorRepository
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             string query = "SELECT SupervisorId, SupervisingDate, LecturerId, ActivityId From Supervisor WHERE LecturerId NOT IN (SELECT LecturerId FROM Supervisor WHERE ActivityId = @ActivityId)";
+            //string query = "SELECT LecturerId, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge, RoomId FROM Lecturer WHERE LecturerId NOT IN (SELECT LecturerId FROM Supervisor WHERE ActivityId = @ActivityId)";
+
+            //string query =
+                //"SELECT s.SupervisorId, s.SupervisingDate, s.LecturerId, s.ActivityId FROM Supervisor s WHERE NOT EXISTS (SELECT 1 FROM Supervisor s2  WHERE s2.ActivityId = @ActivityId AND s2.LecturerId = s.LecturerId)";
+            
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@ActivityId", activityId);
 
@@ -88,6 +93,36 @@ public class DbSupervisorRepository : ISupervisorRepository
             reader.Close();
         }
         return supervisors;
+    }
+    */
+    
+    public List<Lecturer> GetAllLecturersNotSupervisingActivity(int activityId)
+    {
+        List<Lecturer> lecturers = new List<Lecturer>();
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query = @"SELECT LecturerId, LecturerFirstName, LecturerLastName, 
+                                LecturerPhoneNumber, LecturerAge, RoomId 
+                         FROM Lecturer 
+                         WHERE LecturerId NOT IN (
+                             SELECT LecturerId FROM Supervisor WHERE ActivityId = @ActivityId
+                         )";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@ActivityId", activityId);
+
+            connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Lecturer lecturer = ReadLecturer(reader); // Make sure you implement this
+                lecturers.Add(lecturer);
+            }
+        }
+
+        return lecturers;
     }
     public Supervisor? GetById(int id)
     {
@@ -149,6 +184,17 @@ public class DbSupervisorRepository : ISupervisorRepository
     private Supervisor ReadSupervisor(SqlDataReader reader)
     {
         return new Supervisor((int)reader["SupervisorId"], (int)reader["SupervisingDate"], (int)reader["LecturerId"], (int)reader["ActivityId"]);
+    }
+    private Lecturer ReadLecturer(SqlDataReader reader)
+    {
+        int id = (int)reader["LecturerId"];
+        string firstName = (string)reader["LecturerFirstName"];
+        string lastName = (string)reader["LecturerLastName"];
+        string phoneNumber = (string)reader["LecturerPhoneNumber"];
+        int age = (int)reader["LecturerAge"];
+        int roomId = (int)reader["RoomId"];
+
+        return new Lecturer(id, firstName, lastName, phoneNumber, age, roomId);
     }
     private void FillInSupervisor(Supervisor supervisor)
     {

@@ -156,7 +156,7 @@ namespace MvcSomeren.Repositories
                 while (reader.Read())
                 {
                     activity = ReadActivity(reader);
-                    FillInSupervisor(activity.Supervisor);
+                    //FillInSupervisor(activity.Supervisor);
                 }
 
                 reader.Close();
@@ -165,9 +165,9 @@ namespace MvcSomeren.Repositories
             return activity;
         }
         
-        private void FillInSupervisor(Supervisor supervisor)
-        {
-            supervisor.Lecturer = CommonRepository._lecturersRepository.GetById(supervisor.LecturerId);
-        }
+        //private void FillInSupervisor(Supervisor supervisor)
+        //{
+           // supervisor.Lecturer = CommonRepository._lecturersRepository.GetById(supervisor.LecturerId);
+        //}
     }
 }

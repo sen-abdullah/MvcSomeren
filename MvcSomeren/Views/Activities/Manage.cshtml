@@ -34,7 +34,15 @@
                 <td>@item.Lecturer.Age</td>
                 <td>@item.SupervisingDate</td>
                 <td>
-                    <a href="/LecturerSupervisor/Delete/@item.SupervisorId" class="button-delete">Delete</a>
+                    <form method="post" asp-action="DeleteSupervisor" asp-controller="Activities">
+                        @Html.AntiForgeryToken()
+                        @*<input type="hidden" name="name" value="@activities.Name"/>
+                        <input type="hidden" name="lecturerNumber" value="@lecturers.LecturerNumber" />*@
+                        <input type="hidden" name="supervisorId" value="@item.SupervisorId"/>
+                        <input type="hidden" name="activityId" value="@item.ActivityId"/>
+                        
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </form>
                 </td>
             </tr>
         }
@@ -56,6 +64,7 @@
         </tr>
         </thead>
         <tbody>
+        @*
         @foreach (var item in Model.NonSupervisor)
         {
             <tr>
@@ -65,9 +74,18 @@
                 <td>@item.Lecturer.Age</td>
                 <td>@item.SupervisingDate</td>
                 <td>
-                    <a href="/LecturerSupervisor/Delete/@item.SupervisorId" class="button-delete">Delete</a>
                     <a href="/LecturerSupervisor/Create/@item.SupervisorId" class="button-edit">Add</a>
                 </td>
+            </tr>
+        }
+        *@
+        @foreach (var item in Model.Lecturers)
+        {
+            <tr>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.PhoneNumber</td>
+                <td>@item.Age</td>
             </tr>
         }
         </tbody>

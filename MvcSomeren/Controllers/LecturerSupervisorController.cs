@@ -48,7 +48,8 @@ public class LecturerSupervisorController : Controller
         }
     }
     
-    [HttpGet]
+    /*
+     [HttpGet]
     public IActionResult Delete(int? id)
     {
         if (id == null)
@@ -73,6 +74,7 @@ public class LecturerSupervisorController : Controller
             return View(_lecturerSupervisorRepository.GetSupervisorById(id));
         }
     }
+    */
     [HttpGet]
     public IActionResult Edit(int? id)
     {

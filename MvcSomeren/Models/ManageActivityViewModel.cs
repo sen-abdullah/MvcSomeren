@@ -6,6 +6,7 @@ public class ManageActivityViewModel
     public Activity Activity { get; set; }
     
     public List<Supervisor> Supervisors { get; set; }
-    public List<Supervisor> NonSupervisor { get; set; }
+    //public List<Supervisor> NonSupervisor { get; set; }
+    public List<Lecturer> Lecturers { get; set; }
     public List<Participator> Participators { get; set; }
 }

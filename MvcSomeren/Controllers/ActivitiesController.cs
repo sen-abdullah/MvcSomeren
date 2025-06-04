@@ -30,7 +30,8 @@ public class ActivitiesController : Controller
             model.Activity = activity;
             
             model.Supervisors = CommonRepository._supervisorRepository.GetAllSupervisorsForActivities(id);
-            model.NonSupervisor = CommonRepository._supervisorRepository.GetAllSupervisorsWithoutActivities(id);
+            model.Lecturers = CommonRepository._supervisorRepository.GetAllLecturersNotSupervisingActivity(id);
+            //model.NonSupervisor = CommonRepository._supervisorRepository.GetAllSupervisorsWithoutActivities(id);
             return View(model);
         }
         catch (Exception e)
@@ -40,6 +41,36 @@ public class ActivitiesController : Controller
         }
     }
     
+    /*
+    [HttpGet]
+    public IActionResult DeleteSupervisor(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        LecturerSupervisorViewModel? lecturerSupervisorViewModel = CommonRepository._lecturerSupervisorRepository.GetSupervisorById((int)id);
+        return View(lecturerSupervisorViewModel);
+    }
+    */
+
+    [HttpPost]
+    public IActionResult DeleteSupervisor(int supervisorId, int activityId)
+    {
+        try
+        {
+            CommonRepository._lecturerSupervisorRepository.Delete(supervisorId, activityId);
+            return RedirectToAction("Manage" ,new {id = activityId});
+        }
+        catch (Exception e)
+        {
+            //ViewBag.ErrorMessage = "Could Not Add Supervisors"; 
+            return View(e.Message);	
+        }
+    }
+    
+    /*
     [HttpPost]
     public ActionResult AssignSupervisor(Supervisor supervisor)
     {
@@ -57,6 +88,7 @@ public class ActivitiesController : Controller
             return View(supervisor);
         }
     }
+    */
 
     [HttpGet]
     public ActionResult Create()

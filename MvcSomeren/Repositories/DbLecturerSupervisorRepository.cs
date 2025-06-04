@@ -83,14 +83,15 @@ public class DbLecturerSupervisorRepository : ILecturerSupervisorRepository
         }
     }
 
-    public void Delete(int supervisorId)
+    public void Delete(int supervisorId, int activityId)
     {
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
-            var query = $"DELETE FROM Supervisor WHERE SupervisorId = @Id;";
+            var query = $"DELETE FROM Supervisor WHERE SupervisorId = @Id AND ActivityId = @ActivityId;";
 
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@Id", supervisorId);
+            command.Parameters.AddWithValue("@ActivityId", activityId);
 
             try
             {
