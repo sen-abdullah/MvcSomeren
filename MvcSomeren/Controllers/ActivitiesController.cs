@@ -7,6 +7,7 @@ namespace MvcSomeren.Controllers;
 public class ActivitiesController : Controller
 {
     private readonly IActivitiesRepository _activityRepository;
+    private readonly ISupervisorRepository _supervisorRepository;
 
     public ActivitiesController(IActivitiesRepository activityRepository)
     {
@@ -24,13 +25,36 @@ public class ActivitiesController : Controller
         {
             ManageActivityViewModel model = new ManageActivityViewModel();
             model.ActivityID = id;
+            
+            Activity activity = _activityRepository.GetById(id);
+            model.Activity = activity;
+            
             model.Supervisors = CommonRepository._supervisorRepository.GetAllSupervisorsForActivities(id);
+            model.NonSupervisor = CommonRepository._supervisorRepository.GetAllSupervisorsWithoutActivities(id);
             return View(model);
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
             throw;
+        }
+    }
+    
+    [HttpPost]
+    public ActionResult AssignSupervisor(Supervisor supervisor)
+    {
+        try
+        {
+            _supervisorRepository.AddSupervisor(supervisor, supervisor.ActivityId);
+            return RedirectToAction("Manage", new { id = supervisor.ActivityId });
+            
+            //Activity activity = _activityRepository.GetById(activityID);
+            //model.Activity = activity;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return View(supervisor);
         }
     }
 
