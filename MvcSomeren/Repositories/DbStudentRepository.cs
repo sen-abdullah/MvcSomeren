@@ -37,7 +37,40 @@ public class DbStudentRepository : IStudentRapository
 
         return students;
     }
-    
+
+    public List<Student> GetStudentsNotInActivity(int activityId)
+    {
+        List<Student> students = new List<Student>();
+
+        string query = @"
+        SELECT s.StudentId, s.StudentFirstName, s.StudentLastName
+        FROM Student s
+        WHERE s.StudentId NOT IN (
+            SELECT StudentId FROM Participator WHERE ActivityId = @ActivityId
+        )";
+
+        using (SqlConnection conn = new SqlConnection(_connectionString))
+        using (SqlCommand cmd = new SqlCommand(query, conn))
+        {
+            cmd.Parameters.AddWithValue("@ActivityId", activityId);
+            conn.Open();
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    students.Add(new Student
+                    {
+                        StudentId = (int)reader["StudentId"],
+                        StudentFirstName = (string)reader["StudentFirstName"],
+                        StudentLastName = (string)reader["StudentLastName"]
+                    });
+                }
+            }
+        }
+
+        return students;
+    }
+
     // Checked!!
     public Student? GetById(int id)
     {
