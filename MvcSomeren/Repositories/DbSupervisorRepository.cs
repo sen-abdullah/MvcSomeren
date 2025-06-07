@@ -43,7 +43,7 @@ public class DbSupervisorRepository : ISupervisorRepository
 
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
-            string query = "SELECT SupervisorId, SupervisingDate, LecturerId, ActivityId From Supervisor WHERE ActivityId = @ActivityId";
+            string query = "SELECT SupervisorId, SupervisingDate, LecturerId, ActivityId From Supervisor WHERE ActivityId = @ActivityId ORDER BY SupervisingDate ASC";
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@ActivityId", activityId);
 
@@ -74,7 +74,7 @@ public class DbSupervisorRepository : ISupervisorRepository
                          FROM Lecturer 
                          WHERE LecturerId NOT IN (
                              SELECT LecturerId FROM Supervisor WHERE ActivityId = @ActivityId
-                         )";
+                         ) ORDER BY LecturerLastName ASC";
 
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@ActivityId", activityId);

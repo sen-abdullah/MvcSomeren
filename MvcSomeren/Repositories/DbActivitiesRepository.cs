@@ -19,7 +19,7 @@ namespace MvcSomeren.Repositories
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                string query = "SELECT ActivityId, ActivityName, Date, Time FROM Activity ORDER BY ActivityId";
+                string query = "SELECT ActivityId, ActivityName, Date, Time FROM Activity ORDER BY ActivityName";
                 SqlCommand command = new SqlCommand(query, connection);
 
                 command.Connection.Open();

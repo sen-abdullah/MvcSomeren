@@ -44,7 +44,7 @@ public class DbParticipantRepository : IParticipantsRepository
 
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
-            string query = "SELECT ParticipatorId, ParticipateDate, StudentId, ActivityId From Participator WHERE ActivityId = @ActivityId";
+            string query = "SELECT ParticipatorId, ParticipateDate, StudentId, ActivityId From Participator WHERE ActivityId = @ActivityId ORDER BY ParticipateDate ASC";
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@ActivityId", activityId);
 
@@ -73,7 +73,7 @@ public class DbParticipantRepository : IParticipantsRepository
             string query = @"SELECT StudentId, StudentNumber, StudentFirstName, StudentLastName, StudentPhoneNumber, StudentClass, StudentRoomId FROM Student 
                          WHERE StudentId NOT IN (
                              SELECT StudentId FROM Participator WHERE ActivityId = @ActivityId
-                         )";
+                         ) ORDER BY StudentLastName ASC";
 
             SqlCommand command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@ActivityId", activityId);
