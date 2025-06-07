@@ -60,19 +60,20 @@ public class LecturerSupervisorController : Controller
         return View(lecturerSupervisorViewModel);
     }
 
-    [HttpPost]
-    public IActionResult DeleteSupervisor(int id)
-    {
-        try
-        {
-            _lecturerSupervisorRepository.Delete(id);
-            return RedirectToAction(nameof(Index));
-        }
-        catch (Exception e)
-        {
-            return View(_lecturerSupervisorRepository.GetSupervisorById(id));
-        }
-    }
+    //[HttpPost]
+    //public IActionResult DeleteSupervisor(int id)
+    //{
+    //    try
+    //    {
+    //        _lecturerSupervisorRepository.Delete(id);
+    //        return RedirectToAction(nameof(Index));
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        return View(_lecturerSupervisorRepository.GetSupervisorById(id));
+    //    }
+    //}
+
     [HttpGet]
     public IActionResult Edit(int? id)
     {

@@ -62,6 +62,36 @@ namespace MvcSomeren.Repositories
             return new ManageParticipantViewModel(students, activities, null, GetStudents(), GetActivities(), participators);
         }
 
+        public void DeleteParticipant(int participantId, int activityId)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var query = $"DELETE FROM Participator WHERE ParticipatorId = @ParticipatorId AND ActivityId = @ActivityId;";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@ParticipatorId", participantId);
+                command.Parameters.AddWithValue("@ActivityId", activityId);
+
+                try
+                {
+                    connection.Open();
+                    var numberOfRowsAffected = command.ExecuteNonQuery();
+
+                    if (numberOfRowsAffected != 1)
+                    {
+                        throw new Exception($"Delete failed. Rows affected: {numberOfRowsAffected}. ParticipatorId: {participantId}.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error deleting Participant: " + ex.Message, ex);
+                }
+            }
+        }
+
+
+
+
         public ManageParticipantViewModel GetStudentsAndActivities()
         {
             return new ManageParticipantViewModel(new List<Student>(), new List<Models.Activity>(), null, GetStudents(), GetActivities(), new List<Participator>());
