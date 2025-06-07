@@ -7,10 +7,14 @@ namespace MvcSomeren.Controllers;
 public class ActivitiesController : Controller
 {
     private readonly IActivitiesRepository _activityRepository;
+    private readonly ISupervisorRepository _supervisorRepository;
+    private readonly ILecturersRepository _lecturersRepository;
 
-    public ActivitiesController(IActivitiesRepository activityRepository)
+    public ActivitiesController(IActivitiesRepository activityRepository, ISupervisorRepository supervisorRepository, ILecturersRepository lecturersRepository)
     {
         _activityRepository = activityRepository;
+        _supervisorRepository = supervisorRepository;
+        _lecturersRepository = lecturersRepository;
     }
 
     public IActionResult Index()
@@ -18,19 +22,69 @@ public class ActivitiesController : Controller
         List<Activity> activities = _activityRepository.GetAll();
         return View(activities);
     }
-    public IActionResult Manage(int id)
+    public IActionResult ManageSupervisors(int id)
     {
         try
         {
             ManageActivityViewModel model = new ManageActivityViewModel();
             model.ActivityID = id;
-            model.Supervisors = CommonRepository._supervisorRepository.GetAllSupervisorsForActivities(id);
+            
+            Activity activity = _activityRepository.GetById(id);
+            model.Activity = activity;
+            
+            model.Supervisors = _supervisorRepository.GetAllSupervisorsForActivities(id);
+            model.Lecturers = _supervisorRepository.GetAllLecturersNotSupervisingActivity(id);
             return View(model);
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
             throw;
+        }
+    }
+
+    [HttpPost]
+    public IActionResult DeleteSupervisor(int supervisorId, int activityId)
+    {
+        try
+        {
+            var supervisor = _supervisorRepository.GetById(supervisorId);
+            var lecturer = _lecturersRepository.GetById(supervisor.LecturerId);
+            
+            _supervisorRepository.DeleteSupervisor(supervisorId, activityId);
+            TempData["Success"] = $"Successfully removed supervisor: {lecturer.FirstName} {lecturer.LastName}.";
+            return RedirectToAction("ManageSupervisors" ,new {id = activityId});
+        }
+        catch (Exception e)
+        {
+            return View(e.Message);	
+        }
+    }
+    
+    [HttpPost]
+    public IActionResult AddSupervisor(int lecturerId, int activityId)
+    {
+        try
+        {
+            int supervisingDate = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
+
+            var supervisor = new Supervisor
+            {
+                LecturerId = lecturerId,
+                ActivityId = activityId,
+                SupervisingDate = supervisingDate
+            };
+
+            _supervisorRepository.AddSupervisor(supervisor, activityId);
+            var lecturer = _lecturersRepository.GetById(supervisor.LecturerId);
+            
+            TempData["Success"] = $"Successfully added supervisor! {lecturer.FirstName} {lecturer?.LastName}, Supervising Date: {supervisor.SupervisingDate}.";
+            return RedirectToAction("ManageSupervisors", new { id = activityId });
+        }
+        catch (Exception e)
+        {
+            TempData["Error"] = "Could not add supervisor: " + e.Message;
+            return RedirectToAction("ManageSupervisors", new { id = activityId });
         }
     }
 

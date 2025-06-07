@@ -1,0 +1,94 @@
+@model MvcSomeren.Models.ManageActivityViewModel
+
+<div class="text-center pb-5">
+    <h1 class="display-6 py-lg-4">Activity name: @Model.Activity.ActivityName</h1>
+</div>
+
+<div class="container pb-5 d-flex justify-content-center mb-4">
+    <a href="/Activities/Index" class="button-delete">Back to Activities</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success text-center">
+        @TempData["Success"]
+    </div>
+}
+
+<div class="text-center pb-5">
+    <hr class="m-xxl-5">
+    <h3 class="display-5 my-4 p-2">Supervisors</h3>
+    <table class="table table-hover my-4">
+        <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Age</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Supervisors)
+        {
+            <tr>
+                <td>@item.Lecturer.FirstName</td>
+                <td>@item.Lecturer.LastName</td>
+                <td>@item.Lecturer.PhoneNumber</td>
+                <td>@item.Lecturer.Age</td>
+                <td>@item.SupervisingDate</td>
+                <td>
+                    <form method="post" asp-action="DeleteSupervisor" asp-controller="Activities">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="supervisorId" value="@item.SupervisorId"/>
+                        <input type="hidden" name="activityId" value="@item.ActivityId"/>
+                        
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<div class="text-center pb-5">
+    <hr class="m-xxl-5">
+    <h3 class="display-5 my-4 p-2">Non Supervisors</h3>
+    <table class="table table-hover my-4">
+        <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Age</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Lecturers)
+        {
+            <tr>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.PhoneNumber</td>
+                <td>@item.Age</td>
+                <td>
+                    <form method="post" asp-action="AddSupervisor" asp-controller="Activities">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="LecturerId" value="@item.Id" />
+                        <input type="hidden" name="ActivityId" value="@Model.ActivityID" />
+                        <button type="submit" class="btn btn-success">Add</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
