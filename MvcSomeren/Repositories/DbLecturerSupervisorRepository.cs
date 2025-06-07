@@ -13,8 +13,7 @@ public class DbLecturerSupervisorRepository : ILecturerSupervisorRepository
         _connectionString = configuration.GetConnectionString(ConnectionStringKey);
     }
 
-
-    //It fetches all the orders
+    
     public LecturerSupervisorViewModel GetAll()
     {
         List<Lecturer> lecturers = new List<Lecturer>();
@@ -60,30 +59,9 @@ public class DbLecturerSupervisorRepository : ILecturerSupervisorRepository
     {
         return new LecturerSupervisorViewModel(new List<Lecturer>(), new List<Activity>(), null, GetLecturers(), GetActivities(), new List<Supervisor>());
     }
+    /*
 
-    public void AddSupervisor(LecturerSupervisorViewModel lecturerSupervisorViewModel)
-    {
-        using (SqlConnection connection = new SqlConnection(_connectionString))
-        {
-            var query =
-                $"INSERT INTO Supervisor (SupervisingDate, LecturerId, ActivityId) VALUES (@SupervisingDate, @LecturerId, @ActivityId); SELECT SCOPE_IDENTITY();";
-
-            SqlCommand command = new SqlCommand(query, connection);
-            if (lecturerSupervisorViewModel.Supervisor != null)
-            {
-                command.Parameters.AddWithValue("@SupervisingDate",
-                    lecturerSupervisorViewModel.Supervisor.SupervisingDate);
-                command.Parameters.AddWithValue("@LecturerId", lecturerSupervisorViewModel.Supervisor.LecturerId);
-                command.Parameters.AddWithValue("@ActivityId", lecturerSupervisorViewModel.Supervisor.ActivityId);
-            }
-
-            command.Connection.Open();
-            var numberOfRowsAffected = command.ExecuteNonQuery();
-            if (numberOfRowsAffected != 1) throw new Exception("Adding a new order failed.");
-        }
-    }
-
-    public void Delete(int supervisorId, int activityId)
+    public void DeleteSupervisor(int supervisorId, int activityId)
     {
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
@@ -109,6 +87,38 @@ public class DbLecturerSupervisorRepository : ILecturerSupervisorRepository
             }
         }
     }
+    */
+    
+    /*
+    public void AddSupervisor(Supervisor supervisor, int activityId)
+    {
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var query =
+                    $"INSERT INTO Supervisor (SupervisingDate, LecturerId, ActivityId) " +
+                    $"VALUES (@SupervisingDate, @LecturerId, @ActivityId); " +
+                    "SELECT CAST(SCOPE_IDENTITY() as int);";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                
+                command.Parameters.AddWithValue("@SupervisingDate",supervisor.SupervisingDate);
+                command.Parameters.AddWithValue("@LecturerId", supervisor.LecturerId);
+                command.Parameters.AddWithValue("@ActivityId", activityId);
+
+                command.Connection.Open();
+                var numberOfRowsAffected = command.ExecuteNonQuery();
+                if (numberOfRowsAffected != 1) throw new Exception("Adding a new Student failed.");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    */
     
     public void UpdateSupervisor(LecturerSupervisorViewModel lecturerSupervisorViewModel)
     {

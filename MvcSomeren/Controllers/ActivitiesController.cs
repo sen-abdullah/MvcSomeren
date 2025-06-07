@@ -8,10 +8,13 @@ public class ActivitiesController : Controller
 {
     private readonly IActivitiesRepository _activityRepository;
     private readonly ISupervisorRepository _supervisorRepository;
+    private readonly ILecturersRepository _lecturersRepository;
 
-    public ActivitiesController(IActivitiesRepository activityRepository)
+    public ActivitiesController(IActivitiesRepository activityRepository, ISupervisorRepository supervisorRepository, ILecturersRepository lecturersRepository)
     {
         _activityRepository = activityRepository;
+        _supervisorRepository = supervisorRepository;
+        _lecturersRepository = lecturersRepository;
     }
 
     public IActionResult Index()
@@ -19,7 +22,7 @@ public class ActivitiesController : Controller
         List<Activity> activities = _activityRepository.GetAll();
         return View(activities);
     }
-    public IActionResult Manage(int id)
+    public IActionResult ManageSupervisors(int id)
     {
         try
         {
@@ -29,9 +32,8 @@ public class ActivitiesController : Controller
             Activity activity = _activityRepository.GetById(id);
             model.Activity = activity;
             
-            model.Supervisors = CommonRepository._supervisorRepository.GetAllSupervisorsForActivities(id);
-            model.Lecturers = CommonRepository._supervisorRepository.GetAllLecturersNotSupervisingActivity(id);
-            //model.NonSupervisor = CommonRepository._supervisorRepository.GetAllSupervisorsWithoutActivities(id);
+            model.Supervisors = _supervisorRepository.GetAllSupervisorsForActivities(id);
+            model.Lecturers = _supervisorRepository.GetAllLecturersNotSupervisingActivity(id);
             return View(model);
         }
         catch (Exception e)
@@ -40,55 +42,51 @@ public class ActivitiesController : Controller
             throw;
         }
     }
-    
-    /*
-    [HttpGet]
-    public IActionResult DeleteSupervisor(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        LecturerSupervisorViewModel? lecturerSupervisorViewModel = CommonRepository._lecturerSupervisorRepository.GetSupervisorById((int)id);
-        return View(lecturerSupervisorViewModel);
-    }
-    */
 
     [HttpPost]
     public IActionResult DeleteSupervisor(int supervisorId, int activityId)
     {
         try
         {
-            CommonRepository._lecturerSupervisorRepository.Delete(supervisorId, activityId);
-            return RedirectToAction("Manage" ,new {id = activityId});
+            var supervisor = _supervisorRepository.GetById(supervisorId);
+            var lecturer = _lecturersRepository.GetById(supervisor.LecturerId);
+            
+            _supervisorRepository.DeleteSupervisor(supervisorId, activityId);
+            TempData["Success"] = $"Successfully removed supervisor: {lecturer.FirstName} {lecturer.LastName}.";
+            return RedirectToAction("ManageSupervisors" ,new {id = activityId});
         }
         catch (Exception e)
         {
-            //ViewBag.ErrorMessage = "Could Not Add Supervisors"; 
             return View(e.Message);	
         }
     }
     
-    /*
     [HttpPost]
-    public ActionResult AssignSupervisor(Supervisor supervisor)
+    public IActionResult AddSupervisor(int lecturerId, int activityId)
     {
         try
         {
-            _supervisorRepository.AddSupervisor(supervisor, supervisor.ActivityId);
-            return RedirectToAction("Manage", new { id = supervisor.ActivityId });
+            int supervisingDate = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
+
+            var supervisor = new Supervisor
+            {
+                LecturerId = lecturerId,
+                ActivityId = activityId,
+                SupervisingDate = supervisingDate
+            };
+
+            _supervisorRepository.AddSupervisor(supervisor, activityId);
+            var lecturer = _lecturersRepository.GetById(supervisor.LecturerId);
             
-            //Activity activity = _activityRepository.GetById(activityID);
-            //model.Activity = activity;
+            TempData["Success"] = $"Successfully added supervisor! {lecturer.FirstName} {lecturer?.LastName}, Supervising Date: {supervisor.SupervisingDate}.";
+            return RedirectToAction("ManageSupervisors", new { id = activityId });
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Console.WriteLine(ex.Message);
-            return View(supervisor);
+            TempData["Error"] = "Could not add supervisor: " + e.Message;
+            return RedirectToAction("ManageSupervisors", new { id = activityId });
         }
     }
-    */
 
     [HttpGet]
     public ActionResult Create()

@@ -63,39 +63,6 @@ public class DbSupervisorRepository : ISupervisorRepository
         return supervisors;
     }
     
-    /*
-    public List<Supervisor> GetAllSupervisorsWithoutActivities(int activityId)
-    {
-        List<Supervisor> supervisors = new List<Supervisor>();
-
-        using (SqlConnection connection = new SqlConnection(_connectionString))
-        {
-            string query = "SELECT SupervisorId, SupervisingDate, LecturerId, ActivityId From Supervisor WHERE LecturerId NOT IN (SELECT LecturerId FROM Supervisor WHERE ActivityId = @ActivityId)";
-            //string query = "SELECT LecturerId, LecturerFirstName, LecturerLastName, LecturerPhoneNumber, LecturerAge, RoomId FROM Lecturer WHERE LecturerId NOT IN (SELECT LecturerId FROM Supervisor WHERE ActivityId = @ActivityId)";
-
-            //string query =
-                //"SELECT s.SupervisorId, s.SupervisingDate, s.LecturerId, s.ActivityId FROM Supervisor s WHERE NOT EXISTS (SELECT 1 FROM Supervisor s2  WHERE s2.ActivityId = @ActivityId AND s2.LecturerId = s.LecturerId)";
-            
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@ActivityId", activityId);
-
-            command.Connection.Open();
-            SqlDataReader reader = command.ExecuteReader();
-
-            Supervisor supervisor;
-
-            while (reader.Read())
-            {
-                supervisor = ReadSupervisor(reader);
-                FillInSupervisor(supervisor);
-                supervisors.Add(supervisor);
-            }
-            reader.Close();
-        }
-        return supervisors;
-    }
-    */
-    
     public List<Lecturer> GetAllLecturersNotSupervisingActivity(int activityId)
     {
         List<Lecturer> lecturers = new List<Lecturer>();
@@ -117,13 +84,70 @@ public class DbSupervisorRepository : ISupervisorRepository
 
             while (reader.Read())
             {
-                Lecturer lecturer = ReadLecturer(reader); // Make sure you implement this
+                Lecturer lecturer = ReadLecturer(reader);
                 lecturers.Add(lecturer);
             }
         }
 
         return lecturers;
     }
+    
+    public void DeleteSupervisor(int supervisorId, int activityId)
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            var query = $"DELETE FROM Supervisor WHERE SupervisorId = @Id AND ActivityId = @ActivityId;";
+
+            SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@Id", supervisorId);
+            command.Parameters.AddWithValue("@ActivityId", activityId);
+
+            try
+            {
+                connection.Open();
+                var numberOfRowsAffected = command.ExecuteNonQuery();
+
+                if (numberOfRowsAffected != 1)
+                {
+                    throw new Exception($"Delete failed. Rows affected: {numberOfRowsAffected}. SupervisorId: {supervisorId}.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error deleting Supervisor: " + ex.Message, ex);
+            }
+        }
+    }
+    
+    public void AddSupervisor(Supervisor supervisor, int activityId)
+    {
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var query =
+                    $"INSERT INTO Supervisor (SupervisingDate, LecturerId, ActivityId) " +
+                    $"VALUES (@SupervisingDate, @LecturerId, @ActivityId); " +
+                    "SELECT CAST(SCOPE_IDENTITY() as int);";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                
+                command.Parameters.AddWithValue("@SupervisingDate",supervisor.SupervisingDate);
+                command.Parameters.AddWithValue("@LecturerId", supervisor.LecturerId);
+                command.Parameters.AddWithValue("@ActivityId", activityId);
+
+                command.Connection.Open();
+                var numberOfRowsAffected = command.ExecuteNonQuery();
+                if (numberOfRowsAffected != 1) throw new Exception("Adding a new Student failed.");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
     public Supervisor? GetById(int id)
     {
         Supervisor? supervisor = null;
@@ -149,38 +173,6 @@ public class DbSupervisorRepository : ISupervisorRepository
         return supervisor;
     }
     
-    public void AddSupervisor(Supervisor supervisor, int activityId)
-    {
-        try
-        {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                var query =
-                    $"INSERT INTO Supervisor (SupervisorId, SupervisingDate, LecturerId, ActivityId)" +
-                    $"VALUES (@SupervisorId, @SupervisingDate, @LecturerId, @ActivityId); "+
-                    "SELECT CAST(SCOPE_IDENTITY() as int)";
-
-                SqlCommand command = new SqlCommand(query, connection);
-            
-                if (activityId == supervisor.ActivityId)
-                {
-                    command.Parameters.AddWithValue("@SupervisorId", supervisor.SupervisorId);
-                    command.Parameters.AddWithValue("@SupervisingDate",supervisor.SupervisingDate);
-                    command.Parameters.AddWithValue("@LecturerId", supervisor.LecturerId);
-                    command.Parameters.AddWithValue("@ActivityId", supervisor.ActivityId);
-                }
-
-                command.Connection.Open();
-                var numberOfRowsAffected = command.ExecuteNonQuery();
-                if (numberOfRowsAffected != 1) throw new Exception("Adding a new Student failed.");
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-    }
     private Supervisor ReadSupervisor(SqlDataReader reader)
     {
         return new Supervisor((int)reader["SupervisorId"], (int)reader["SupervisingDate"], (int)reader["LecturerId"], (int)reader["ActivityId"]);
