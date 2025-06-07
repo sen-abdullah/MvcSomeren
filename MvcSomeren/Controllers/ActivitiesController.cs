@@ -9,12 +9,13 @@ public class ActivitiesController : Controller
     private readonly IActivitiesRepository _activityRepository;
     private readonly ISupervisorRepository _supervisorRepository;
     private readonly ILecturersRepository _lecturersRepository;
-
-    public ActivitiesController(IActivitiesRepository activityRepository, ISupervisorRepository supervisorRepository, ILecturersRepository lecturersRepository)
+    private readonly IParticipantsRepository _participantRepository;
+    public ActivitiesController(IActivitiesRepository activityRepository, ISupervisorRepository supervisorRepository, ILecturersRepository lecturersRepository, IParticipantsRepository participantsRepository)
     {
         _activityRepository = activityRepository;
         _supervisorRepository = supervisorRepository;
         _lecturersRepository = lecturersRepository;
+        _participantRepository = participantsRepository;
     }
 
     public IActionResult Index()
@@ -85,6 +86,66 @@ public class ActivitiesController : Controller
         {
             TempData["Error"] = "Could not add supervisor: " + e.Message;
             return RedirectToAction("ManageSupervisors", new { id = activityId });
+        }
+    }
+
+    public IActionResult ManageParticipants(int id)
+    {
+        try
+        {
+            ManageActivityViewModel model = new ManageActivityViewModel();
+            model.ActivityID = id;
+
+            Activity activity = _activityRepository.GetById(id);
+            model.Activity = activity;
+
+            model.Participators = CommonRepository._participantsRepository.GetAllParticipantsForActivities(id);
+            model.Students = CommonRepository._participantsRepository.GetAllStudentsWithoutActivity(id);
+
+            return View(model);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw;
+        }
+    }
+
+    [HttpPost]
+    public IActionResult AddParticipant(int studentId, int activityId)
+    {
+        try
+        {
+            CommonRepository._participantsRepository.AddStudent(studentId, activityId);
+            var student = _participantRepository.GetById(studentId);
+
+            TempData["ConfirmationMessage"] = $"Student {student?.Student.StudentFirstName} {student?.Student.StudentLastName} was successfully added as participant.";
+            return RedirectToAction("ManageParticipants", new { id = activityId });
+        }
+        catch (Exception e)
+        {
+            TempData["ErrorMessage"] = e.Message; 
+            return RedirectToAction("ManageParticipants", new { id = activityId });
+        }
+    }
+
+    [HttpPost]
+    public IActionResult RemoveParticipant(int participantId, int activityId)
+    {
+        try
+        {
+            var participant = _participantRepository.GetById(participantId);
+
+            TempData["ConfirmationMessage"] = $"Participant {participant?.Student.StudentFirstName} {participant?.Student.StudentLastName} was successfully removed.";
+
+            CommonRepository._participantsRepository.DeleteParticipant(participantId, activityId);
+
+            return RedirectToAction("ManageParticipants", new { id = activityId });
+        }
+        catch (Exception e)
+        {
+            TempData["ErrorMessage"] = e.Message;
+            return RedirectToAction("ManageParticipants", new { id = activityId });
         }
     }
 

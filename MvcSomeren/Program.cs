@@ -16,7 +16,11 @@ public class Program
         var _student_rep = new DbStudentRepository(builder.Configuration);
         builder.Services.AddSingleton<IStudentRapository>(_student_rep);
         CommonRepository._studentRapository = _student_rep;
-        
+
+        var _participant_rep = new DbParticipantRepository(builder.Configuration);
+        builder.Services.AddSingleton<IParticipantsRepository>(_participant_rep);
+        CommonRepository._participantsRepository = _participant_rep;
+
         var _lecturer_rep = new DbLecturersRepository(builder.Configuration);
         builder.Services.AddSingleton<ILecturersRepository>(_lecturer_rep);
         CommonRepository._lecturersRepository = _lecturer_rep;

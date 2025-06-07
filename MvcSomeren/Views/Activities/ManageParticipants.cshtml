@@ -1,0 +1,97 @@
+﻿@model MvcSomeren.Models.ManageActivityViewModel
+
+
+<div class="text-center pb-5">
+	<h1 class="display-6 py-lg-4">Activity name: @Model.Activity.ActivityName</h1>
+</div>
+
+<div class="container pb-5 d-flex justify-content-center mb-4">
+	<a href="/Activities/Index" class="button-delete">Back to Activities</a>
+</div>
+
+@if (TempData["ConfirmationMessage"] != null)
+{
+	<div class="alert alert-success text-center">
+		@TempData["ConfirmationMessage"]
+	</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+	<div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="text-center pb-5">
+	<hr class="m-xxl-5">
+	<h3 class="display-5 my-4 p-2">Participants</h3>
+	<table class="table table-hover my-4">
+		<thead>
+			<tr>
+				<th>Student Number</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Class</th>
+				<th>Phone Number</th>
+				<th>Participating Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.Participators)
+			{
+				<tr>
+					<td>@item.Student.StudentNumber</td>
+					<td>@item.Student.StudentFirstName</td>
+					<td>@item.Student.StudentLastName</td>
+					<td>@item.Student.StudentClass</td>
+					<td>@item.Student.StudentPhoneNumber</td>
+					<td>@item.ParticipateDate</td>
+					<td>
+						<form method="post" asp-action="RemoveParticipant" asp-controller="Activities">
+							@Html.AntiForgeryToken()
+							<input type="hidden" name="participantId" value="@item.ParticipatorId" />
+							<input type="hidden" name="activityId" value="@item.ActivityId" />
+
+							<button type="submit" class="btn btn-danger">Remove</button>
+						</form>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+
+<div class="text-center pb-5">
+	<hr class="m-xxl-5">
+	<h3 class="display-5 my-4 p-2">Non Participants</h3>
+	<table class="table table-hover my-4">
+		<thead>
+			<tr>
+				<th>Student Number</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Class</th>
+				<th>Phone Number</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.Students)
+			{
+				<tr>
+					<td>@item.StudentNumber</td>
+					<td>@item.StudentFirstName</td>
+					<td>@item.StudentLastName</td>
+					<td>@item.StudentClass</td>
+					<td>@item.StudentPhoneNumber</td>
+					<td>
+						<form method="post" asp-action="AddParticipant" asp-controller="Activities">
+							@Html.AntiForgeryToken()
+							<input type="hidden" name="StudentId" value="@item.StudentId" />
+							<input type="hidden" name="ActivityId" value="@Model.ActivityID" />
+							<button type="submit" class="btn btn-success">Add</button>
+						</form>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
