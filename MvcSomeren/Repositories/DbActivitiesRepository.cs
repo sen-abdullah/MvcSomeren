@@ -52,7 +52,7 @@ namespace MvcSomeren.Repositories
         public void Add(Activity activity)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
-            { /*Correct if wrong*/
+            {
                 string checkQuery = "SELECT COUNT(*) FROM Activity WHERE Date = @Date AND Time = @Time";
                 SqlCommand checkCommand = new SqlCommand(checkQuery, connection);
                 checkCommand.Parameters.AddWithValue("@Date", activity.Date);
@@ -156,7 +156,6 @@ namespace MvcSomeren.Repositories
                 while (reader.Read())
                 {
                     activity = ReadActivity(reader);
-                    //FillInSupervisor(activity.Supervisor);
                 }
 
                 reader.Close();
@@ -164,10 +163,5 @@ namespace MvcSomeren.Repositories
 
             return activity;
         }
-        
-        //private void FillInSupervisor(Supervisor supervisor)
-        //{
-           // supervisor.Lecturer = CommonRepository._lecturersRepository.GetById(supervisor.LecturerId);
-        //}
     }
 }
