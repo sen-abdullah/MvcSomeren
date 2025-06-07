@@ -9,4 +9,5 @@ public static class CommonRepository
     public static ISupervisorRepository _supervisorRepository;
     public static IRoomsRepository _roomsRepository;
     public static ILecturerSupervisorRepository _lecturerSupervisorRepository;
+    public static IParticipantsRepository _participantsRepository;
 }
